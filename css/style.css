@@ -1011,3 +1011,125 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* =========================================
+   RULES PAGE — the ten rules, poster-style
+   Mirrors the printed REGLAS sheet: line-art
+   icon, orange rule bar, condensed number+title.
+   ========================================= */
+.wrap--narrow { max-width: 880px; }
+
+.rules-section { padding-top: 56px; }
+
+.rules-panel {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 8px 38px;
+  overflow: hidden;
+}
+
+/* the orange/green corner flashes from the printed sheet */
+.rules-panel::before,
+.rules-panel::after {
+  content: "";
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  pointer-events: none;
+}
+.rules-panel::before {
+  top: -44px; left: -44px;
+  background: var(--orange);
+  transform: rotate(45deg);
+}
+.rules-panel::after {
+  bottom: -44px; right: -44px;
+  background: var(--green);
+  transform: rotate(45deg);
+}
+
+.rule {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  align-items: center;
+  gap: 26px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+  transition: background .22s var(--ease);
+}
+.rule:last-of-type { border-bottom: 0; }
+
+.rule:hover { background: linear-gradient(90deg, var(--orange-soft), transparent 70%); }
+
+.rule-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 2.5px solid var(--ink);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  background: var(--surface);
+  transition: background .22s var(--ease), color .22s var(--ease),
+              border-color .22s var(--ease), transform .22s var(--ease);
+}
+.rule-icon svg { width: 34px; height: 34px; }
+
+.rule:hover .rule-icon {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--orange);
+  transform: scale(1.06);
+}
+
+.rule-body {
+  border-left: 3px solid var(--orange);
+  padding-left: 22px;
+}
+
+.rule-title {
+  font-family: var(--font-head);
+  font-size: 1.75rem;
+  letter-spacing: .5px;
+  line-height: 1.1;
+  margin: 0 0 6px;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.rule-num { color: var(--orange); }
+
+.rule-body p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: .99rem;
+  line-height: 1.6;
+}
+
+.rules-respect {
+  margin-top: 26px;
+  padding: 20px 24px;
+  text-align: center;
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--radius);
+  border-bottom: 4px solid var(--orange);
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.rules-respect strong { font-weight: 400; color: #fff; }
+
+@media (max-width: 720px) {
+  .rules-panel { padding: 4px 20px; }
+  .rule { grid-template-columns: 56px 1fr; gap: 16px; padding: 22px 0; }
+  .rule-icon { width: 52px; height: 52px; border-width: 2px; }
+  .rule-icon svg { width: 26px; height: 26px; }
+  .rule-body { padding-left: 16px; }
+  .rule-title { font-size: 1.45rem; }
+  .rules-respect { font-size: 1.1rem; padding: 16px 18px; }
+}

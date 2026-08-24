@@ -10,7 +10,7 @@ Team registration runs through the coach's existing Google Form, embedded on `re
 ```
 index.html      Home — hero, how it works, divisions, why this league
 league.html     The League — format, divisions table, fees (#fees), fields
-rules.html      Rules — match basics, eligibility, cards & sanctions table
+rules.html      Rules — the coach's ten official rules, poster-style (REAL content)
 schedule.html   Schedule & standings — empty state + table format preview
 register.html   Register — embedded Google Form + checklist + what happens next
 contact.html    Contact — phone/WhatsApp/email cards + FAQ (#faq)
@@ -65,8 +65,14 @@ The three division cards use the three star colors from the crest.
 
 ## Placeholder content to replace
 
-The league name and logo are real. Everything below is **made up** to make the layout read
-correctly — replace it with the coach's real info before this goes live.
+The league name and logo are real, and so is `rules.html` — it carries the coach's ten official
+rules exactly as they appear on his printed REGLAS sheet, in Spanish and English. Everything
+below is still **made up** to make the layout read correctly — replace it with the coach's real
+info before this goes live.
+
+> ⚠️ **Known contradiction:** the divisions on `index.html` and `league.html` still say
+> "11 vs 11" (keys `home_div1_t1`, `home_div2_t1`, `home_div3_t1`, `lg_r1c3`, `lg_r2c3`,
+> `lg_r3c3`). Real rule 2 is **8 vs 8**. Fix these together with the real division info.
 
 | What | Where |
 |---|---|
@@ -74,7 +80,6 @@ correctly — replace it with the coach's real info before this goes live.
 | Email `info@lasvegassoccerleague.com` | footers, `contact.html` |
 | Divisions, ages, game days | `index.html`, `league.html`, `js/i18n.js` |
 | Fees ($350 / $70 / $100) | `league.html` `#fees` section |
-| Fines & suspensions table | `rules.html` |
 | Season months (Feb–Jun / Aug–Dec) | `league.html`, `js/i18n.js` |
 | Field / venue names | `league.html` |
 | 2026 season label | `index.html` hero eyebrow, `js/i18n.js` `home_eyebrow` |

@@ -46,7 +46,7 @@ forward it as-is if that's easier.
 |---|---|
 | `index.html` | Home — hero with the Vegas skyline, divisions, how it works |
 | `league.html` | Format, divisions table, fees (`#fees`), fields |
-| `rules.html` | Match rules, eligibility, cards & sanctions |
+| `rules.html` | The coach's ten official rules, poster-style — **real content** |
 | `schedule.html` | Standings placeholder (season hasn't been drawn yet) |
 | `register.html` | Button that opens the coach's Google Form in a new tab |
 | `contact.html` | Contact cards + FAQ (`#faq`) |
@@ -57,7 +57,7 @@ forward it as-is if that's easier.
 | `README.md` | Full technical notes — branding, editing copy, what's placeholder |
 | `COACH-SETUP.md` | Bilingual instructions for unlocking the Google Form |
 
-## Two open items
+## Open items
 
 1. **The Google Form requires a sign-in.** Verified directly: logged-out visitors get
    HTTP 401 and a Google sign-in wall. That's why the register page links out to the form
@@ -65,9 +65,13 @@ forward it as-is if that's easier.
    needs. The embed code is still in `register.html`, commented out, ready to restore once
    the coach turns that setting off. See `COACH-SETUP.md`.
 
-2. **All league details are placeholders.** Phone, email, fees, divisions, season dates,
-   fines, and venues were invented to make the layout read correctly. `README.md` has the
-   table of exactly what to replace and where. The league name and crest are real.
+2. **Most league details are still placeholders.** Phone, email, fees, divisions, season
+   dates, and venues were invented to make the layout read correctly. `README.md` has the
+   table of exactly what to replace and where. The league name, the crest, and the rules
+   page are real.
+
+3. **`index.html` and `league.html` still say "11 vs 11"** in six places, which contradicts
+   real rule 2 (8 vs 8). Worth fixing in the same pass as the real division info.
 
 ## Related
 
