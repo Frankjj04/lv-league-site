@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Las Vegas Soccer League — Registra tu equipo</title>
+  <meta name="description" content="Liga de fútbol amateur en Las Vegas, Nevada. Registra tu equipo para la próxima temporada: divisiones abierta, veteranos y femenil. Árbitros certificados, calendario fijo y premiación." />
+  <meta property="og:title" content="Las Vegas Soccer League — Registra tu equipo" />
+  <meta property="og:description" content="Liga de fútbol amateur en Las Vegas, Nevada. Inscribe tu equipo para la próxima temporada." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#FC8C00" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page-title-key="meta_title_home">
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+  <a href="index.html" class="logo" aria-label="Las Vegas Soccer League">
+    <img src="assets/logo.jpg" alt="" class="logo-mark" />
+    <span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active" data-i18n="nav_home">Inicio</a></li>
+    <li><a href="league.html" data-i18n="nav_league">La Liga</a></li>
+    <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+    <li><a href="schedule.html" data-i18n="nav_schedule">Calendario</a></li>
+    <li><a href="contact.html" data-i18n="nav_contact">Contacto</a></li>
+    <li><a href="register.html" class="nav-cta" data-i18n="nav_register">Registrar equipo</a></li>
+  </ul>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="hamburger" role="button" tabindex="0" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <a href="index.html" class="active" data-i18n="nav_home">Inicio</a>
+  <a href="league.html" data-i18n="nav_league">La Liga</a>
+  <a href="rules.html" data-i18n="nav_rules">Reglamento</a>
+  <a href="schedule.html" data-i18n="nav_schedule">Calendario</a>
+  <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+  <a href="register.html" class="nav-cta" data-i18n="nav_register">Registrar equipo</a>
+</div>
+
+<!-- ========== HERO ========== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <span class="eyebrow" data-i18n="home_eyebrow">Las Vegas, Nevada &nbsp;·&nbsp; Temporada 2026</span>
+      <h1 data-i18n="home_h1">ARMA TU EQUIPO.<br><span class="hl">REGÍSTRALO</span><br>Y A JUGAR.</h1>
+      <p class="hero-sub" data-i18n="home_sub">La liga donde los equipos de Las Vegas compiten en serio: calendario fijo, árbitros certificados, tabla de posiciones y premiación al final de cada temporada.</p>
+      <div class="hero-actions">
+        <a href="register.html" class="btn btn--primary btn--lg" data-i18n="home_cta1">Registrar mi equipo</a>
+        <a href="league.html" class="btn btn--ghost btn--lg" data-i18n="home_cta2">Cómo funciona la liga</a>
+      </div>
+      <div class="hero-note">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span data-i18n="home_note">Inscripciones abiertas — los cupos por división son limitados.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mountain range + Las Vegas Strip skyline, in the style of the crest.
+       Left to right: Luxor pyramid & beam, High Roller, hotel towers,
+       Statue of Liberty (NY-NY), the Strat, Eiffel Tower (Paris),
+       the Welcome to Fabulous Las Vegas sign. -->
+  <div class="hero-scape" aria-hidden="true">
+    <svg viewBox="0 0 1440 300" role="presentation">
+
+      <!-- desert mountains -->
+      <path class="mtn-back"  d="M0 196 L140 118 L268 176 L410 92 L560 174 L700 112 L858 182 L1010 106 L1160 176 L1300 124 L1440 190 L1440 300 L0 300 Z" />
+      <path class="mtn-front" d="M0 238 L118 174 L246 224 L392 156 L540 222 L688 164 L846 230 L1004 168 L1158 226 L1302 178 L1440 234 L1440 300 L0 300 Z" />
+
+      <!-- Luxor sky beam -->
+      <path class="beam" d="M214 186 L226 186 L252 0 L188 0 Z" />
+
+      <g class="city">
+        <!-- ground line -->
+        <rect x="0" y="278" width="1440" height="22" />
+
+        <!-- low buildings, far left -->
+        <path d="M0 278 L0 258 L44 258 L44 244 L90 244 L90 264 L134 264 L134 278 Z" />
+
+        <!-- Luxor pyramid + sphinx -->
+        <path d="M150 278 L220 186 L290 278 Z" />
+        <path d="M292 278 L292 258 L300 258 L302 246 L310 244 L316 250 L314 258 L330 258 L330 278 Z" />
+
+        <!-- High Roller cabins -->
+        <circle cx="422" cy="196" r="4.5" /><circle cx="414.8" cy="169" r="4.5" />
+        <circle cx="395" cy="149.2" r="4.5" /><circle cx="368" cy="142" r="4.5" />
+        <circle cx="341" cy="149.2" r="4.5" /><circle cx="321.2" cy="169" r="4.5" />
+        <circle cx="314" cy="196" r="4.5" /><circle cx="321.2" cy="223" r="4.5" />
+        <circle cx="341" cy="242.8" r="4.5" /><circle cx="368" cy="250" r="4.5" />
+        <circle cx="395" cy="242.8" r="4.5" /><circle cx="414.8" cy="223" r="4.5" />
+        <circle cx="368" cy="196" r="7" />
+        <rect x="342" y="268" width="52" height="10" />
+
+        <!-- hotel towers -->
+        <path d="M468 278 L468 232 L500 232 L500 220 L544 220 L544 278 Z" />
+
+        <!-- Statue of Liberty, New York-New York -->
+        <path d="M596 278 L596 246 L644 246 L644 278 Z" />
+        <path d="M606 246 L611 208 L629 208 L634 246 Z" />
+        <path d="M608 210 L600 224 L607 228 L615 214 Z" />
+        <path d="M626 210 L637 184 L644 187 L633 213 Z" />
+        <path d="M636 182 L641 166 L647 182 Z" />
+        <circle cx="620" cy="198" r="8" />
+        <path d="M609 194 L613 180 L616 192 L620 176 L624 192 L627 180 L631 194 Z" />
+
+        <!-- the Strat -->
+        <path d="M756 278 L761 132 L775 132 L780 278 Z" />
+        <path d="M750 132 L786 132 L781 110 L755 110 Z" />
+        <path d="M753 110 L783 110 L779 98 L757 98 Z" />
+        <path d="M764 98 L772 98 L770 44 L766 44 Z" />
+        <path d="M766 44 L770 44 L768 20 Z" />
+
+        <!-- more towers -->
+        <path d="M812 278 L812 240 L848 240 L848 278 Z" />
+
+        <!-- Eiffel Tower, Paris Las Vegas -->
+        <path d="M886 278 L910 278 L921 194 L912 194 Z" />
+        <path d="M968 278 L944 278 L933 194 L942 194 Z" />
+        <rect x="906" y="188" width="42" height="8" />
+        <path d="M914 188 L940 188 L935 134 L919 134 Z" />
+        <rect x="915" y="128" width="24" height="7" />
+        <path d="M921 128 L933 128 L931 86 L923 86 Z" />
+        <rect x="918" y="80" width="18" height="6" />
+        <rect x="925" y="52" width="4" height="28" />
+        <path d="M924 52 L930 52 L927 36 Z" />
+
+        <!-- towers -->
+        <path d="M1000 278 L1000 230 L1030 230 L1030 216 L1062 216 L1062 278 Z" />
+
+        <!-- Welcome to Fabulous Las Vegas sign -->
+        <rect x="1125" y="248" width="6" height="30" />
+        <rect x="1145" y="248" width="6" height="30" />
+        <path d="M1138 180 L1176 220 L1138 258 L1100 220 Z" />
+        <circle cx="1138" cy="166" r="12" />
+        <path d="M1138 112 L1142 126 L1157 126 L1145 135 L1149 149 L1138 140 L1127 149 L1131 135 L1119 126 L1134 126 Z" />
+
+        <!-- right-hand blocks -->
+        <path d="M1240 278 L1240 254 L1288 254 L1288 236 L1340 236 L1340 260 L1394 260 L1394 246 L1440 246 L1440 278 Z" />
+      </g>
+
+      <!-- High Roller wheel structure -->
+      <g class="wheel-legs"><path d="M338 278 L364 202 M398 278 L372 202" /></g>
+      <g class="wheel-rim"><circle cx="368" cy="196" r="54" /></g>
+      <g class="wheel-spokes">
+        <path d="M368 196 L422 196 M368 196 L406 158 M368 196 L368 142 M368 196 L330 158
+                 M368 196 L314 196 M368 196 L330 234 M368 196 L368 250 M368 196 L406 234" />
+      </g>
+    </svg>
+  </div>
+</header>
+
+<!-- ========== STATS ========== -->
+<section class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num"><span data-count="3">3</span></div>
+      <div class="stat-label" data-i18n="home_stat1">Divisiones</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span data-count="16" data-suffix="">16</span></div>
+      <div class="stat-label" data-i18n="home_stat2">Equipos por división</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span data-count="14">14</span></div>
+      <div class="stat-label" data-i18n="home_stat3">Jornadas por temporada</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-i18n="home_stat4_num">DOM</div>
+      <div class="stat-label" data-i18n="home_stat4">Día de juego</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow" data-i18n="home_steps_tag">Cómo funciona</span>
+      <h2 data-i18n="home_steps_h2">DE TU EQUIPO A LA CANCHA EN <span class="accent">4 PASOS</span></h2>
+      <p class="lede" data-i18n="home_steps_p">Sin vueltas. Llenas el formulario, confirmas tu cupo y te mandamos el calendario.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <h3 data-i18n="home_step1_h">Llena el registro</h3>
+        <p data-i18n="home_step1_p">Nombre del equipo, datos del delegado y la división en la que quieres competir. Toma menos de 5 minutos.</p>
+      </div>
+      <div class="step reveal">
+        <h3 data-i18n="home_step2_h">Confirmamos tu cupo</h3>
+        <p data-i18n="home_step2_p">Te contactamos por teléfono o WhatsApp con el costo de inscripción, la fecha límite y la forma de pago.</p>
+      </div>
+      <div class="step reveal">
+        <h3 data-i18n="home_step3_h">Entregas tu roster</h3>
+        <p data-i18n="home_step3_p">Registras a tus jugadores con identificación. Cada jugador queda dado de alta para toda la temporada.</p>
+      </div>
+      <div class="step reveal">
+        <h3 data-i18n="home_step4_h">Sale el calendario</h3>
+        <p data-i18n="home_step4_p">Publicamos rol de juegos, horarios y canchas. El primer silbatazo suena el día de arranque de la temporada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== DIVISIONS ========== -->
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="home_div_tag">Divisiones</span>
+      <h2 data-i18n="home_div_h2">ELIGE DÓNDE <span class="accent">COMPITE TU EQUIPO</span></h2>
+      <p class="lede" data-i18n="home_div_p">Cada división tiene su propio calendario y su propia tabla. Un equipo puede inscribirse en más de una.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="card division reveal">
+        <h3 data-i18n="home_div1_h">Libre / Abierta</h3>
+        <p data-i18n="home_div1_p">Mayores de 18 años, sin límite de edad superior. La división más competida de la liga.</p>
+        <div class="division-meta">
+          <span class="tag tag--orange" data-i18n="home_div1_t1">11 vs 11</span>
+          <span class="tag" data-i18n="home_div1_t2">18+</span>
+          <span class="tag" data-i18n="home_div1_t3">Domingos</span>
+        </div>
+      </article>
+
+      <article class="card division division--green reveal">
+        <h3 data-i18n="home_div2_h">Veteranos 35+</h3>
+        <p data-i18n="home_div2_p">Para los que llevan años en la cancha. Mismo formato, ritmo pensado para jugadores de 35 años en adelante.</p>
+        <div class="division-meta">
+          <span class="tag tag--green" data-i18n="home_div2_t1">11 vs 11</span>
+          <span class="tag" data-i18n="home_div2_t2">35+</span>
+          <span class="tag" data-i18n="home_div2_t3">Domingos</span>
+        </div>
+      </article>
+
+      <article class="card division division--pink reveal">
+        <h3 data-i18n="home_div3_h">Femenil</h3>
+        <p data-i18n="home_div3_p">División femenil con calendario propio. Abierta a equipos nuevos y a equipos ya formados.</p>
+        <div class="division-meta">
+          <span class="tag" data-i18n="home_div3_t1">11 vs 11</span>
+          <span class="tag" data-i18n="home_div3_t2">18+</span>
+          <span class="tag" data-i18n="home_div3_t3">Sábados</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WHY ========== -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow" data-i18n="home_why_tag">Por qué esta liga</span>
+      <h2 data-i18n="home_why_h2">UNA LIGA <span class="accent">BIEN ORGANIZADA</span></h2>
+      <p class="lede" data-i18n="home_why_p">Lo básico, bien hecho: que el juego empiece a tiempo, que el árbitro esté ahí y que la tabla esté actualizada.</p>
+    </div>
+
+    <div class="grid grid--4">
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">🧑‍⚖️</div>
+        <h3 data-i18n="home_why1_h">Árbitros certificados</h3>
+        <p data-i18n="home_why1_p">Cuerpo arbitral asignado para cada partido, con central y auxiliares según la división.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">🏟️</div>
+        <h3 data-i18n="home_why2_h">Canchas de calidad</h3>
+        <p data-i18n="home_why2_p">Complejos deportivos en Las Vegas con campo marcado, redes y horarios respetados.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">📊</div>
+        <h3 data-i18n="home_why3_h">Tabla y estadísticas</h3>
+        <p data-i18n="home_why3_p">Posiciones, goleo individual y tarjetas actualizadas cada semana después de la jornada.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">🏆</div>
+        <h3 data-i18n="home_why4_h">Liguilla y premiación</h3>
+        <p data-i18n="home_why4_p">La temporada cierra con fase final. Trofeos para campeón, subcampeón y campeón de goleo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="section cta-band">
+  <div class="wrap">
+    <h2 class="reveal" data-i18n="cta_h2">¿LISTO PARA <span class="accent">INSCRIBIR A TU EQUIPO?</span></h2>
+    <p class="reveal" data-i18n="cta_p">El registro toma unos minutos. Después nosotros te contactamos con todos los detalles.</p>
+    <a href="register.html" class="btn btn--primary btn--lg reveal" data-i18n="cta_btn">Ir al formulario de registro</a>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><img src="assets/logo.jpg" alt="" class="logo-mark" /><span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span></a>
+        <p data-i18n="footer_about">Liga de fútbol amateur en Las Vegas, Nevada. Organizada por y para la comunidad futbolera del valle.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_nav_h">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+          <li><a href="league.html" data-i18n="nav_league">La Liga</a></li>
+          <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+          <li><a href="schedule.html" data-i18n="nav_schedule">Calendario</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_teams_h">Equipos</h4>
+        <ul class="footer-links">
+          <li><a href="register.html" data-i18n="nav_register">Registrar equipo</a></li>
+          <li><a href="league.html#fees" data-i18n="footer_fees">Costos</a></li>
+          <li><a href="contact.html#faq" data-i18n="footer_faq">Preguntas frecuentes</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_h">Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+17025550100">(702) 555-0100</a></li>
+          <li><a href="mailto:info@lasvegassoccerleague.com">info@lasvegassoccerleague.com</a></li>
+          <li><span data-i18n="footer_city">Las Vegas, NV</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Las Vegas Soccer League</span>
+      <span data-i18n="footer_made">Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

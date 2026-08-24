@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reglamento — Las Vegas Soccer League</title>
+  <meta name="description" content="Reglamento de la Las Vegas Soccer League: duración de partidos, elegibilidad de jugadores, tarjetas y sanciones, uniformes y partidos no presentados." />
+  <meta property="og:title" content="Reglamento — Las Vegas Soccer League" />
+  <meta property="og:description" content="Reglas de juego, elegibilidad, sanciones y conducta de la liga." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#FC8C00" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page-title-key="meta_title_rules">
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+  <a href="index.html" class="logo" aria-label="Las Vegas Soccer League">
+    <img src="assets/logo.jpg" alt="" class="logo-mark" />
+    <span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+    <li><a href="league.html" data-i18n="nav_league">La Liga</a></li>
+    <li><a href="rules.html" class="active" data-i18n="nav_rules">Reglamento</a></li>
+    <li><a href="schedule.html" data-i18n="nav_schedule">Calendario</a></li>
+    <li><a href="contact.html" data-i18n="nav_contact">Contacto</a></li>
+    <li><a href="register.html" class="nav-cta" data-i18n="nav_register">Registrar equipo</a></li>
+  </ul>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="hamburger" role="button" tabindex="0" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <a href="index.html" data-i18n="nav_home">Inicio</a>
+  <a href="league.html" data-i18n="nav_league">La Liga</a>
+  <a href="rules.html" class="active" data-i18n="nav_rules">Reglamento</a>
+  <a href="schedule.html" data-i18n="nav_schedule">Calendario</a>
+  <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+  <a href="register.html" class="nav-cta" data-i18n="nav_register">Registrar equipo</a>
+</div>
+
+<!-- ========== PAGE HEAD ========== -->
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="rl_eyebrow">Reglamento</span>
+    <h1 data-i18n="rl_h1">REGLAS <span class="accent">DE LA LIGA</span></h1>
+    <p data-i18n="rl_sub">La liga se rige por las Reglas de Juego de FIFA, con los ajustes que se listan en esta página. Todo delegado es responsable de que su equipo las conozca.</p>
+  </div>
+</header>
+
+<!-- ========== MATCH BASICS ========== -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="rl_match_tag">El partido</span>
+      <h2 data-i18n="rl_match_h2">LO BÁSICO <span class="accent">EN LA CANCHA</span></h2>
+    </div>
+
+    <div class="grid grid--4">
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">⏱️</div>
+        <h3 data-i18n="rl_m1_h">Duración</h3>
+        <p data-i18n="rl_m1_p">Dos tiempos de 45 minutos con 10 minutos de descanso. El árbitro puede ajustar por retrasos en el rol de juegos.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">👥</div>
+        <h3 data-i18n="rl_m2_h">Jugadores</h3>
+        <p data-i18n="rl_m2_p">11 en cancha, mínimo 7 para iniciar. Cambios libres: un jugador que sale puede volver a entrar.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">🪪</div>
+        <h3 data-i18n="rl_m3_h">Identificación</h3>
+        <p data-i18n="rl_m3_p">Todo jugador presenta credencial de la liga o identificación con foto antes del partido. Sin ID, no juega.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon" aria-hidden="true">👕</div>
+        <h3 data-i18n="rl_m4_h">Uniforme</h3>
+        <p data-i18n="rl_m4_p">Playeras numeradas del mismo color, espinilleras obligatorias y tacos permitidos según la cancha.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ELIGIBILITY ========== -->
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="rl_elig_tag">Jugadores</span>
+      <h2 data-i18n="rl_elig_h2">ELEGIBILIDAD Y <span class="accent">ROSTER</span></h2>
+      <p class="lede" data-i18n="rl_elig_p">Un jugador solo puede estar registrado con un equipo por división y por temporada.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="card reveal">
+        <div class="card-num">01</div>
+        <h3 data-i18n="rl_e1_h">Alta de jugadores</h3>
+        <p data-i18n="rl_e1_p">Hasta 22 jugadores por roster. Las altas se cierran antes de la jornada 10; después de esa fecha el roster queda congelado.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-num">02</div>
+        <h3 data-i18n="rl_e2_h">Edad mínima</h3>
+        <p data-i18n="rl_e2_p">18 años cumplidos para las divisiones libre y femenil; 35 años cumplidos para veteranos, verificados con identificación oficial.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-num">03</div>
+        <h3 data-i18n="rl_e3_h">Jugador no registrado</h3>
+        <p data-i18n="rl_e3_p">Alinear a un jugador fuera del roster se sanciona con la pérdida del partido por 3-0 y multa al equipo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== DISCIPLINE ========== -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="rl_disc_tag">Disciplina</span>
+      <h2 data-i18n="rl_disc_h2">TARJETAS Y <span class="accent">SANCIONES</span></h2>
+      <p class="lede" data-i18n="rl_disc_p">Las sanciones se aplican automáticamente a partir del reporte del árbitro. El comité de disciplina resuelve los casos graves.</p>
+    </div>
+
+    <div class="table-scroll reveal">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="rl_th1">Situación</th>
+            <th data-i18n="rl_th2">Sanción</th>
+            <th data-i18n="rl_th3">Multa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="rl_r1c1">Acumulación de 5 amarillas</td>
+            <td data-i18n="rl_r1c2">1 partido de suspensión</td>
+            <td data-i18n="rl_r1c3">—</td>
+          </tr>
+          <tr>
+            <td data-i18n="rl_r2c1">Tarjeta roja (doble amarilla)</td>
+            <td data-i18n="rl_r2c2">1 partido de suspensión</td>
+            <td data-i18n="rl_r2c3">$25</td>
+          </tr>
+          <tr>
+            <td data-i18n="rl_r3c1">Roja directa por juego brusco</td>
+            <td data-i18n="rl_r3c2">2 partidos de suspensión</td>
+            <td data-i18n="rl_r3c3">$50</td>
+          </tr>
+          <tr>
+            <td data-i18n="rl_r4c1">Agresión a un árbitro</td>
+            <td data-i18n="rl_r4c2">Expulsión de la liga</td>
+            <td data-i18n="rl_r4c3">$150</td>
+          </tr>
+          <tr>
+            <td data-i18n="rl_r5c1">Riña o pleito colectivo</td>
+            <td data-i18n="rl_r5c2">Caso al comité de disciplina</td>
+            <td data-i18n="rl_r5c3">Según resolución</td>
+          </tr>
+          <tr>
+            <td data-i18n="rl_r6c1">Partido no presentado</td>
+            <td data-i18n="rl_r6c2">Derrota 3-0</td>
+            <td data-i18n="rl_r6c3">$70</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notice reveal" style="margin-top:24px;">
+      <span aria-hidden="true">⚠️</span>
+      <span data-i18n="rl_disc_note"><strong>Tolerancia cero:</strong> cualquier agresión física o verbal hacia árbitros, rivales o aficionados se turna directamente al comité de disciplina y puede terminar en expulsión definitiva del jugador o del equipo.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FORFEITS / MISC ========== -->
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="rl_misc_tag">Operación</span>
+      <h2 data-i18n="rl_misc_h2">PUNTOS, EMPATES Y <span class="accent">DEFAULTS</span></h2>
+    </div>
+
+    <div class="grid grid--2">
+      <article class="card reveal">
+        <h3 data-i18n="rl_x1_h">Puntuación</h3>
+        <p data-i18n="rl_x1_p">Victoria 3 puntos, empate 1 punto, derrota 0. En caso de empate en la tabla se define por diferencia de goles, luego por goles a favor y después por resultado entre ambos equipos.</p>
+      </article>
+      <article class="card reveal">
+        <h3 data-i18n="rl_x2_h">Tiempo de espera</h3>
+        <p data-i18n="rl_x2_p">Se otorgan 15 minutos de tolerancia desde la hora programada. Si el equipo no completa 7 jugadores, se marca partido no presentado.</p>
+      </article>
+      <article class="card reveal">
+        <h3 data-i18n="rl_x3_h">Protestas</h3>
+        <p data-i18n="rl_x3_p">Solo el delegado registrado puede presentar una protesta, por escrito y dentro de las 48 horas siguientes al partido.</p>
+      </article>
+      <article class="card reveal">
+        <h3 data-i18n="rl_x4_h">Clima y cancelaciones</h3>
+        <p data-i18n="rl_x4_p">Si una jornada se suspende por clima o por la ciudad, se reprograma. El aviso se manda al grupo de delegados.</p>
+      </article>
+    </div>
+
+    <div class="notice reveal" style="margin-top:30px;">
+      <span aria-hidden="true">📄</span>
+      <span data-i18n="rl_final_note"><strong>Versión oficial:</strong> este resumen es una guía. El reglamento completo se entrega en la junta de delegados y es el documento que aplica en cualquier disputa.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="section cta-band">
+  <div class="wrap">
+    <h2 class="reveal" data-i18n="cta_h2">¿LISTO PARA <span class="accent">INSCRIBIR A TU EQUIPO?</span></h2>
+    <p class="reveal" data-i18n="cta_p">El registro toma unos minutos. Después nosotros te contactamos con todos los detalles.</p>
+    <a href="register.html" class="btn btn--primary btn--lg reveal" data-i18n="cta_btn">Ir al formulario de registro</a>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><img src="assets/logo.jpg" alt="" class="logo-mark" /><span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span></a>
+        <p data-i18n="footer_about">Liga de fútbol amateur en Las Vegas, Nevada. Organizada por y para la comunidad futbolera del valle.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_nav_h">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+          <li><a href="league.html" data-i18n="nav_league">La Liga</a></li>
+          <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+          <li><a href="schedule.html" data-i18n="nav_schedule">Calendario</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_teams_h">Equipos</h4>
+        <ul class="footer-links">
+          <li><a href="register.html" data-i18n="nav_register">Registrar equipo</a></li>
+          <li><a href="league.html#fees" data-i18n="footer_fees">Costos</a></li>
+          <li><a href="contact.html#faq" data-i18n="footer_faq">Preguntas frecuentes</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_h">Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+17025550100">(702) 555-0100</a></li>
+          <li><a href="mailto:info@lasvegassoccerleague.com">info@lasvegassoccerleague.com</a></li>
+          <li><span data-i18n="footer_city">Las Vegas, NV</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Las Vegas Soccer League</span>
+      <span data-i18n="footer_made">Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

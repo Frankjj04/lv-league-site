@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar equipo — Las Vegas Soccer League</title>
+  <meta name="description" content="Formulario de registro de equipos para la Las Vegas Soccer League. Inscribe a tu equipo para la próxima temporada en pocos minutos." />
+  <meta property="og:title" content="Registrar equipo — Las Vegas Soccer League" />
+  <meta property="og:description" content="Inscribe a tu equipo para la próxima temporada de la Las Vegas Soccer League." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#FC8C00" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page-title-key="meta_title_register">
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+  <a href="index.html" class="logo" aria-label="Las Vegas Soccer League">
+    <img src="assets/logo.jpg" alt="" class="logo-mark" />
+    <span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+    <li><a href="league.html" data-i18n="nav_league">La Liga</a></li>
+    <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+    <li><a href="schedule.html" data-i18n="nav_schedule">Calendario</a></li>
+    <li><a href="contact.html" data-i18n="nav_contact">Contacto</a></li>
+    <li><a href="register.html" class="nav-cta" data-i18n="nav_register">Registrar equipo</a></li>
+  </ul>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="hamburger" role="button" tabindex="0" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <a href="index.html" data-i18n="nav_home">Inicio</a>
+  <a href="league.html" data-i18n="nav_league">La Liga</a>
+  <a href="rules.html" data-i18n="nav_rules">Reglamento</a>
+  <a href="schedule.html" data-i18n="nav_schedule">Calendario</a>
+  <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+  <a href="register.html" class="nav-cta active" data-i18n="nav_register">Registrar equipo</a>
+</div>
+
+<!-- ========== PAGE HEAD ========== -->
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="reg_eyebrow">Inscripciones abiertas</span>
+    <h1 data-i18n="reg_h1">REGISTRA <span class="accent">TU EQUIPO</span></h1>
+    <p data-i18n="reg_sub">Llena el formulario de la liga y quedas en la lista de la próxima temporada. Después te contactamos con el costo, la fecha límite de pago y la información de tu división.</p>
+  </div>
+</header>
+
+<!-- ========== FORM ========== -->
+<section class="section">
+  <div class="wrap">
+    <div class="form-single">
+      <div class="form-cta reveal">
+        <img src="assets/logo.jpg" alt="" class="form-cta-crest" />
+        <h2 data-i18n="reg_open_h">FORMULARIO DE <span class="accent">REGISTRO</span></h2>
+        <p data-i18n="reg_open_p">Llena el formulario de la liga para apartar el lugar de tu equipo. Se abre en una pestaña nueva.</p>
+        <a class="btn btn--primary btn--lg"
+           href="https://forms.gle/bxiA7X9htGQmF93U8"
+           target="_blank" rel="noopener"
+           data-i18n="reg_open_btn">Abrir formulario de registro</a>
+        <p class="form-cta-note" data-i18n="reg_open_note">Google te va a pedir iniciar sesión. Si no tienes cuenta o se te complica, <a href="contact.html">escríbenos</a> y te registramos por teléfono.</p>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         PARA INCRUSTAR EL FORMULARIO EN LA PÁGINA / TO EMBED THE FORM
+         ----------------------------------------------------------------
+         El formulario de Google exige iniciar sesión, y Chrome bloquea
+         las cookies que eso necesita dentro de un <iframe>. Por eso el
+         botón de arriba abre el formulario en una pestaña nueva.
+
+         Cuando el formulario ya no pida iniciar sesión (ver
+         COACH-SETUP.md), borra el bloque .form-cta de arriba y
+         descomenta esto para incrustarlo en la página:
+
+         <div class="form-panel">
+           <iframe class="form-embed"
+             src="https://docs.google.com/forms/d/e/1FAIpQLSc_t6QVH_zKXrfHa6PJDritjL8JuOg2A3wC0A9TNnise-bgWA/viewform?embedded=true"
+             title="Formulario de registro de equipos" loading="lazy"></iframe>
+         </div>
+         ================================================================ -->
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><img src="assets/logo.jpg" alt="" class="logo-mark" /><span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span></a>
+        <p data-i18n="footer_about">Liga de fútbol amateur en Las Vegas, Nevada. Organizada por y para la comunidad futbolera del valle.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_nav_h">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+          <li><a href="league.html" data-i18n="nav_league">La Liga</a></li>
+          <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+          <li><a href="schedule.html" data-i18n="nav_schedule">Calendario</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_teams_h">Equipos</h4>
+        <ul class="footer-links">
+          <li><a href="register.html" data-i18n="nav_register">Registrar equipo</a></li>
+          <li><a href="league.html#fees" data-i18n="footer_fees">Costos</a></li>
+          <li><a href="contact.html#faq" data-i18n="footer_faq">Preguntas frecuentes</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_h">Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+17025550100">(702) 555-0100</a></li>
+          <li><a href="mailto:info@lasvegassoccerleague.com">info@lasvegassoccerleague.com</a></li>
+          <li><span data-i18n="footer_city">Las Vegas, NV</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Las Vegas Soccer League</span>
+      <span data-i18n="footer_made">Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
