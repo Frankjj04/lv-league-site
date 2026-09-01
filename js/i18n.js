@@ -66,7 +66,7 @@ window.LVSL_TRANSLATIONS = {
     reg_open_h: 'FORMULARIO DE <span class="accent">REGISTRO</span>',
     reg_open_p: 'Llena el formulario de la liga para apartar el lugar de tu equipo. Se abre en una pestaña nueva.',
     reg_open_btn: 'Abrir formulario de registro',
-    reg_open_note: 'Google te va a pedir iniciar sesión. Si no tienes cuenta o se te complica, escríbenos y te registramos por teléfono.',
+    reg_open_note: 'Google te va a pedir iniciar sesión. Si no tienes cuenta o se te complica, llámanos al <a href="tel:+17028319474">702-831-9474</a> y te registramos por teléfono.',
 
     /* ── INICIO ── */
     meta_title_home: 'Las Vegas Soccer League — Registra tu equipo',
@@ -77,6 +77,34 @@ window.LVSL_TRANSLATIONS = {
     home_note: 'Inscripciones abiertas — los cupos por división son limitados.',
     home_sub: 'Liga de fútbol amateur en Las Vegas, Nevada. Arma tu equipo, regístralo y juega esta temporada.',
     nav_home: 'Inicio',
+
+
+    /* ── COSTOS ── */
+    meta_title_costs: 'Costos — Las Vegas Soccer League',
+    nav_costs:    'Costos',
+    cs_eyebrow:   'Costos',
+    cs_h1:        'COSTOS <span class="accent">DE LA LIGA</span>',
+    cs_sub:       'Estos son los costos por formato. El arbitraje se paga en cada partido; la inscripción es al momento de registrar al equipo.',
+    cs_f1_h:      '8 vs 8',
+    cs_f1_when:   'Todos los días',
+    cs_f1_note:   'Formato regular de la liga.',
+    cs_f2_h:      '11 vs 11',
+    cs_f2_when:   'Domingos',
+    cs_f2_note:   'Cancha completa, solo los domingos.',
+    cs_row_team:   'Registro de equipo',
+    cs_row_player: 'Registro por jugador',
+    cs_row_ref:    'Arbitraje',
+    cs_row_team2:   'Registro de equipo',
+    cs_row_player2: 'Registro por jugador',
+    cs_row_ref2:    'Arbitraje',
+    cs_per_game:  'por juego',
+    cs_per_game2: 'por juego',
+    cs_pay_note:  '<strong>Pago del arbitraje:</strong> siempre en efectivo, al inicio del partido o a más tardar al medio tiempo. Quien lo mande por Zelle paga $10 extra.',
+    cs_ct_tag:    'Contacto',
+    cs_ct_h2:     '¿DUDAS SOBRE <span class="accent">LOS COSTOS?</span>',
+    cs_ct_p:      'Escríbenos o márcanos y te ayudamos a registrar a tu equipo.',
+    footer_contact_h: 'Contacto',
+    footer_city:      'Las Vegas, NV',
 
   },
 
@@ -137,7 +165,7 @@ window.LVSL_TRANSLATIONS = {
     reg_open_h: 'REGISTRATION <span class="accent">FORM</span>',
     reg_open_p: 'Fill out the league form to claim your team\'s spot. It opens in a new tab.',
     reg_open_btn: 'Open the registration form',
-    reg_open_note: 'Google will ask you to sign in. If you don\'t have an account or run into trouble, contact us and we\'ll register you over the phone.',
+    reg_open_note: 'Google will ask you to sign in. If you don\'t have an account or run into trouble, call us at <a href="tel:+17028319474">702-831-9474</a> and we\'ll register you over the phone.',
 
     /* ── HOME ── */
     meta_title_home: 'Las Vegas Soccer League — Register your team',
@@ -148,6 +176,34 @@ window.LVSL_TRANSLATIONS = {
     home_note: 'Registration is open — spots per division are limited.',
     home_sub: 'Amateur soccer league in Las Vegas, Nevada. Build your team, sign it up, and play this season.',
     nav_home: 'Home',
+
+
+    /* ── COSTS ── */
+    meta_title_costs: 'Fees — Las Vegas Soccer League',
+    nav_costs:    'Fees',
+    cs_eyebrow:   'Fees',
+    cs_h1:        'LEAGUE <span class="accent">FEES</span>',
+    cs_sub:       'These are the costs by format. Referee fees are paid at each game; registration is paid when you sign your team up.',
+    cs_f1_h:      '8 vs 8',
+    cs_f1_when:   'Every day',
+    cs_f1_note:   'The league\'s regular format.',
+    cs_f2_h:      '11 vs 11',
+    cs_f2_when:   'Sundays',
+    cs_f2_note:   'Full field, Sundays only.',
+    cs_row_team:   'Team registration',
+    cs_row_player: 'Per player registration',
+    cs_row_ref:    'Referee fee',
+    cs_row_team2:   'Team registration',
+    cs_row_player2: 'Per player registration',
+    cs_row_ref2:    'Referee fee',
+    cs_per_game:  'per game',
+    cs_per_game2: 'per game',
+    cs_pay_note:  '<strong>Referee payment:</strong> always in cash, at the start of the game or by halftime at the latest. Sending it by Zelle costs $10 extra.',
+    cs_ct_tag:    'Contact',
+    cs_ct_h2:     'QUESTIONS ABOUT <span class="accent">THE FEES?</span>',
+    cs_ct_p:      'Message or call us and we\'ll help you sign your team up.',
+    footer_contact_h: 'Contact',
+    footer_city:      'Las Vegas, NV',
 
   }
 };

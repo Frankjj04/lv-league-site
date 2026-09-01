@@ -695,6 +695,42 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .fee-price span { font-size: 1rem; color: var(--text-mute); }
 
 .fee-list { margin-top: 20px; text-align: left; }
+
+/* ---- Costos page: one card per format, fees itemised ---- */
+.cost-card { text-align: left; }
+.cost-card .cost-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.cost-card h3 { font-family: var(--font-head); font-size: 2rem; letter-spacing: .01em; margin: 0; }
+.cost-when { font-size: .95rem; color: var(--text-dim); margin: 0 0 6px; }
+.cost-rows { list-style: none; padding: 0; margin: 22px 0 0; }
+.cost-rows li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  padding: 15px 0;
+  border-top: 1px solid var(--line);
+}
+.cost-rows li:first-child { border-top: 0; padding-top: 4px; }
+.cost-label  { color: var(--text-dim); font-size: .97rem; }
+.cost-amount { font-family: var(--font-head); font-size: 1.9rem; line-height: 1; color: var(--ink); white-space: nowrap; }
+.cost-amount span { font-family: var(--font-body); font-size: .8rem; font-weight: 600; color: var(--text-dim); }
+
+/* ---- Contact strip ---- */
+.contact-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+.contact-chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 20px;
+  background: var(--surface); border: 2px solid var(--ink); border-radius: 999px;
+  font-weight: 600; color: var(--ink); text-decoration: none;
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+.contact-chip:hover { background: var(--ink); color: #fff; }
+.contact-chip svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+@media (max-width: 700px) {
+  .cost-amount { font-size: 1.6rem; }
+  .contact-chip { width: 100%; justify-content: center; }
+}
 .fee-list li {
   font-size: .92rem;
   color: var(--text-dim);
@@ -925,9 +961,9 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   margin-bottom: 42px;
 }
 
-/* Two-column footer, for while the site is just Home + Rules + Register.
-   Drop the --slim class from the markup as pages come back. */
-.footer-grid--slim { grid-template-columns: 1.6fr 1fr; }
+/* Trimmed footer while the site is Home + Rules + Costos + Register.
+   Drop the --slim class from the markup as more pages come back. */
+.footer-grid--slim { grid-template-columns: 1.6fr 1fr 1.3fr; }
 
 .footer h4 {
   font-family: var(--font-body);
