@@ -1,23 +1,43 @@
 # Las Vegas Soccer League — team registration site
 
 Static site (plain HTML/CSS/JS, no build step). Bilingual **Spanish / English**, Spanish by default.
-Team registration runs through the coach's existing Google Form, embedded on `register.html`.
+Team registration runs through the coach's existing Google Form, linked from `register.html`.
 
 > Separate from `~/lv-soccer-league`, which is the existing Next.js + Supabase game-schedule/admin
 > app. If the two should become one project, the schedule page here is the natural place to link
 > or merge into it.
 
+Three pages. The league, schedule, and contact pages were removed on 2026-09-01 (see below) and
+get added back one at a time as the coach supplies real information.
+
 ```
-index.html      Home — hero, how it works, divisions, why this league
-league.html     The League — format, divisions table, fees (#fees), fields
+index.html      Home — hero only (headline, buttons, Vegas skyline)
 rules.html      Rules — the coach's ten official rules, poster-style (REAL content)
-schedule.html   Schedule & standings — empty state + table format preview
-register.html   Register — embedded Google Form + checklist + what happens next
-contact.html    Contact — phone/WhatsApp/email cards + FAQ (#faq)
+register.html   Register — links out to the coach's Google Form
 css/style.css   All styling
 js/i18n.js      All ES/EN copy
-js/main.js      Nav, language toggle, scroll reveal, counters, FAQ accordion
+js/main.js      Nav, language toggle, scroll reveal
+vercel.json     Redirects for the removed URLs
 ```
+
+## Pages removed on 2026-09-01
+
+`league.html`, `schedule.html` and `contact.html` were deleted along with their translation
+entries. All of their content was invented placeholder copy. They live on in git at commit
+`7ab192c`:
+
+```bash
+git show 7ab192c:contact.html > contact.html   # bring a page back
+git show 7ab192c:js/i18n.js | less             # lift its old ES/EN copy back out
+```
+
+`vercel.json` redirects `/league.html`, `/schedule.html` and `/contact.html` to `/` so
+previously shared links don't 404. The home page's second hero button, which pointed at the
+league page, now points at the rules.
+
+When a page comes back: restore its file, restore its keys in `js/i18n.js`, add it to the nav
+and mobile nav in **all three** HTML files, drop the `footer-grid--slim` class from the footer,
+and delete its line from `vercel.json`.
 
 ## Run it locally
 
@@ -65,24 +85,20 @@ The three division cards use the three star colors from the crest.
 
 ## Placeholder content to replace
 
-The league name and logo are real, and so is `rules.html` — it carries the coach's ten official
-rules exactly as they appear on his printed REGLAS sheet, in Spanish and English. Everything
-below is still **made up** to make the layout read correctly — replace it with the coach's real
-info before this goes live.
+Real: the league name, the crest, the Google Form link, and `rules.html` — the coach's ten
+official rules exactly as they appear on his printed REGLAS sheet, in Spanish and English.
 
-> ⚠️ **Known contradiction:** the divisions on `index.html` and `league.html` still say
-> "11 vs 11" (keys `home_div1_t1`, `home_div2_t1`, `home_div3_t1`, `lg_r1c3`, `lg_r2c3`,
-> `lg_r3c3`). Real rule 2 is **8 vs 8**. Fix these together with the real division info.
+On 2026-09-01 the home page was cut down to just its hero — the stats bar, "how it works"
+steps, division cards, why-this-league grid and CTA band were removed along with 90 translation
+entries, all of it invented. The Vegas skyline SVG stayed. Recover any of it from
+`git show 7ab192c:index.html`. What's left that's still made up:
 
-| What | Where |
+| What's still invented | Where |
 |---|---|
-| Phone `(702) 555-0100` | footers, `contact.html` (also the `tel:` and `wa.me` links) |
-| Email `info@lasvegassoccerleague.com` | footers, `contact.html` |
-| Divisions, ages, game days | `index.html`, `league.html`, `js/i18n.js` |
-| Fees ($350 / $70 / $100) | `league.html` `#fees` section |
-| Season months (Feb–Jun / Aug–Dec) | `league.html`, `js/i18n.js` |
-| Field / venue names | `league.html` |
-| 2026 season label | `index.html` hero eyebrow, `js/i18n.js` `home_eyebrow` |
+| Phone / WhatsApp | The note under the registration button (`reg_open_note`) says "escríbenos / contact us" but links nowhere. Make it a `tel:` / `wa.me` link. |
+| Season label "Temporada 2026" | `index.html`, key `home_eyebrow` |
+| "Certified referees, standings table, prizes" | `index.html`, key `home_sub` — check these against what the league actually does |
+| Divisions, fees, season dates, venues, standings | Come back with the removed sections and pages, as the coach supplies them. |
 
 ## Editing text
 
@@ -106,9 +122,10 @@ console.log(bad?'PROBLEMS':'OK '+k.size+' keys');"
 
 ## Publishing the standings later
 
-`schedule.html` ships with a placeholder table and an HTML comment showing how to swap in a live
-Google Sheet (File → Share → Publish to web → embed the URL in an iframe). The sheet then updates
-the site automatically whenever the board edits it.
+There's no schedule page right now. When it comes back, the simplest version is a Google Sheet
+the board edits: in Sheets, **File → Share → Publish to web**, then drop the published URL into
+an `<iframe>` on the page. The site then updates itself whenever the sheet changes. The old
+placeholder table is in git at `git show 7ab192c:schedule.html`.
 
 ## Deploying
 

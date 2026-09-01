@@ -1,0 +1,42 @@
+{
+  "redirects": [
+    {
+      "source": "/league.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/schedule.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        }
+      ]
+    }
+  ]
+}

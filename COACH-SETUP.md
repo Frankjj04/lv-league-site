@@ -74,6 +74,6 @@ https://forms.gle/bxiA7X9htGQmF93U8
 
 ## Nothing needs to change on the website
 
-The form is already wired into `register.html` — the embed and the "open separately" button both
+The form is already wired into the home page (`index.html`) — the embed and the "open separately" button both
 point at this same form, so responses keep landing in the same spreadsheet. The moment the
 settings above are fixed, the page starts working for everyone. No code change, no redeploy.
