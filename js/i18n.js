@@ -72,10 +72,10 @@ window.LVSL_TRANSLATIONS = {
     meta_title_home: 'Las Vegas Soccer League — Registra tu equipo',
     home_cta1: 'Registrar mi equipo',
     home_cta2: 'Ver el reglamento',
-    home_eyebrow: 'Las Vegas, Nevada &nbsp;·&nbsp; Temporada 2026',
+    home_eyebrow: 'Las Vegas, Nevada &nbsp;·&nbsp; Inscripciones abiertas',
     home_h1: 'ARMA TU EQUIPO.<br><span class="hl">REGÍSTRALO</span><br>Y A JUGAR.',
     home_note: 'Inscripciones abiertas — los cupos por división son limitados.',
-    home_sub: 'La liga donde los equipos de Las Vegas compiten en serio: calendario fijo, árbitros certificados, tabla de posiciones y premiación al final de cada temporada.',
+    home_sub: 'Liga de fútbol amateur en Las Vegas, Nevada. Arma tu equipo, regístralo y juega esta temporada.',
     nav_home: 'Inicio',
 
   },
@@ -143,10 +143,10 @@ window.LVSL_TRANSLATIONS = {
     meta_title_home: 'Las Vegas Soccer League — Register your team',
     home_cta1: 'Register my team',
     home_cta2: 'See the rules',
-    home_eyebrow: 'Las Vegas, Nevada &nbsp;·&nbsp; 2026 Season',
+    home_eyebrow: 'Las Vegas, Nevada &nbsp;·&nbsp; Registration open',
     home_h1: 'BUILD YOUR TEAM.<br><span class="hl">SIGN IT UP.</span><br>PLAY BALL.',
     home_note: 'Registration is open — spots per division are limited.',
-    home_sub: 'The league where Las Vegas teams play for real: a fixed schedule, certified referees, live standings, and trophies at the end of every season.',
+    home_sub: 'Amateur soccer league in Las Vegas, Nevada. Build your team, sign it up, and play this season.',
     nav_home: 'Home',
 
   }
