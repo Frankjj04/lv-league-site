@@ -53,6 +53,10 @@
     return isNaN(d) ? '' : d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
+  const payLabel = (m) => ({
+    cash: 'Efectivo', zelle: 'Zelle', stripe: 'Tarjeta', other: 'Otro',
+  }[m] || m);
+
   const divisionLabel = (id) => {
     const d = DIVISIONS.find((x) => x.id === id);
     return d ? d.es : id;
@@ -171,6 +175,9 @@
       { n: minors,      l: 'Menores de edad', tone: minors ? 'note' : '' },
     ];
 
+    const noPhoto = list.filter((p) => !p.photo).length;
+    if (noPhoto) tiles.push({ n: noPhoto, l: 'Sin foto', tone: 'warn' });
+
     if (paymentOn()) {
       const stuck = pendingIn(activeDivision).length;
       tiles.push({ n: stuck, l: 'Sin terminar', tone: stuck ? 'warn' : '' });
@@ -258,10 +265,13 @@
 
   function playerRow(p) {
     return '<li class="pl" data-id="' + p.id + '" tabindex="0">' +
-      '<img class="pl-photo" src="' + esc(p.photo) + '" alt="" />' +
+      (p.photo
+        ? '<img class="pl-photo" src="' + esc(p.photo) + '" alt="" />'
+        : '<span class="pl-photo pl-photo--none" title="Sin foto">?</span>') +
       '<span class="pl-main">' +
         '<span class="pl-name">' + esc(p.name) +
           (isMinor(p) ? '<span class="pl-minor" title="Menor de edad">MENOR</span>' : '') +
+          (!p.photo ? '<span class="pl-nophoto" title="No se puede imprimir su credencial">FALTA FOTO</span>' : '') +
         '</span>' +
         '<span class="pl-meta">' + age(p.dob) + ' años · ' + esc(phoneFmt(p.phone)) + '</span>' +
       '</span>' +
@@ -327,9 +337,29 @@
         row('Tutor', p.guardianName
           ? esc(p.guardianName) + ' · <a href="tel:' + esc(p.guardianPhone) + '">' +
             esc(phoneFmt(p.guardianPhone)) + '</a>' : '') +
-        row('Registrado', esc(dateFmt(p.createdAt))) +
+        row('Registrado', esc(dateFmt(p.createdAt)) +
+          (p.source === 'in_person' ? ' <span class="sh-tag">agregado por la liga</span>' : '')) +
+        row('Pago', p.paymentMethod ? esc(payLabel(p.paymentMethod)) : '') +
+        row('Nota', esc(p.note || '')) +
         row('Aceptó el descargo', esc(dateFmt(p.waiverAcceptedAt))) +
-      '</dl>';
+      '</dl>' +
+      (p.photo ? '' :
+        '<div class="sh-addphoto">' +
+          '<p><strong>Sin foto.</strong> No se puede imprimir su credencial hasta que tenga una.</p>' +
+          '<input type="file" id="sheetPhoto" accept="image/*" capture="environment" class="visually-hidden" />' +
+          '<label for="sheetPhoto" class="btn btn--ghost">Tomar o subir foto</label>' +
+          '<span class="sh-addphoto-status" id="sheetPhotoStatus"></span>' +
+        '</div>');
+
+    const picker = $('sheetPhoto');
+    if (picker) {
+      picker.addEventListener('change', async (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const ok = await window.LVSL_ADMIN_ADD.uploadPhotoFor(p.id, f, $('sheetPhotoStatus'));
+        if (ok) { closeSheet(); await load(); }
+      });
+    }
 
     $('sheet').hidden = false;
     document.body.style.overflow = 'hidden';
@@ -410,6 +440,8 @@
 
   $('search').addEventListener('input', render);
   $('minorsOnly').addEventListener('change', render);
+
+  if (window.LVSL_ADMIN_ADD) window.LVSL_ADMIN_ADD.init(load);
 
   start();
 })();

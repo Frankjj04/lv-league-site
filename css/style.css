@@ -2070,3 +2070,81 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 @media print { .gate { display: none !important; } }
 
 .adm-empty strong { display: block; color: var(--ink); font-size: 1.05rem; margin-bottom: 6px; }
+
+/* ---------- coach's add-player form ---------- */
+.add-title {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  letter-spacing: .02em;
+  margin: 0 0 4px;
+  padding-right: 34px;
+  color: var(--ink);
+}
+
+.add-lede { margin: 0 0 22px; font-size: .9rem; color: var(--text-dim); }
+
+.add-warn {
+  background: var(--orange-soft);
+  border-left: 3px solid var(--orange);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  margin: -8px 0 20px;
+  font-size: .87rem;
+  color: var(--text-dim);
+}
+
+.adm-btn--wide { width: 100%; justify-content: center; margin-top: 8px; }
+
+#addSheet .field { margin-bottom: 18px; }
+#addSheet .photo-preview { width: 86px; height: 108px; }
+
+/* ---------- missing photo ---------- */
+.pl-photo--none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed var(--orange-line);
+  background: var(--orange-soft);
+  color: var(--orange);
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+}
+
+.pl-nophoto {
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  background: var(--maroon);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.sh-tag {
+  font-size: .74rem;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.sh-addphoto {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: var(--orange-soft);
+  border: 1.5px solid var(--orange-line);
+  border-radius: var(--radius-sm);
+}
+
+.sh-addphoto p { margin: 0 0 12px; font-size: .88rem; color: var(--text-dim); }
+.sh-addphoto strong { color: var(--maroon); }
+.sh-addphoto .btn { cursor: pointer; }
+
+.sh-addphoto-status {
+  display: block;
+  margin-top: 10px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--maroon);
+}

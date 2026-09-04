@@ -43,10 +43,13 @@
     </span>
   </a>
   <div class="adm-head-actions">
+    <button type="button" class="adm-btn adm-btn--primary" id="addBtn">
+      <span aria-hidden="true">&#43;</span> Agregar jugador
+    </button>
     <button type="button" class="adm-btn" id="csvBtn">
       <span aria-hidden="true">&#8681;</span> Descargar CSV
     </button>
-    <button type="button" class="adm-btn adm-btn--primary" id="printBtn">
+    <button type="button" class="adm-btn" id="printBtn">
       <span aria-hidden="true">&#9646;</span> Imprimir credenciales
     </button>
     <button type="button" class="adm-btn adm-btn--quiet" id="outBtn">Salir</button>
@@ -92,11 +95,119 @@
   </div>
 </div>
 
+<!-- ========== ADD A PLAYER (coach) ========== -->
+<div class="adm-sheet" id="addSheet" hidden role="dialog" aria-modal="true" aria-labelledby="addTitle">
+  <div class="adm-sheet-scrim" data-close-add></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close-add aria-label="Cerrar">&times;</button>
+    <h2 id="addTitle" class="add-title">Agregar jugador</h2>
+    <p class="add-lede">Para los que pagan en persona y no llenan el formulario.</p>
+
+    <form id="addForm" novalidate>
+      <div class="field">
+        <label for="a-division">División <span class="req">*</span></label>
+        <select id="a-division" required><option value="">Elige…</option></select>
+      </div>
+
+      <div class="field">
+        <label for="a-team">Equipo <span class="req">*</span></label>
+        <select id="a-team" required disabled><option value="">Elige…</option></select>
+      </div>
+
+      <div class="field">
+        <label for="a-name">Nombre completo <span class="req">*</span></label>
+        <input type="text" id="a-name" maxlength="80" required />
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="a-dob">Fecha de nacimiento <span class="req">*</span></label>
+          <input type="date" id="a-dob" required />
+        </div>
+        <div class="field">
+          <label for="a-phone">Teléfono <span class="req">*</span></label>
+          <input type="tel" id="a-phone" maxlength="24" inputmode="tel" placeholder="702-000-0000" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="a-email">Email <span class="req">*</span></label>
+        <input type="email" id="a-email" maxlength="120" inputmode="email" required />
+        <p class="field-help">Si no tiene, usa uno tuyo con algo distinto, por ejemplo
+          info.lvsleague+nombre@gmail.com — el sistema no permite el mismo email dos veces
+          en la misma división.</p>
+      </div>
+
+      <div class="field">
+        <label for="a-address">Dirección de casa <span class="req">*</span></label>
+        <input type="text" id="a-address" maxlength="140" required />
+      </div>
+
+      <div class="field-row" id="a-guardian" hidden>
+        <div class="field">
+          <label for="a-gname">Nombre del tutor</label>
+          <input type="text" id="a-gname" maxlength="80" />
+        </div>
+        <div class="field">
+          <label for="a-gphone">Teléfono del tutor</label>
+          <input type="tel" id="a-gphone" maxlength="24" inputmode="tel" />
+        </div>
+      </div>
+      <p class="add-warn" id="a-minorWarn" hidden>
+        Es menor de edad. Consigue los datos del tutor y su firma en papel.
+      </p>
+
+      <div class="field">
+        <label for="a-method">¿Cómo pagó?</label>
+        <select id="a-method">
+          <option value="cash">Efectivo</option>
+          <option value="zelle">Zelle</option>
+          <option value="stripe">Tarjeta</option>
+          <option value="other">Otro</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="a-note">Nota (opcional)</label>
+        <input type="text" id="a-note" maxlength="200" placeholder="Lo que quieras recordar" />
+      </div>
+
+      <div class="field">
+        <label>Foto para la credencial</label>
+        <p class="field-help">Opcional. Si no la tienes ahora, se puede agregar después
+          desde la ficha del jugador.</p>
+        <div class="photo-field">
+          <div class="photo-preview" id="a-photoPreview"><span class="photo-preview-empty">Sin foto</span></div>
+          <div class="photo-controls">
+            <input type="file" id="a-photo" accept="image/*" capture="environment" class="visually-hidden" />
+            <label for="a-photo" class="btn btn--ghost">Tomar foto</label>
+            <button type="button" class="photo-clear" id="a-photoClear" hidden>Quitar</button>
+          </div>
+        </div>
+      </div>
+
+      <label class="check" for="a-waiver">
+        <input type="checkbox" id="a-waiver" required />
+        <span class="check-box" aria-hidden="true"></span>
+        <span class="check-label">ACEPTÓ EL DESCARGO <span class="req">*</span></span>
+      </label>
+      <p class="field-help">Confirmas que el jugador aceptó el descargo de responsabilidad
+        en persona.</p>
+
+      <p class="form-error" id="a-error" hidden role="alert"></p>
+      <button type="submit" class="adm-btn adm-btn--primary adm-btn--wide" id="a-submit">
+        Guardar jugador
+      </button>
+    </form>
+  </div>
+</div>
+
 <!-- ========== PRINTABLE CREDENTIALS ========== -->
 <div class="cred-sheet" id="credSheet" aria-hidden="true"></div>
 
 <script src="js/league-config.js"></script>
 <script src="js/sample-roster.js"></script>
+<script src="js/admin-add.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

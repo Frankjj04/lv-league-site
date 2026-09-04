@@ -23,6 +23,7 @@ export default async function handler(req, res) {
     const { rows } = await query(
       `SELECT id, division, team, name, dob, phone, email, address,
               guardian_name, guardian_phone, status,
+              source, payment_method, added_note,
               waiver_accepted_at, created_at,
               (photo IS NOT NULL) AS has_photo
          FROM players
@@ -43,6 +44,9 @@ export default async function handler(req, res) {
       guardianName: r.guardian_name,
       guardianPhone: r.guardian_phone,
       status: r.status,
+      source: r.source,
+      paymentMethod: r.payment_method,
+      note: r.added_note,
       photo: r.has_photo ? '/api/photo?id=' + r.id : '',
       waiverAcceptedAt: r.waiver_accepted_at,
       createdAt: r.created_at,
