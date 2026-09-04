@@ -49,6 +49,12 @@
 /* ===================== RESET ===================== */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* The hidden attribute has to beat our own display rules. Without this, any
+   element we style with display:flex/grid/block ignores hidden entirely and
+   renders anyway — which silently left the roster's detail overlay covering
+   the page. Keep this above every component rule. */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
