@@ -14,6 +14,19 @@
 </head>
 <body class="admin-body">
 
+<!-- ========== PASSWORD GATE ========== -->
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gateForm">
+    <img src="assets/logo.jpg" alt="" class="gate-crest" />
+    <h1>Lista de jugadores</h1>
+    <p>Esta página es privada. Escribe la contraseña de la liga.</p>
+    <label class="visually-hidden" for="gatePass">Contraseña</label>
+    <input type="password" id="gatePass" autocomplete="current-password" required />
+    <p class="gate-err" id="gateErr" hidden role="alert"></p>
+    <button type="submit" class="adm-btn adm-btn--primary" id="gateBtn">Entrar</button>
+  </form>
+</div>
+
 <!-- ========== SAMPLE DATA BANNER ========== -->
 <div class="adm-banner" id="sampleBanner" hidden>
   <strong>DATOS DE EJEMPLO</strong>
@@ -21,7 +34,7 @@
 </div>
 
 <!-- ========== HEADER ========== -->
-<header class="adm-head">
+<header class="adm-head" id="admHead" hidden>
   <a href="index.html" class="adm-brand">
     <img src="assets/logo.jpg" alt="" />
     <span>
@@ -36,10 +49,11 @@
     <button type="button" class="adm-btn adm-btn--primary" id="printBtn">
       <span aria-hidden="true">&#9646;</span> Imprimir credenciales
     </button>
+    <button type="button" class="adm-btn adm-btn--quiet" id="outBtn">Salir</button>
   </div>
 </header>
 
-<main class="adm-main">
+<main class="adm-main" id="admMain" hidden>
 
   <!-- ========== SUMMARY ========== -->
   <section class="adm-stats" id="stats" aria-label="Resumen"></section>

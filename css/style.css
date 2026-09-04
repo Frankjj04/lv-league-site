@@ -1997,3 +1997,68 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .sh-row { grid-template-columns: 1fr; gap: 2px; }
   .adm-sheet-panel { padding: 22px 18px 34px; }
 }
+
+/* ---------- roster password gate ---------- */
+.gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--ink);
+}
+
+.gate-card {
+  width: min(380px, 100%);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 34px 30px 30px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+
+.gate-crest { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; margin-bottom: 16px; }
+
+.gate-card h1 {
+  font-family: var(--font-head);
+  font-size: 1.7rem;
+  letter-spacing: .02em;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+
+.gate-card p { margin: 0 0 20px; font-size: .9rem; color: var(--text-dim); }
+
+.gate-card input {
+  width: 100%;
+  padding: 13px 14px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  margin-bottom: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.gate-card input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 4px rgba(252,140,0,.18);
+}
+
+.gate-card .adm-btn { width: 100%; justify-content: center; }
+
+.gate-err {
+  margin: 0 0 14px !important;
+  font-size: .87rem;
+  font-weight: 600;
+  color: var(--maroon) !important;
+}
+
+.adm-btn--quiet { border-color: transparent; color: rgba(255,255,255,.6); }
+.adm-btn--quiet:hover { border-color: rgba(255,255,255,.28); color: #fff; }
+
+@media print { .gate { display: none !important; } }

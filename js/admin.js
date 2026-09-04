@@ -58,19 +58,82 @@
     return d ? d.es : id;
   };
 
+  /* ---------- sign in ---------- */
+  function showGate(msg) {
+    $('gate').hidden = false;
+    $('admHead').hidden = true;
+    $('admMain').hidden = true;
+    if (msg) { $('gateErr').textContent = msg; $('gateErr').hidden = false; }
+    $('gatePass').focus();
+  }
+
+  function showRoster() {
+    $('gate').hidden = true;
+    $('admHead').hidden = false;
+    $('admMain').hidden = false;
+  }
+
+  $('gateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('gateErr').hidden = true;
+    $('gateBtn').disabled = true;
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: $('gatePass').value }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { showGate(data.message || 'Contraseña incorrecta.'); return; }
+      $('gatePass').value = '';
+      showRoster();
+      await load();
+    } catch (err) {
+      showGate('No se pudo conectar. Inténtalo otra vez.');
+    } finally {
+      $('gateBtn').disabled = false;
+    }
+  });
+
+  $('outBtn').addEventListener('click', async () => {
+    try { await fetch('/api/login', { method: 'DELETE' }); } catch (e) { /* sign out anyway */ }
+    players = [];
+    showGate('');
+    $('gateErr').hidden = true;
+  });
+
   /* ---------- load ---------- */
   async function load() {
     try {
       const res = await fetch('/api/players', { headers: { Accept: 'application/json' } });
+      if (res.status === 401) { showGate(''); return; }
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       players = Array.isArray(data) ? data : (data.players || []);
+      usingSample = false;
+      $('sampleBanner').hidden = true;
     } catch (e) {
+      // No API yet (or it is down): fall back to the invented roster and say so.
       players = (window.LVSL_SAMPLE_ROSTER || []).slice();
       usingSample = true;
       $('sampleBanner').hidden = false;
     }
     render();
+  }
+
+  /* Ask the server whether this browser already holds a session. If there is
+     no API at all — the site as it stands today — skip the gate and show the
+     sample roster, so the page can still be reviewed. */
+  async function start() {
+    let state = null;
+    try {
+      const res = await fetch('/api/login', { headers: { Accept: 'application/json' } });
+      if (res.ok) state = await res.json();
+    } catch (e) { /* no API deployed */ }
+
+    if (!state || !state.configured) { showRoster(); await load(); return; }
+    if (state.signedIn) { showRoster(); await load(); return; }
+    showGate('');
   }
 
   /* ---------- filtering ---------- */
@@ -332,5 +395,5 @@
   $('search').addEventListener('input', render);
   $('minorsOnly').addEventListener('change', render);
 
-  load();
+  start();
 })();

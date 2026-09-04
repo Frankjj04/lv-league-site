@@ -1,0 +1,16 @@
+{
+  "name": "lv-league-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Las Vegas Soccer League \u2014 player registration site",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  },
+  "scripts": {
+    "test": "node test/api.test.mjs"
+  }
+}
