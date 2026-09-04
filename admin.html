@@ -52,6 +52,7 @@
     <button type="button" class="adm-btn" id="printBtn">
       <span aria-hidden="true">&#9646;</span> Imprimir credenciales
     </button>
+    <button type="button" class="adm-btn adm-btn--quiet" id="binBtn">Archivados</button>
     <button type="button" class="adm-btn adm-btn--quiet" id="outBtn">Salir</button>
   </div>
 </header>
@@ -92,6 +93,18 @@
   <div class="adm-sheet-panel">
     <button type="button" class="adm-sheet-x" data-close aria-label="Cerrar">&times;</button>
     <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- ========== ARCHIVED PLAYERS ========== -->
+<div class="adm-sheet" id="binSheet" hidden role="dialog" aria-modal="true" aria-labelledby="binTitle">
+  <div class="adm-sheet-scrim" data-close-bin></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close-bin aria-label="Cerrar">&times;</button>
+    <h2 id="binTitle" class="add-title">Archivados</h2>
+    <p class="add-lede">Jugadores que quitaste de la lista. No aparecen en los equipos,
+      en el CSV ni en las credenciales, pero siguen guardados.</p>
+    <div id="binBody"></div>
   </div>
 </div>
 

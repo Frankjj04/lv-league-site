@@ -343,6 +343,17 @@
         row('Nota', esc(p.note || '')) +
         row('Aceptó el descargo', esc(dateFmt(p.waiverAcceptedAt))) +
       '</dl>' +
+      '<div class="sh-danger">' +
+        '<button type="button" class="sh-del-open" id="delOpen">Quitar de la lista</button>' +
+        '<div class="sh-del" id="delBox" hidden>' +
+          '<p>Escribe <strong>' + esc(p.name) + '</strong> para confirmar.</p>' +
+          '<input type="text" id="delName" autocomplete="off" placeholder="Nombre del jugador" />' +
+          '<input type="text" id="delReason" maxlength="200" placeholder="Motivo (opcional)" />' +
+          '<p class="sh-del-note">Se puede recuperar después desde Archivados.</p>' +
+          '<p class="form-error" id="delErr" hidden></p>' +
+          '<button type="button" class="sh-del-go" id="delGo" disabled>Quitar de la lista</button>' +
+        '</div>' +
+      '</div>' +
       (p.photo ? '' :
         '<div class="sh-addphoto">' +
           '<p><strong>Sin foto.</strong> No se puede imprimir su credencial hasta que tenga una.</p>' +
@@ -350,6 +361,48 @@
           '<label for="sheetPhoto" class="btn btn--ghost">Tomar o subir foto</label>' +
           '<span class="sh-addphoto-status" id="sheetPhotoStatus"></span>' +
         '</div>');
+
+    // The confirm button stays dead until the typed name matches the row.
+    const delName = $('delName');
+    const delGo = $('delGo');
+    const norm = (v) => String(v || '').trim().replace(/\s+/g, ' ').toLowerCase();
+
+    $('delOpen').addEventListener('click', () => {
+      $('delBox').hidden = false;
+      $('delOpen').hidden = true;
+      delName.focus();
+    });
+
+    delName.addEventListener('input', () => {
+      delGo.disabled = norm(delName.value) !== norm(p.name);
+    });
+
+    delGo.addEventListener('click', async () => {
+      delGo.disabled = true;
+      delGo.textContent = 'Quitando…';
+      try {
+        const res = await fetch('/api/player?id=' + p.id, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ confirmName: delName.value, reason: $('delReason').value }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          $('delErr').textContent = data.message || 'No se pudo quitar.';
+          $('delErr').hidden = false;
+          delGo.disabled = false;
+          delGo.textContent = 'Quitar de la lista';
+          return;
+        }
+        closeSheet();
+        await load();
+      } catch (e) {
+        $('delErr').textContent = 'No se pudo conectar.';
+        $('delErr').hidden = false;
+        delGo.disabled = false;
+        delGo.textContent = 'Quitar de la lista';
+      }
+    });
 
     const picker = $('sheetPhoto');
     if (picker) {
@@ -372,6 +425,85 @@
 
   $('sheet').addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeSheet(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('sheet').hidden) closeSheet(); });
+
+  /* ---------- archived players ---------- */
+  async function openBin() {
+    const body = $('binBody');
+    body.innerHTML = '<p class="bin-empty">Cargando…</p>';
+    $('binSheet').hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    let list = [];
+    try {
+      const res = await fetch('/api/players?archived=1', { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      list = await res.json();
+    } catch (e) {
+      body.innerHTML = '<p class="bin-empty">No se pudo cargar.</p>';
+      return;
+    }
+
+    if (!list.length) {
+      body.innerHTML = '<p class="bin-empty">No has quitado a nadie.</p>';
+      return;
+    }
+
+    body.innerHTML = '<ul class="bin-list">' + list.map((p) =>
+      '<li class="bin" data-id="' + p.id + '">' +
+        '<span class="bin-main">' +
+          '<span class="bin-name">' + esc(p.name) + '</span>' +
+          '<span class="bin-meta">' + esc(p.team) + ' · ' + esc(divisionLabel(p.division)) + '</span>' +
+          '<span class="bin-meta">Quitado ' + esc(dateFmt(p.deletedAt)) +
+            (p.deletedReason ? ' — ' + esc(p.deletedReason) : '') + '</span>' +
+        '</span>' +
+        '<button type="button" class="bin-restore" data-restore="' + p.id + '">Restaurar</button>' +
+        '<button type="button" class="bin-purge" data-purge="' + p.id + '" ' +
+          'data-name="' + esc(p.name) + '">Borrar para siempre</button>' +
+      '</li>').join('') + '</ul>';
+
+    body.querySelectorAll('[data-restore]').forEach((b) => {
+      b.addEventListener('click', async () => {
+        b.disabled = true;
+        const res = await fetch('/api/player?id=' + b.dataset.restore, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ restore: true }),
+        });
+        const d = await res.json().catch(() => ({}));
+        if (!res.ok) { alert(d.message || 'No se pudo restaurar.'); b.disabled = false; return; }
+        await load();
+        await openBin();
+      });
+    });
+
+    // Permanent removal asks for the name a second time, on a row that is
+    // already archived. Two separate decisions, never one click.
+    body.querySelectorAll('[data-purge]').forEach((b) => {
+      b.addEventListener('click', async () => {
+        const typed = window.prompt(
+          'Esto borra a ' + b.dataset.name + ' para siempre. No se puede deshacer.\n\n' +
+          'Escribe el nombre completo para confirmar:');
+        if (typed === null) return;
+        b.disabled = true;
+        const res = await fetch('/api/player?id=' + b.dataset.purge + '&purge=1', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ confirmName: typed }),
+        });
+        const d = await res.json().catch(() => ({}));
+        if (!res.ok) { alert(d.message || 'No se pudo borrar.'); b.disabled = false; return; }
+        await openBin();
+      });
+    });
+  }
+
+  $('binBtn').addEventListener('click', openBin);
+  $('binSheet').addEventListener('click', (e) => {
+    if (e.target.closest('[data-close-bin]')) {
+      $('binSheet').hidden = true;
+      document.body.style.overflow = '';
+    }
+  });
 
   /* ---------- CSV ---------- */
   function toCsv(list) {

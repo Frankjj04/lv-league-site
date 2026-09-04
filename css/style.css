@@ -2148,3 +2148,110 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   font-weight: 600;
   color: var(--maroon);
 }
+
+/* ---------- removing a player ----------
+   Deliberately understated. This should never look like a primary action
+   sitting next to the player's phone number. */
+.sh-danger {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.sh-del-open {
+  background: none;
+  border: none;
+  padding: 6px 0;
+  font-family: var(--font-body);
+  font-size: .87rem;
+  color: var(--text-mute);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sh-del-open:hover { color: var(--maroon); }
+
+.sh-del {
+  background: var(--maroon-soft);
+  border: 1.5px solid var(--maroon);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+}
+
+.sh-del p { margin: 0 0 12px; font-size: .89rem; color: var(--text-dim); }
+.sh-del strong { color: var(--maroon); }
+
+.sh-del input {
+  width: 100%;
+  padding: 11px 13px;
+  margin-bottom: 10px;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.sh-del input:focus {
+  outline: none;
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 3px rgba(97,2,0,.14);
+}
+
+.sh-del-note { font-size: .82rem !important; color: var(--text-mute) !important; }
+
+.sh-del-go {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--maroon);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sh-del-go:disabled { background: var(--text-mute); opacity: .5; cursor: not-allowed; }
+.sh-del-go:not(:disabled):hover { background: #7A0300; }
+
+/* ---------- archived ---------- */
+.bin-list { list-style: none; margin: 0; padding: 0; }
+
+.bin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.bin-main { display: flex; flex-direction: column; flex: 1 1 100%; min-width: 0; }
+.bin-name { font-weight: 600; font-size: .96rem; color: var(--text); }
+.bin-meta { font-size: .82rem; color: var(--text-mute); }
+
+.bin-restore, .bin-purge {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bin-restore { border: 1.5px solid var(--green); background: var(--green-soft); color: var(--green); }
+.bin-restore:hover { background: var(--green); color: #fff; }
+
+.bin-purge { border: 1.5px solid var(--line); background: none; color: var(--text-mute); }
+.bin-purge:hover { border-color: var(--maroon); color: var(--maroon); }
+
+.bin-restore:disabled, .bin-purge:disabled { opacity: .5; cursor: wait; }
+
+.bin-empty { color: var(--text-mute); font-size: .9rem; padding: 20px 0; }
+
+@media print { .sh-danger, .bin-list { display: none !important; } }

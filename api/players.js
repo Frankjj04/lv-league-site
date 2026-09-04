@@ -19,15 +19,19 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'not_configured' });
   }
 
+  // ?archived=1 returns the recycle bin instead of the roster.
+  const archived = req.query && (req.query.archived === '1' || req.query.archived === 'true');
+
   try {
     const { rows } = await query(
       `SELECT id, division, team, name, dob, phone, email, address,
               guardian_name, guardian_phone, status,
               source, payment_method, added_note,
-              waiver_accepted_at, created_at,
+              waiver_accepted_at, created_at, deleted_at, deleted_reason,
               (photo IS NOT NULL) AS has_photo
          FROM players
-        ORDER BY division, team, name`
+        WHERE deleted_at IS ${archived ? 'NOT NULL' : 'NULL'}
+        ORDER BY ${archived ? 'deleted_at DESC' : 'division, team, name'}`
     );
 
     res.setHeader('Cache-Control', 'private, no-store');
@@ -50,6 +54,8 @@ export default async function handler(req, res) {
       photo: r.has_photo ? '/api/photo?id=' + r.id : '',
       waiverAcceptedAt: r.waiver_accepted_at,
       createdAt: r.created_at,
+      deletedAt: r.deleted_at,
+      deletedReason: r.deleted_reason,
     })));
   } catch (err) {
     console.error('players failed:', err);
