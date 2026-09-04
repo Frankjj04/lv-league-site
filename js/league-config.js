@@ -11,8 +11,10 @@
    capitalised exactly as they appear on his schedules, so a player sees
    the same string on the form that he sees on the schedule.
 
+   Every division is 8v8.
+
    ── STILL UNCONFIRMED ─────────────────────
-   • Saturday's official division name and format (3 teams so far).
+   • Saturday's official division name. It shows as plain "Sábado".
    • Whether the Sunday 11v11 league is still running. It is not on any
      of the schedules provided, so it is NOT listed here. Add it back if
      it exists.
@@ -149,7 +151,7 @@ window.LVSL_CONFIG = {
       id: 'sabado',
       es: 'Sábado',
       en: 'Saturday',
-      format: '',          // TODO: confirm the format with the coach
+      format: '8v8',
       fee: 0,
       teams: [
         'EL COMBO DE DRAKE',
