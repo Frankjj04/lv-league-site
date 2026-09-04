@@ -1,16 +1,22 @@
 /* =========================================
    LAS VEGAS SOCCER LEAGUE — League Configuration
 
-   THIS IS THE FILE THE COACH'S ANSWERS GO IN.
-   Editing it changes the registration form. Nothing else needs to change.
+   THIS IS THE FILE THE LEAGUE LIVES IN.
+   Editing it changes the registration form and the roster page.
+   Nothing else needs to change.
 
-   ─────────────────────────────────────────
-   ⚠️  THE DIVISIONS AND TEAMS BELOW ARE PLACEHOLDERS.
-   Only "Martes — Open Division" is confirmed real (it is the section
-   header on the coach's Google Form). Everything else is invented so the
-   form can be built and previewed. Replace all of it with his real list
-   before this page goes live.
-   ─────────────────────────────────────────
+   Divisions and teams below were taken from the coach's own schedule
+   sheets (2026 Summer-Fall season, rounds played Aug 25 – Sep 4 2026),
+   plus the Saturday teams he gave directly. Team names are spelled and
+   capitalised exactly as they appear on his schedules, so a player sees
+   the same string on the form that he sees on the schedule.
+
+   ── STILL UNCONFIRMED ─────────────────────
+   • Saturday's official division name and format (3 teams so far).
+   • Whether the Sunday 11v11 league is still running. It is not on any
+     of the schedules provided, so it is NOT listed here. Add it back if
+     it exists.
+   ──────────────────────────────────────────
    ========================================= */
 
 'use strict';
@@ -21,40 +27,134 @@ window.LVSL_CONFIG = {
   registrationOpen: true,
 
   /* Online payment. Off until the coach decides the amount and opens Stripe.
-     When he does: set enabled true and put the amount in each division below. */
+     When he does: set enabled true and put the amount in each division's fee. */
   payment: {
     enabled: false,
     currency: 'usd',
   },
 
   /* Every division a player can sign up for.
-       id      — never change once players have registered; it is stored on the row
+       id      — NEVER change once players have registered; it is stored on the row
        es / en — what the player sees in the dropdown
        format  — shown under the dropdown, purely informational
        fee     — what Stripe charges, in whole dollars. Ignored while payment is off.
-       teams   — the teams in this division, exactly as the coach spells them */
+       teams   — alphabetical, so a player can find theirs in a long list */
   divisions: [
     {
-      id: 'martes-open',
-      es: 'Martes — Open Division',
-      en: 'Tuesday — Open Division',
+      id: 'martes-over35',
+      es: 'Martes — Over 35',
+      en: 'Tuesday — Over 35 Men',
       format: '8v8',
       fee: 0,
       teams: [
-        'EJEMPLO — Equipo 1',
-        'EJEMPLO — Equipo 2',
-        'EJEMPLO — Equipo 3',
+        'BAYERN MUNICH',
+        'CHELSEA',
+        'CUERVOS DE NUEVO TOLEDO',
+        'DEP. CHALCO',
+        'DURANGO',
+        'DVO MICHOACAN',
+        'EPIQUE FC',
+        'FRANJA PUEBLA',
+        'GRANJENO',
+        'GUADALAJARA',
+        'LOS ÑOÑOS',
+        'LVFC',
+        'OLD BOYS',
+        'PUMAS FC',
+        'REAL MADRID',
+        'SANTOS',
+        'STYLE BARBERSHOP',
+        'TEOCALTICHE',
+        'UNION',
       ],
     },
     {
-      id: 'domingo-11v11',
-      es: 'Domingo — 11v11',
-      en: 'Sunday — 11v11',
-      format: '11v11',
+      id: 'martes-open',
+      es: 'Martes — Open, Super-League',
+      en: 'Tuesday — Open Men, Super-League',
+      format: '8v8',
       fee: 0,
       teams: [
-        'EJEMPLO — Equipo A',
-        'EJEMPLO — Equipo B',
+        'AC MILAN',
+        'CHIVAHERMANOS',
+        'GUERRERO',
+        'JALISCO',
+        'LA BANDA',
+        'LA BOLA 8',
+        'LEGACY',
+        'LV GAMBLERS',
+        'LV UNITED',
+        'MARINEROS',
+        'NATIONAL',
+        'UNITED KINGS',
+      ],
+    },
+    {
+      id: 'miercoles-premier',
+      es: 'Miércoles — Premier, Open/Libre',
+      en: 'Wednesday — Premier, Men\'s Open',
+      format: '8v8',
+      fee: 0,
+      teams: [
+        'AJAX',
+        'ALTA VISTA FC',
+        'AMERICA',
+        'BAD COMPANY',
+        'BORUSSIA DORTMUND',
+        'DVO BETHANIA',
+        'EL COMBO DE DRAKE',
+        'ELITE',
+        'FC BARCELONA',
+        'FC PATRIA Y VIDA',
+        'INTER FC',
+        'LACKRA FC',
+        'LOBOS',
+        'MARQUENSE',
+        'MINEROS',
+        'PROS',
+        'RESACA FC',
+        'RIVALS FC',
+        'SANTOS',
+        'WINCHESTER',
+      ],
+    },
+    {
+      id: 'viernes-open',
+      es: 'Viernes — Open',
+      en: 'Friday — Open Men',
+      format: '8v8',
+      fee: 0,
+      teams: [
+        'ANTIGUA FC',
+        'AVALANCHE',
+        'BANDIDOS UNIDOS',
+        'DEP. ZITACUARO',
+        'DVO. MI RENDICION',
+        'FC UNITED',
+        'HOMIES',
+        'HOOLIGANS',
+        'LOS ANGELES',
+        'PARAPENTOS',
+        'PASTELITOS',
+        'PGZ',
+        'RISEN',
+        'SIN CITY',
+        'TIGRES DEL SUR',
+        'TORO FC',
+        'TOROS NEZA',
+        'VERACRUZ',
+      ],
+    },
+    {
+      id: 'sabado',
+      es: 'Sábado',
+      en: 'Saturday',
+      format: '',          // TODO: confirm the format with the coach
+      fee: 0,
+      teams: [
+        'EL COMBO DE DRAKE',
+        'LUCKY 21',
+        'REAL CENTENNIAL',
       ],
     },
   ],
