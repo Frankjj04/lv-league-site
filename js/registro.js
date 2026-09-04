@@ -234,7 +234,7 @@
     };
 
     need(divisionSel, 'rg_e_division', 'Elige tu división.');
-    if (!teamSel.disabled) need(teamSel, 'rg_e_team', 'Elige tu equipo.');
+    if (!teamSel.disabled) need(teamSel, 'rg_e_team', 'Busca el equipo con el que juegas.');
     if (!otherField.hidden) need(otherInput, 'rg_e_team_other', 'Escribe el nombre de tu equipo.');
 
     need($('name'), 'rg_e_name', 'Escribe tu nombre completo.');
