@@ -15,14 +15,14 @@ window.LVSL_TRANSLATIONS = {
   es: {
     /* ── META ── */
     meta_title_rules: 'Reglamento — Las Vegas Soccer League',
-    meta_title_register: 'Registrar equipo — Las Vegas Soccer League',
+    meta_title_register: 'Registro de jugadores — Las Vegas Soccer League',
 
     /* ── NAV / BRAND ── */
     nav_rules: 'Reglamento',
-    nav_register: 'Registrar equipo',
+    nav_register: 'Registrarme',
 
     /* ── CTA BAND (compartido) ── */
-    cta_h2: '¿LISTO PARA <span class="accent">INSCRIBIR A TU EQUIPO?</span>',
+    cta_h2: '¿LISTO PARA <span class="accent">JUGAR ESTA TEMPORADA?</span>',
     cta_p: 'El registro toma unos minutos. Después nosotros te contactamos con todos los detalles.',
     cta_btn: 'Ir al formulario de registro',
 
@@ -61,21 +61,21 @@ window.LVSL_TRANSLATIONS = {
 
     /* ── REGISTRO ── */
     reg_eyebrow: 'Inscripciones abiertas',
-    reg_h1: 'REGISTRA <span class="accent">TU EQUIPO</span>',
-    reg_sub: 'Llena el formulario de la liga y quedas en la lista de la próxima temporada. Después te contactamos con el costo, la fecha límite de pago y la información de tu división.',
-    reg_open_h: 'FORMULARIO DE <span class="accent">REGISTRO</span>',
-    reg_open_p: 'Llena el formulario de la liga para apartar el lugar de tu equipo. Se abre en una pestaña nueva.',
+    reg_h1: 'REGÍSTRATE CON <span class="accent">TU EQUIPO</span>',
+    reg_sub: 'Llena tus datos, elige tu equipo y quedas inscrito en la liga. Cada jugador se registra por su cuenta: un formulario por jugador.',
+    reg_open_h: 'FORMULARIO DEL <span class="accent">JUGADOR</span>',
+    reg_open_p: 'Llena el formulario para quedar en la lista de tu equipo. Se abre en una pestaña nueva.',
     reg_open_btn: 'Abrir formulario de registro',
-    reg_open_note: 'Google te va a pedir iniciar sesión. Si no tienes cuenta o se te complica, llámanos al <a href="tel:+17028319474">702-831-9474</a> y te registramos por teléfono.',
+    reg_open_note: 'Google te va a pedir iniciar sesión porque el formulario pide la foto de tu credencial. Si no tienes cuenta o se te complica, llámanos al <a href="tel:+17028319474">702-831-9474</a> y te registramos por teléfono.',
 
     /* ── INICIO ── */
-    meta_title_home: 'Las Vegas Soccer League — Registra tu equipo',
-    home_cta1: 'Registrar mi equipo',
+    meta_title_home: 'Las Vegas Soccer League — Regístrate con tu equipo',
+    home_cta1: 'Registrarme',
     home_cta2: 'Ver el reglamento',
     home_eyebrow: 'Las Vegas, Nevada &nbsp;·&nbsp; Inscripciones abiertas',
-    home_h1: 'ARMA TU EQUIPO.<br><span class="hl">REGÍSTRALO</span><br>Y A JUGAR.',
+    home_h1: 'ELIGE TU EQUIPO.<br><span class="hl">REGÍSTRATE</span><br>Y A JUGAR.',
     home_note: 'Inscripciones abiertas — los cupos por división son limitados.',
-    home_sub: 'Liga de fútbol amateur en Las Vegas, Nevada. Arma tu equipo, regístralo y juega esta temporada.',
+    home_sub: 'Liga de fútbol amateur en Las Vegas, Nevada. Regístrate con tu equipo y juega esta temporada.',
     nav_home: 'Inicio',
 
 
@@ -84,7 +84,7 @@ window.LVSL_TRANSLATIONS = {
     nav_costs:    'Costos',
     cs_eyebrow:   'Costos',
     cs_h1:        'COSTOS <span class="accent">DE LA LIGA</span>',
-    cs_sub:       'Estos son los costos por formato. El arbitraje se paga en cada partido; la inscripción es al momento de registrar al equipo.',
+    cs_sub:       'Estos son los costos por formato. El arbitraje se paga en cada partido; la inscripción del equipo se paga al registrarse.',
     cs_f1_h:      '8 vs 8',
     cs_f1_when:   'Todos los días',
     cs_f1_note:   'Formato regular de la liga.',
@@ -102,7 +102,7 @@ window.LVSL_TRANSLATIONS = {
     cs_pay_note:  '<strong>Pago del arbitraje:</strong> siempre en efectivo, al inicio del partido o a más tardar al medio tiempo. Quien lo mande por Zelle paga $10 extra.',
     cs_ct_tag:    'Contacto',
     cs_ct_h2:     '¿DUDAS SOBRE <span class="accent">LOS COSTOS?</span>',
-    cs_ct_p:      'Escríbenos o márcanos y te ayudamos a registrar a tu equipo.',
+    cs_ct_p:      'Escríbenos o márcanos y te ayudamos con tu registro.',
     footer_contact_h: 'Contacto',
     footer_city:      'Las Vegas, NV',
 
@@ -114,14 +114,14 @@ window.LVSL_TRANSLATIONS = {
   en: {
     /* ── META ── */
     meta_title_rules: 'Rules — Las Vegas Soccer League',
-    meta_title_register: 'Register your team — Las Vegas Soccer League',
+    meta_title_register: 'Player registration — Las Vegas Soccer League',
 
     /* ── NAV / BRAND ── */
     nav_rules: 'Rules',
-    nav_register: 'Register team',
+    nav_register: 'Sign up',
 
     /* ── CTA BAND (shared) ── */
-    cta_h2: 'READY TO <span class="accent">SIGN UP YOUR TEAM?</span>',
+    cta_h2: 'READY TO <span class="accent">PLAY THIS SEASON?</span>',
     cta_p: 'Registration takes a few minutes. We\'ll follow up with everything else.',
     cta_btn: 'Go to the registration form',
 
@@ -160,21 +160,21 @@ window.LVSL_TRANSLATIONS = {
 
     /* ── REGISTER ── */
     reg_eyebrow: 'Registration open',
-    reg_h1: 'REGISTER <span class="accent">YOUR TEAM</span>',
-    reg_sub: 'Fill out the league form and your team is on the list for next season. We\'ll follow up with the fee, the payment deadline, and your division details.',
-    reg_open_h: 'REGISTRATION <span class="accent">FORM</span>',
-    reg_open_p: 'Fill out the league form to claim your team\'s spot. It opens in a new tab.',
+    reg_h1: 'SIGN UP WITH <span class="accent">YOUR TEAM</span>',
+    reg_sub: 'Fill in your details, pick your team, and you\'re on the roster. Every player signs up individually: one form per player.',
+    reg_open_h: 'PLAYER <span class="accent">FORM</span>',
+    reg_open_p: 'Fill out the form to get added to your team\'s roster. It opens in a new tab.',
     reg_open_btn: 'Open the registration form',
-    reg_open_note: 'Google will ask you to sign in. If you don\'t have an account or run into trouble, call us at <a href="tel:+17028319474">702-831-9474</a> and we\'ll register you over the phone.',
+    reg_open_note: 'Google will ask you to sign in because the form asks for your credential photo. If you don\'t have an account or run into trouble, call us at <a href="tel:+17028319474">702-831-9474</a> and we\'ll register you over the phone.',
 
     /* ── HOME ── */
-    meta_title_home: 'Las Vegas Soccer League — Register your team',
-    home_cta1: 'Register my team',
+    meta_title_home: 'Las Vegas Soccer League — Sign up with your team',
+    home_cta1: 'Sign me up',
     home_cta2: 'See the rules',
     home_eyebrow: 'Las Vegas, Nevada &nbsp;·&nbsp; Registration open',
-    home_h1: 'BUILD YOUR TEAM.<br><span class="hl">SIGN IT UP.</span><br>PLAY BALL.',
+    home_h1: 'PICK YOUR TEAM.<br><span class="hl">SIGN UP.</span><br>PLAY BALL.',
     home_note: 'Registration is open — spots per division are limited.',
-    home_sub: 'Amateur soccer league in Las Vegas, Nevada. Build your team, sign it up, and play this season.',
+    home_sub: 'Amateur soccer league in Las Vegas, Nevada. Sign up with your team and play this season.',
     nav_home: 'Home',
 
 
@@ -183,7 +183,7 @@ window.LVSL_TRANSLATIONS = {
     nav_costs:    'Fees',
     cs_eyebrow:   'Fees',
     cs_h1:        'LEAGUE <span class="accent">FEES</span>',
-    cs_sub:       'These are the costs by format. Referee fees are paid at each game; registration is paid when you sign your team up.',
+    cs_sub:       'These are the costs by format. Referee fees are paid at each game; the team registration fee is paid at sign-up.',
     cs_f1_h:      '8 vs 8',
     cs_f1_when:   'Every day',
     cs_f1_note:   'The league\'s regular format.',
@@ -201,7 +201,7 @@ window.LVSL_TRANSLATIONS = {
     cs_pay_note:  '<strong>Referee payment:</strong> always in cash, at the start of the game or by halftime at the latest. Sending it by Zelle costs $10 extra.',
     cs_ct_tag:    'Contact',
     cs_ct_h2:     'QUESTIONS ABOUT <span class="accent">THE FEES?</span>',
-    cs_ct_p:      'Message or call us and we\'ll help you sign your team up.',
+    cs_ct_p:      'Message or call us and we\'ll help you get registered.',
     footer_contact_h: 'Contact',
     footer_city:      'Las Vegas, NV',
 
