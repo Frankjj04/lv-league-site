@@ -51,12 +51,14 @@ forward it as-is if that's easier.
 |---|---|
 | `index.html` | Home — hero only: headline, the two buttons, and the Vegas skyline |
 | `rules.html` | The coach's ten official rules, poster-style — **real content** |
-| `register.html` | Button that opens the coach's Google Form in a new tab |
+| `registro.html` | The player registration form — division, team, details, photo, waiver |
 | `css/style.css` | All styling, palette sampled from the crest |
 | `js/i18n.js` | All Spanish + English copy |
 | `js/main.js` | Nav, language toggle, scroll reveal |
+| `js/registro.js` | The registration form's logic |
+| **`js/league-config.js`** | **Divisions, teams and fees — the one file to edit for the league** |
 | `assets/logo.jpg` | The league crest |
-| `vercel.json` | Redirects the three removed page URLs to the home page |
+| `vercel.json` | Redirects the removed page URLs, and `/register.html` to `/registro.html` |
 | `README.md` | Full technical notes — branding, editing copy, what's placeholder |
 | `COACH-SETUP.md` | Bilingual instructions for unlocking the Google Form |
 
@@ -98,11 +100,19 @@ they'll be needed when those pages come back.
 
 ## Open items
 
-1. **The Google Form requires a sign-in.** Verified directly: logged-out visitors get
-   HTTP 401 and a Google sign-in wall. That's why the register page links out to the form
-   in a new tab instead of embedding it — Chrome blocks the cookies an embedded sign-in
-   needs. The embed code is still in `register.html`, commented out, ready to restore once
-   the coach turns that setting off. See `COACH-SETUP.md`.
+1. **The Google Form is being replaced, and it is not coming back.** It returned HTTP 401
+   to every logged-out visitor. The cause was the **FOTO PARA CREDENCIAL** file-upload
+   question: Google Forms demands a signed-in Google account on any form containing a file
+   upload, and that cannot be switched off. The coach was never going to be able to fix it.
+   `registro.html` replaces it with the league's own form, no sign-in, camera works on a
+   phone. `COACH-SETUP.md` is obsolete.
+
+   **The form cannot be submitted yet.** It posts to `/api/register`, which has not been
+   built. Do not link players to it or push it live until that endpoint, and a database
+   behind it, exist.
+
+   **The divisions and teams in `js/league-config.js` are placeholders** labelled `EJEMPLO`.
+   Only "Martes — Open Division" is real. They must be replaced with the coach's actual list.
 
 2. **There is no contact info on the site at all now.** The footer's phone and email were
    invented, so they came out with the contact page. The note under the registration button

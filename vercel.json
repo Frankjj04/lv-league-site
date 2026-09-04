@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/register.html",
+      "destination": "/registro.html",
+      "permanent": false
+    },
+    {
       "source": "/league.html",
       "destination": "/",
       "permanent": false

@@ -1,23 +1,25 @@
-# Las Vegas Soccer League — team registration site
+# Las Vegas Soccer League — player registration site
 
 Static site (plain HTML/CSS/JS, no build step). Bilingual **Spanish / English**, Spanish by default.
-Team registration runs through the coach's existing Google Form, linked from `register.html`.
+Players register themselves at `registro.html` and join a team the league already has.
 
 > Separate from `~/lv-soccer-league`, which is the existing Next.js + Supabase game-schedule/admin
 > app. If the two should become one project, the schedule page here is the natural place to link
 > or merge into it.
 
-Three pages. The league, schedule, and contact pages were removed on 2026-09-01 (see below) and
+Four pages. The league, schedule, and contact pages were removed on 2026-09-01 (see below) and
 get added back one at a time as the coach supplies real information.
 
 ```
 index.html      Home — hero only (headline, buttons, Vegas skyline)
 rules.html      Rules — the coach's ten official rules, poster-style (REAL content)
-register.html   Register — links out to the coach's Google Form
+registro.html   Register — the player registration form
 css/style.css   All styling
 js/i18n.js      All ES/EN copy
 js/main.js      Nav, language toggle, scroll reveal
-vercel.json     Redirects for the removed URLs
+js/registro.js  Registration form: teams, guardian fields, photo, validation
+js/league-config.js  Divisions, teams, fees — THE file to edit for the league
+vercel.json     Redirects for the removed and renamed URLs
 ```
 
 ## Pages removed on 2026-09-01
@@ -49,19 +51,52 @@ python3 -m http.server 8000
 
 ---
 
-## ⚠️ Do this first: the Google Form is currently locked
+## Registration
 
-The form at `https://forms.gle/bxiA7X9htGQmF93U8` returns **HTTP 401 (sign-in required)**.
-Anyone who visits the Register page will hit a Google sign-in wall instead of the form, and
-if the form is restricted to an organization, people outside it won't be able to submit at all.
+`registro.html` is the league's own player registration form. Players register one at a time
+and pick the team they already play for — the league's teams exist already, players do not
+create them.
 
-The coach needs to open the form in Google Forms → **Settings (gear icon)** → **Responses**, and:
+The form asks for the same things the coach's Google Form asked for: division, team, name,
+date of birth, phone, email, home address, a headshot for the player credential, and the
+bilingual liability release. It adds three things the Google Form could not do:
 
-- Turn **off** "Restrict to users in <organization>"
-- Set "Collect email addresses" to **Do not collect** or **Responder input** (not *Verified*)
+- **Teams are a dropdown filtered by division**, so the roster groups cleanly instead of
+  collecting the same team under three different spellings.
+- **Guardian name and phone appear automatically** when the date of birth says the player is
+  under 18, and become required.
+- **The headshot is downscaled in the browser** before upload, so a photo straight off a phone
+  camera works.
 
-Then re-check by opening the form link in a private/incognito window. If the form loads without
-asking to sign in, the embed on `register.html` will work for everyone.
+### Everything about the league lives in one file
+
+`js/league-config.js` holds the divisions, the teams in each, the fee per division, the age
+that counts as a minor, and an on/off switch for registration. Editing that file is the only
+thing needed to change what the form offers.
+
+> **The divisions and teams in it right now are placeholders**, labelled `EJEMPLO`. Only
+> "Martes — Open Division" is confirmed real. Replace them with the coach's list before this
+> page goes live.
+
+### Why the Google Form had to go
+
+The form returned HTTP 401 to everyone: a Google sign-in wall instead of the questions. The
+cause was the **FOTO PARA CREDENCIAL** file-upload question — Google Forms requires a signed-in
+Google account on any form that contains a file upload, and there is no setting to turn that
+off. It was never a misconfiguration, and no amount of fiddling in Settings → Responses would
+have fixed it. Players without a Google account, or unwilling to sign in, simply could not
+register.
+
+`register.html`, the page that linked out to that form, was removed. `vercel.json` redirects
+`/register.html` to `/registro.html`, so anything already shared — an Instagram bio link, a QR
+code, a text message — still lands on the right page.
+
+### Not finished yet
+
+The form posts to `/api/register`, **which does not exist yet**. Until it does, a submission
+fails. Still to build: that endpoint, a database behind it, the coach's roster page with CSV
+export and printable credentials, and Stripe payment.
+
 
 ## Branding
 
@@ -85,7 +120,7 @@ The three division cards use the three star colors from the crest.
 
 ## Placeholder content to replace
 
-Real: the league name, the crest, the Google Form link, and `rules.html` — the coach's ten
+Real: the league name, the crest, the waiver wording, and `rules.html` — the coach's ten
 official rules exactly as they appear on his printed REGLAS sheet, in Spanish and English.
 
 On 2026-09-01 the home page was cut down to just its hero — the stats bar, "how it works"
