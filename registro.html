@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de jugadores — Las Vegas Soccer League</title>
+  <meta name="description" content="Regístrate como jugador de la Las Vegas Soccer League. Elige tu división y tu equipo, sube tu foto para la credencial y quedas inscrito." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Registro de jugadores — Las Vegas Soccer League" />
+  <meta property="og:description" content="Regístrate con tu equipo para la próxima temporada de la Las Vegas Soccer League." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lvsl.futbol/registro.html" />
+  <meta property="og:site_name" content="Las Vegas Soccer League" />
+  <meta property="og:locale" content="es_MX" />
+  <meta property="og:image" content="https://lvsl.futbol/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Las Vegas Soccer League — Regístrate con tu equipo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://lvsl.futbol/assets/og.png" />
+  <link rel="canonical" href="https://lvsl.futbol/registro.html" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#FC8C00" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page-title-key="meta_title_register">
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+  <a href="index.html" class="logo" aria-label="Las Vegas Soccer League">
+    <img src="assets/logo.jpg" alt="" class="logo-mark" />
+    <span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+    <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+    <li><a href="costos.html" data-i18n="nav_costs">Costos</a></li>
+    <li><a href="registro.html" class="nav-cta active" data-i18n="nav_register">Registrarme</a></li>
+  </ul>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="hamburger" role="button" tabindex="0" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <a href="index.html" data-i18n="nav_home">Inicio</a>
+  <a href="rules.html" data-i18n="nav_rules">Reglamento</a>
+  <a href="costos.html" data-i18n="nav_costs">Costos</a>
+  <a href="registro.html" class="nav-cta active" data-i18n="nav_register">Registrarme</a>
+</div>
+
+<!-- ========== PAGE HEAD ========== -->
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="reg_eyebrow">Inscripciones abiertas</span>
+    <h1 data-i18n="reg_h1">REGÍSTRATE CON <span class="accent">TU EQUIPO</span></h1>
+    <p data-i18n="reg_sub">Llena tus datos, elige tu equipo y quedas inscrito en la liga. Cada jugador se registra por su cuenta: un formulario por jugador.</p>
+  </div>
+</header>
+
+<!-- ========== REGISTRATION CLOSED ========== -->
+<section class="section" id="regClosed" hidden>
+  <div class="wrap wrap--narrow">
+    <div class="form-cta">
+      <img src="assets/logo.jpg" alt="" class="form-cta-crest" />
+      <h2 data-i18n="rg_closed_h">INSCRIPCIONES <span class="accent">CERRADAS</span></h2>
+      <p data-i18n="rg_closed_p">Por ahora no estamos recibiendo registros. Escríbenos y te avisamos en cuanto abra la próxima temporada.</p>
+      <a class="btn btn--primary btn--lg" href="tel:+17028319474">702-831-9474</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FORM ========== -->
+<section class="section" id="regFormSection">
+  <div class="wrap wrap--narrow">
+
+    <form class="pform" id="regForm" novalidate>
+
+      <!-- ---------- 1. DIVISION + TEAM ---------- -->
+      <fieldset class="pform-step">
+        <legend>
+          <span class="pform-step-n">1</span>
+          <span data-i18n="rg_s1_h">Tu división y tu equipo</span>
+        </legend>
+
+        <div class="field">
+          <label for="division" data-i18n="rg_division_l">División <span class="req">*</span></label>
+          <p class="field-help" data-i18n="rg_division_help">El día en el que juega tu equipo.</p>
+          <select id="division" name="division" required aria-describedby="err-division">
+            <option value="" data-i18n="rg_choose">Elige una opción…</option>
+          </select>
+          <p class="field-err" id="err-division" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="team" data-i18n="rg_team_l">Equipo <span class="req">*</span></label>
+          <p class="field-help" data-i18n="rg_team_help">Elige primero tu división para ver los equipos.</p>
+          <select id="team" name="team" required disabled aria-describedby="err-team">
+            <option value="" data-i18n="rg_choose">Elige una opción…</option>
+          </select>
+          <p class="field-err" id="err-team" hidden></p>
+        </div>
+
+        <div class="field" id="otherTeamField" hidden>
+          <label for="teamOther" data-i18n="rg_team_other_l">Nombre de tu equipo <span class="req">*</span></label>
+          <input type="text" id="teamOther" name="teamOther" maxlength="60" autocomplete="off" aria-describedby="err-teamOther" />
+          <p class="field-err" id="err-teamOther" hidden></p>
+        </div>
+      </fieldset>
+
+      <!-- ---------- 2. PLAYER ---------- -->
+      <fieldset class="pform-step">
+        <legend>
+          <span class="pform-step-n">2</span>
+          <span data-i18n="rg_s2_h">Tus datos</span>
+        </legend>
+
+        <div class="field">
+          <label for="name" data-i18n="rg_name_l">Nombre completo <span class="req">*</span></label>
+          <input type="text" id="name" name="name" maxlength="80" autocomplete="name"
+                 required aria-describedby="err-name" />
+          <p class="field-err" id="err-name" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="dob" data-i18n="rg_dob_l">Fecha de nacimiento <span class="req">*</span></label>
+          <p class="field-help" data-i18n="rg_dob_help">La liga la usa para tu credencial y para tu categoría.</p>
+          <input type="date" id="dob" name="dob" required aria-describedby="err-dob" />
+          <p class="field-err" id="err-dob" hidden></p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="phone" data-i18n="rg_phone_l">Teléfono <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" maxlength="24" autocomplete="tel"
+                   inputmode="tel" placeholder="702-000-0000"
+                   required aria-describedby="err-phone" />
+            <p class="field-err" id="err-phone" hidden></p>
+          </div>
+
+          <div class="field">
+            <label for="email" data-i18n="rg_email_l">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" maxlength="120" autocomplete="email"
+                   inputmode="email" placeholder="tu@correo.com"
+                   required aria-describedby="err-email" />
+            <p class="field-err" id="err-email" hidden></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="address" data-i18n="rg_address_l">Dirección de casa <span class="req">*</span></label>
+          <input type="text" id="address" name="address" maxlength="140" autocomplete="street-address"
+                 required aria-describedby="err-address" />
+          <p class="field-err" id="err-address" hidden></p>
+        </div>
+      </fieldset>
+
+      <!-- ---------- 2b. GUARDIAN (minors only) ---------- -->
+      <fieldset class="pform-step pform-step--minor" id="guardianStep" hidden>
+        <legend>
+          <span class="pform-step-n" aria-hidden="true">!</span>
+          <span data-i18n="rg_s2b_h">Padre, madre o tutor</span>
+        </legend>
+        <p class="pform-step-note" data-i18n="rg_s2b_note">Eres menor de edad, así que necesitamos los datos de tu padre, madre o tutor. Esa persona es quien acepta el descargo de responsabilidad por ti.</p>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="guardianName" data-i18n="rg_g_name_l">Nombre del tutor <span class="req">*</span></label>
+            <input type="text" id="guardianName" name="guardianName" maxlength="80"
+                   aria-describedby="err-guardianName" />
+            <p class="field-err" id="err-guardianName" hidden></p>
+          </div>
+          <div class="field">
+            <label for="guardianPhone" data-i18n="rg_g_phone_l">Teléfono del tutor <span class="req">*</span></label>
+            <input type="tel" id="guardianPhone" name="guardianPhone" maxlength="24" inputmode="tel"
+                   placeholder="702-000-0000" aria-describedby="err-guardianPhone" />
+            <p class="field-err" id="err-guardianPhone" hidden></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ---------- 3. PHOTO ---------- -->
+      <fieldset class="pform-step">
+        <legend>
+          <span class="pform-step-n">3</span>
+          <span data-i18n="rg_s3_h">Foto para tu credencial</span>
+        </legend>
+        <p class="pform-step-note" data-i18n="rg_photo_note">Una foto de la cara, como la de una identificación. Puedes tomarla en este momento con tu teléfono.</p>
+
+        <div class="photo-field">
+          <div class="photo-preview" id="photoPreview" aria-hidden="true">
+            <span class="photo-preview-empty" data-i18n="rg_photo_empty">Sin foto</span>
+          </div>
+          <div class="photo-controls">
+            <input type="file" id="photo" name="photo" accept="image/*" capture="user"
+                   class="visually-hidden" aria-describedby="err-photo" />
+            <label for="photo" class="btn btn--ghost" data-i18n="rg_photo_btn">Elegir o tomar foto</label>
+            <button type="button" class="photo-clear" id="photoClear" hidden data-i18n="rg_photo_clear">Quitar</button>
+            <p class="field-help" id="photoStatus" data-i18n="rg_photo_help">JPG o PNG. La ajustamos automáticamente, no importa el tamaño.</p>
+          </div>
+        </div>
+        <p class="field-err" id="err-photo" hidden></p>
+      </fieldset>
+
+      <!-- ---------- 4. WAIVER ---------- -->
+      <fieldset class="pform-step">
+        <legend>
+          <span class="pform-step-n">4</span>
+          <span data-i18n="rg_s4_h">Descargo de responsabilidad</span>
+        </legend>
+
+        <div class="waiver">
+          <p class="waiver-lang"><strong>ESPAÑOL:</strong></p>
+          <p>Reconozco que participar en la Las Vegas Soccer League implica riesgo de lesión. Libero de responsabilidad a la liga, organizadores y staff. Autorizo el uso de mi imagen en fotos y videos con fines promocionales.</p>
+          <p class="waiver-lang"><strong>ENGLISH:</strong></p>
+          <p>I acknowledge that participation in Las Vegas Soccer League involves risk of injury. I release the league, organizers, and staff from any liability. I also authorize the use of my image in photos and videos for promotional purposes.</p>
+        </div>
+
+        <label class="check" for="waiver">
+          <input type="checkbox" id="waiver" name="waiver" required aria-describedby="err-waiver" />
+          <span class="check-box" aria-hidden="true"></span>
+          <span class="check-label">ACEPTO <span class="check-label-en">(I AGREE)</span> <span class="req">*</span></span>
+        </label>
+        <p class="field-err" id="err-waiver" hidden></p>
+        <p class="waiver-stamp" data-i18n="rg_waiver_stamp">Guardamos la fecha y la hora en que aceptas, junto con tu registro.</p>
+      </fieldset>
+
+      <!-- honeypot — hidden from people, filled in by bots -->
+      <div class="visually-hidden" aria-hidden="true">
+        <label for="website">No llenar / do not fill</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <!-- ---------- SUBMIT ---------- -->
+      <div class="pform-submit">
+        <p class="form-error" id="formError" hidden role="alert"></p>
+        <button type="submit" class="btn btn--primary btn--lg btn--block" id="submitBtn">
+          <span data-i18n="rg_submit">Enviar mi registro</span>
+        </button>
+        <p class="pform-legal" data-i18n="rg_submit_legal">Tus datos son solo para la liga. No los vendemos ni los compartimos.</p>
+      </div>
+    </form>
+
+    <!-- ---------- SUCCESS ---------- -->
+    <div class="form-cta" id="regSuccess" hidden tabindex="-1">
+      <img src="assets/logo.jpg" alt="" class="form-cta-crest" />
+      <h2 data-i18n="rg_ok_h">¡LISTO, <span class="accent">YA ESTÁS DENTRO!</span></h2>
+      <p data-i18n="rg_ok_p">Tu registro quedó guardado. Tu delegado y la liga ya te tienen en la lista de tu equipo.</p>
+      <p class="form-cta-note" id="regSuccessDetail"></p>
+      <a class="btn btn--ghost" href="index.html" data-i18n="rg_ok_btn">Volver al inicio</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid footer-grid--slim">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><img src="assets/logo.jpg" alt="" class="logo-mark" /><span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span></a>
+        <p data-i18n="footer_about">Liga de fútbol amateur en Las Vegas, Nevada. Organizada por y para la comunidad futbolera del valle.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_nav_h">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+          <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+          <li><a href="costos.html" data-i18n="nav_costs">Costos</a></li>
+          <li><a href="registro.html" data-i18n="nav_register">Registrarme</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_h">Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+17028319474">702-831-9474</a></li>
+          <li><a href="mailto:info.lvsleague@gmail.com">info.lvsleague@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/lvsleague" target="_blank" rel="noopener">@lvsleague</a></li>
+          <li><span data-i18n="footer_city">Las Vegas, NV</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Las Vegas Soccer League</span>
+      <span data-i18n="footer_made">Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/league-config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/registro.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<!-- Vercel Web Analytics — cookieless page counts, no personal data -->
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
