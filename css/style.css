@@ -2068,3 +2068,5 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .adm-btn--quiet:hover { border-color: rgba(255,255,255,.28); color: #fff; }
 
 @media print { .gate { display: none !important; } }
+
+.adm-empty strong { display: block; color: var(--ink); font-size: 1.05rem; margin-bottom: 6px; }

@@ -214,7 +214,23 @@
 
     const sorted = [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0], 'es'));
 
-    $('empty').hidden = list.length > 0;
+    // "No matches" and "nobody has registered yet" are different situations,
+    // and the second is what the coach sees on day one.
+    const box = $('empty');
+    box.hidden = list.length > 0;
+    if (!list.length) {
+      const searching = $('search').value.trim() || $('minorsOnly').checked;
+      const anyone = players.some((x) => !isPending(x));
+      // If the list is empty and nothing was typed, the only way players can
+      // exist is that they are all in another division.
+      box.innerHTML = searching
+        ? 'Nadie coincide con esa búsqueda.'
+        : anyone
+          ? 'Todavía no hay jugadores en esta división.'
+          : '<strong>Todavía no se ha registrado nadie.</strong><br>' +
+            'Los jugadores van a aparecer aquí, agrupados por equipo, en cuanto llenen ' +
+            'el formulario en lvsl.futbol/registro.html';
+    }
 
     $('roster').innerHTML = sorted.map(([key, members]) => {
       const team = key.split('||')[1];
