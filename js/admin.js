@@ -16,6 +16,16 @@
   let usingSample = false;
   let activeDivision = 'all';
 
+  const paymentOn = () => !!(CFG.payment && CFG.payment.enabled);
+  const isPending = (p) => p.status === 'pending';
+
+  /* Registrations that stopped at the payment screen. They are real people
+     with a real phone number — worth a call, not worth counting as members. */
+  function pendingIn(division) {
+    return players.filter((p) => isPending(p) &&
+      (division === 'all' || p.division === division));
+  }
+
   /* ---------- small helpers ---------- */
   const esc = (s) => String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -64,32 +74,44 @@
   }
 
   /* ---------- filtering ---------- */
+  function matches(p, q) {
+    if (!q) return true;
+    const hay = [p.name, p.team, p.phone, p.email, phoneFmt(p.phone)].join(' ').toLowerCase();
+    return hay.indexOf(q) !== -1;
+  }
+
   function visible() {
     const q = $('search').value.trim().toLowerCase();
-    const unpaid = $('unpaidOnly').checked;
+    const minorsOnly = $('minorsOnly').checked;
 
     return players.filter((p) => {
+      if (isPending(p)) return false;                    // not a member yet
       if (activeDivision !== 'all' && p.division !== activeDivision) return false;
-      if (unpaid && p.paid) return false;
-      if (!q) return true;
-      const hay = [p.name, p.team, p.phone, p.email, phoneFmt(p.phone)].join(' ').toLowerCase();
-      return hay.indexOf(q) !== -1;
+      if (minorsOnly && !isMinor(p)) return false;
+      return matches(p, q);
     });
   }
 
   /* ---------- summary ---------- */
   function renderStats(list) {
     const teams = new Set(list.map((p) => p.team));
-    const paid = list.filter((p) => p.paid).length;
     const minors = list.filter(isMinor).length;
+    const week = Date.now() - 7 * 864e5;
+    const fresh = list.filter((p) => Date.parse(p.createdAt) >= week).length;
 
+    // Everyone in this list completed registration, so there is nothing to
+    // mark paid. The number worth watching is the ones who never finished.
     const tiles = [
       { n: list.length, l: 'Jugadores' },
       { n: teams.size,  l: 'Equipos' },
-      { n: paid,        l: 'Pagados', tone: 'good' },
-      { n: list.length - paid, l: 'Deben', tone: (list.length - paid) ? 'warn' : '' },
+      { n: fresh,       l: 'Nuevos esta semana' },
       { n: minors,      l: 'Menores de edad', tone: minors ? 'note' : '' },
     ];
+
+    if (paymentOn()) {
+      const stuck = pendingIn(activeDivision).length;
+      tiles.push({ n: stuck, l: 'Sin terminar', tone: stuck ? 'warn' : '' });
+    }
 
     $('stats').innerHTML = tiles.map((t) =>
       '<div class="adm-stat' + (t.tone ? ' is-' + t.tone : '') + '">' +
@@ -100,8 +122,9 @@
 
   /* ---------- division tabs ---------- */
   function renderTabs() {
-    const counts = { all: players.length };
-    DIVISIONS.forEach((d) => { counts[d.id] = players.filter((p) => p.division === d.id).length; });
+    const members = players.filter((p) => !isPending(p));
+    const counts = { all: members.length };
+    DIVISIONS.forEach((d) => { counts[d.id] = members.filter((p) => p.division === d.id).length; });
 
     const tabs = [{ id: 'all', label: 'Todas' }]
       .concat(DIVISIONS.map((d) => ({ id: d.id, label: d.es })));
@@ -133,7 +156,6 @@
     $('roster').innerHTML = sorted.map(([key, members]) => {
       const team = key.split('||')[1];
       const div  = key.split('||')[0];
-      const owe  = members.filter((p) => !p.paid).length;
 
       members.sort((a, b) => a.name.localeCompare(b.name, 'es'));
 
@@ -142,29 +164,21 @@
           '<h2 class="team-name">' + esc(team) + '</h2>' +
           '<span class="team-div">' + esc(divisionLabel(div)) + '</span>' +
           '<span class="team-count">' + members.length + ' jugador' + (members.length === 1 ? '' : 'es') + '</span>' +
-          (owe ? '<span class="team-owe">' + owe + ' sin pagar</span>' : '') +
         '</header>' +
         '<ul class="team-list">' + members.map(playerRow).join('') + '</ul>' +
       '</section>';
     }).join('');
 
     $('roster').querySelectorAll('.pl').forEach((el) => {
-      el.addEventListener('click', (e) => {
-        if (e.target.closest('.pl-paid')) return;
-        openSheet(Number(el.dataset.id));
-      });
-    });
-
-    $('roster').querySelectorAll('.pl-paid input').forEach((box) => {
-      box.addEventListener('change', () => {
-        const p = players.find((x) => x.id === Number(box.dataset.id));
-        if (p) { p.paid = box.checked; render(); }
+      el.addEventListener('click', () => openSheet(Number(el.dataset.id)));
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet(Number(el.dataset.id)); }
       });
     });
   }
 
   function playerRow(p) {
-    return '<li class="pl' + (p.paid ? '' : ' pl--owes') + '" data-id="' + p.id + '" tabindex="0">' +
+    return '<li class="pl" data-id="' + p.id + '" tabindex="0">' +
       '<img class="pl-photo" src="' + esc(p.photo) + '" alt="" />' +
       '<span class="pl-main">' +
         '<span class="pl-name">' + esc(p.name) +
@@ -172,11 +186,39 @@
         '</span>' +
         '<span class="pl-meta">' + age(p.dob) + ' años · ' + esc(phoneFmt(p.phone)) + '</span>' +
       '</span>' +
-      '<label class="pl-paid" title="Marcar como pagado">' +
-        '<input type="checkbox" data-id="' + p.id + '"' + (p.paid ? ' checked' : '') + ' />' +
-        '<span>' + (p.paid ? 'Pagado' : 'Debe') + '</span>' +
-      '</label>' +
+      '<span class="pl-since">' + esc(dateFmt(p.createdAt)) + '</span>' +
     '</li>';
+  }
+
+  /* ---------- registrations that never finished paying ---------- */
+  function renderPending() {
+    const box = $('pending');
+    if (!paymentOn()) { box.hidden = true; box.innerHTML = ''; return; }
+
+    const q = $('search').value.trim().toLowerCase();
+    const list = pendingIn(activeDivision).filter((p) => matches(p, q));
+
+    if (!list.length) { box.hidden = true; box.innerHTML = ''; return; }
+
+    list.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+
+    box.hidden = false;
+    box.innerHTML =
+      '<header class="pend-head">' +
+        '<h2>Sin terminar<span class="pend-n">' + list.length + '</span></h2>' +
+        '<p>Llenaron el formulario pero no completaron el pago, así que todavía no están en ' +
+        'ningún equipo. Una llamada normalmente los termina de inscribir.</p>' +
+      '</header>' +
+      '<ul class="pend-list">' + list.map((p) =>
+        '<li class="pend">' +
+          '<span class="pend-main">' +
+            '<span class="pend-name">' + esc(p.name) + '</span>' +
+            '<span class="pend-meta">' + esc(p.team) + ' · ' + esc(divisionLabel(p.division)) + '</span>' +
+          '</span>' +
+          '<span class="pend-when">' + esc(dateFmt(p.createdAt)) + '</span>' +
+          '<a class="pend-call" href="tel:' + esc(p.phone) + '">' + esc(phoneFmt(p.phone)) + '</a>' +
+        '</li>').join('') +
+      '</ul>';
   }
 
   /* ---------- player detail ---------- */
@@ -193,7 +235,9 @@
         '<div>' +
           '<h2 id="sheetName">' + esc(p.name) + '</h2>' +
           '<p class="sh-team">' + esc(p.team) + ' · ' + esc(divisionLabel(p.division)) + '</p>' +
-          '<span class="sh-pill' + (p.paid ? ' is-paid' : '') + '">' + (p.paid ? 'Pagado' : 'Debe') + '</span>' +
+          (isPending(p)
+            ? '<span class="sh-pill">Sin terminar</span>'
+            : '<span class="sh-pill is-paid">Inscrito</span>') +
         '</div>' +
       '</div>' +
       '<dl class="sh-rows">' +
@@ -224,7 +268,7 @@
   function toCsv(list) {
     const head = ['Division', 'Equipo', 'Nombre', 'Nacimiento', 'Edad', 'Menor',
                   'Telefono', 'Email', 'Direccion', 'Tutor', 'Telefono tutor',
-                  'Pagado', 'Registrado', 'Acepto descargo'];
+                  'Estado', 'Registrado', 'Acepto descargo'];
 
     // Excel and Sheets both read a quoted field; a quote inside one is doubled.
     const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
@@ -232,7 +276,7 @@
     const rows = list.map((p) => [
       divisionLabel(p.division), p.team, p.name, p.dob, age(p.dob), isMinor(p) ? 'SI' : '',
       phoneFmt(p.phone), p.email, p.address, p.guardianName, phoneFmt(p.guardianPhone),
-      p.paid ? 'SI' : 'NO', p.createdAt, p.waiverAcceptedAt,
+      isPending(p) ? 'SIN TERMINAR' : 'INSCRITO', p.createdAt, p.waiverAcceptedAt,
     ].map(cell).join(','));
 
     // BOM so Excel opens the accents correctly.
@@ -281,11 +325,12 @@
     const list = visible();
     renderStats(list);
     renderTabs();
+    renderPending();
     renderRoster(list);
   }
 
   $('search').addEventListener('input', render);
-  $('unpaidOnly').addEventListener('change', render);
+  $('minorsOnly').addEventListener('change', render);
 
   load();
 })();

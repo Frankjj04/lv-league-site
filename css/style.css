@@ -1712,16 +1712,6 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   font-variant-numeric: tabular-nums;
 }
 
-.team-owe {
-  font-size: .78rem;
-  font-weight: 700;
-  letter-spacing: .03em;
-  color: #fff;
-  background: var(--maroon);
-  padding: 3px 9px;
-  border-radius: 999px;
-}
-
 .team-list { list-style: none; margin: 0; padding: 0; }
 
 /* ---------- player rows ---------- */
@@ -1738,8 +1728,6 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .pl:last-child { border-bottom: none; }
 .pl:hover { background: var(--orange-soft); }
 .pl:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px; }
-
-.pl--owes { box-shadow: inset 3px 0 0 var(--maroon); }
 
 .pl-photo {
   width: 42px;
@@ -1773,22 +1761,96 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 
 .pl-meta { font-size: .84rem; color: var(--text-mute); font-variant-numeric: tabular-nums; }
 
-.pl-paid {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+.pl-since {
   flex-shrink: 0;
-  font-size: .83rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  cursor: pointer;
-  padding: 6px 4px;
+  font-size: .8rem;
+  color: var(--text-mute);
+  font-variant-numeric: tabular-nums;
 }
 
-.pl-paid input { width: 17px; height: 17px; accent-color: var(--green); cursor: pointer; }
-.pl:not(.pl--owes) .pl-paid { color: var(--green); }
-
 .adm-empty { text-align: center; color: var(--text-mute); padding: 50px 0; }
+
+/* ---------- never finished paying ----------
+   Deliberately not a team card: these people are not on a roster yet,
+   so the block reads as a to-do list, not as a group. */
+.pend-box {
+  border: 1.5px solid var(--orange-line);
+  border-left: 4px solid var(--orange);
+  border-radius: var(--radius-sm);
+  background: var(--orange-soft);
+  padding: 16px 20px;
+  margin-bottom: 22px;
+}
+
+.pend-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  letter-spacing: .02em;
+  margin: 0 0 5px;
+  color: var(--ink);
+}
+
+.pend-n {
+  font-size: .78rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  background: var(--maroon);
+  color: #fff;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pend-head p {
+  margin: 0 0 12px;
+  font-size: .87rem;
+  color: var(--text-dim);
+  max-width: 64ch;
+}
+
+.pend-list { list-style: none; margin: 0; padding: 0; }
+
+.pend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 0;
+  border-top: 1px solid var(--orange-line);
+}
+
+.pend-main { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.pend-name { font-weight: 600; font-size: .94rem; color: var(--text); }
+.pend-meta { font-size: .82rem; color: var(--text-mute); }
+
+.pend-when {
+  font-size: .8rem;
+  color: var(--text-mute);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.pend-call {
+  flex-shrink: 0;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--maroon);
+  padding: 7px 13px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.pend-call:hover { background: #7A0300; }
+
+@media (max-width: 640px) {
+  .pend { flex-wrap: wrap; gap: 8px 12px; }
+  .pend-when { order: 3; }
+  .pend-call { order: 2; margin-left: auto; }
+}
 
 /* ---------- player detail sheet ---------- */
 .adm-sheet { position: fixed; inset: 0; z-index: 300; display: flex; justify-content: flex-end; }
@@ -1855,7 +1917,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .cred-sheet { display: none; }
 
 @media print {
-  .adm-banner, .adm-head, .adm-main, .adm-sheet { display: none !important; }
+  .adm-banner, .adm-head, .adm-main, .adm-sheet, .pend-box { display: none !important; }
 
   .admin-body { background: #fff; }
 
