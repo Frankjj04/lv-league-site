@@ -1479,3 +1479,459 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .photo-preview { width: 92px; height: 116px; }
   .photo-clear { display: block; margin: 10px 0 0; }
 }
+
+/* ═══════════════════════════════════════════════════
+   ROSTER PAGE (admin.html)
+   A tool, not a page: scanned and operated, so it runs
+   denser and flatter than the public site.
+   ═══════════════════════════════════════════════════ */
+
+.admin-body { background: var(--bg-alt); }
+
+.adm-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--maroon);
+  color: #fff;
+  padding: 10px 22px;
+  font-size: .87rem;
+}
+
+.adm-banner strong {
+  background: var(--orange);
+  color: var(--ink);
+  font-family: var(--font-head);
+  letter-spacing: .06em;
+  padding: 2px 9px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* ---------- header ---------- */
+.adm-head {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 22px;
+  background: var(--ink);
+  color: #fff;
+}
+
+.adm-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.adm-brand img { width: 40px; height: 40px; border-radius: 7px; object-fit: cover; }
+.adm-brand span { display: flex; flex-direction: column; line-height: 1.2; }
+.adm-brand-l1 { font-family: var(--font-head); font-size: 1.05rem; letter-spacing: .05em; color: #fff; }
+.adm-brand-l2 { font-size: .82rem; color: rgba(255,255,255,.62); }
+
+.adm-head-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border: 1.5px solid rgba(255,255,255,.28);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: .87rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s var(--ease), border-color .15s var(--ease);
+}
+
+.adm-btn:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.5); }
+
+.adm-btn--primary {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--ink);
+}
+
+.adm-btn--primary:hover { background: #FF9C1F; border-color: #FF9C1F; }
+
+.adm-main { max-width: 1120px; margin: 0 auto; padding: 26px 22px 90px; }
+
+/* ---------- summary tiles ---------- */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.adm-stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 15px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.adm-stat-n {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-stat-l { font-size: .82rem; color: var(--text-mute); }
+
+/* state lives in the left edge, so it reads without being counted */
+.adm-stat.is-good { border-left: 4px solid var(--green); }
+.adm-stat.is-warn { border-left: 4px solid var(--maroon); }
+.adm-stat.is-warn .adm-stat-n { color: var(--maroon); }
+.adm-stat.is-note { border-left: 4px solid var(--orange); }
+
+/* ---------- controls ---------- */
+.adm-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.adm-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.adm-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all .15s var(--ease);
+}
+
+.adm-tab:hover { border-color: var(--text-mute); color: var(--text); }
+
+.adm-tab.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.adm-tab-n {
+  font-variant-numeric: tabular-nums;
+  font-size: .8rem;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-dim);
+}
+
+.adm-tab.active .adm-tab-n { background: rgba(255,255,255,.2); color: #fff; }
+
+.adm-filters { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.adm-search input {
+  width: 268px;
+  max-width: 100%;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: .92rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.adm-search input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(252,140,0,.18);
+}
+
+.adm-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .88rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+
+.adm-toggle input { width: 17px; height: 17px; accent-color: var(--maroon); cursor: pointer; }
+
+/* ---------- team groups ---------- */
+.team {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.team-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 15px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.team-name {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  letter-spacing: .02em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.team-div { font-size: .82rem; color: var(--text-mute); }
+
+.team-count {
+  margin-left: auto;
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.team-owe {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: #fff;
+  background: var(--maroon);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.team-list { list-style: none; margin: 0; padding: 0; }
+
+/* ---------- player rows ---------- */
+.pl {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: background .13s var(--ease);
+}
+
+.pl:last-child { border-bottom: none; }
+.pl:hover { background: var(--orange-soft); }
+.pl:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px; }
+
+.pl--owes { box-shadow: inset 3px 0 0 var(--maroon); }
+
+.pl-photo {
+  width: 42px;
+  height: 52px;
+  border-radius: 5px;
+  object-fit: cover;
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+
+.pl-main { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+
+.pl-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: .97rem;
+  color: var(--text);
+}
+
+.pl-minor {
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  background: var(--orange);
+  color: var(--ink);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.pl-meta { font-size: .84rem; color: var(--text-mute); font-variant-numeric: tabular-nums; }
+
+.pl-paid {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  font-size: .83rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 6px 4px;
+}
+
+.pl-paid input { width: 17px; height: 17px; accent-color: var(--green); cursor: pointer; }
+.pl:not(.pl--owes) .pl-paid { color: var(--green); }
+
+.adm-empty { text-align: center; color: var(--text-mute); padding: 50px 0; }
+
+/* ---------- player detail sheet ---------- */
+.adm-sheet { position: fixed; inset: 0; z-index: 300; display: flex; justify-content: flex-end; }
+.adm-sheet-scrim { position: absolute; inset: 0; background: rgba(11,11,12,.5); }
+
+.adm-sheet-panel {
+  position: relative;
+  width: min(440px, 100%);
+  background: var(--surface);
+  overflow-y: auto;
+  padding: 26px 26px 40px;
+  box-shadow: -14px 0 44px rgba(11,11,12,.2);
+}
+
+.adm-sheet-x {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--text-mute);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.adm-sheet-x:hover { color: var(--ink); }
+
+.sh-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 22px; padding-right: 30px; }
+.sh-photo { width: 84px; height: 105px; border-radius: 7px; object-fit: cover; flex-shrink: 0; }
+.sh-top h2 { font-family: var(--font-head); font-size: 1.6rem; margin: 0 0 3px; letter-spacing: .02em; }
+.sh-team { margin: 0 0 10px; font-size: .88rem; color: var(--text-mute); }
+
+.sh-pill {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--maroon);
+  color: #fff;
+}
+
+.sh-pill.is-paid { background: var(--green); }
+
+.sh-rows { margin: 0; }
+
+.sh-row {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 10px;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  font-size: .92rem;
+}
+
+.sh-row dt { color: var(--text-mute); }
+.sh-row dd { margin: 0; color: var(--text); overflow-wrap: anywhere; }
+.sh-row a { color: var(--maroon); font-weight: 600; }
+
+/* ---------- printable credentials ---------- */
+.cred-sheet { display: none; }
+
+@media print {
+  .adm-banner, .adm-head, .adm-main, .adm-sheet { display: none !important; }
+
+  .admin-body { background: #fff; }
+
+  .cred-sheet {
+    display: grid;
+    grid-template-columns: repeat(3, 2.125in);
+    gap: .22in;
+    padding: .3in;
+  }
+
+  .cred {
+    width: 2.125in;
+    height: 3.375in;
+    border: 1.2pt solid #0B0B0C;
+    border-radius: 7pt;
+    padding: 8pt;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    overflow: hidden;
+  }
+
+  .cred-top { display: flex; align-items: center; gap: 5pt; width: 100%; margin-bottom: 6pt; }
+  .cred-crest { width: 20pt; height: 20pt; border-radius: 3pt; object-fit: cover; }
+  .cred-league {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 7.5pt;
+    line-height: 1.05;
+    letter-spacing: .04em;
+    text-align: left;
+    color: #0B0B0C;
+  }
+
+  .cred-photo {
+    width: 1.1in;
+    height: 1.35in;
+    object-fit: cover;
+    border-radius: 4pt;
+    border: .8pt solid #0B0B0C;
+    margin-bottom: 6pt;
+  }
+
+  .cred-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12.5pt;
+    line-height: 1.1;
+    letter-spacing: .02em;
+    color: #0B0B0C;
+  }
+
+  .cred-team { font-size: 7.5pt; color: #4C555F; margin-top: 2pt; }
+
+  .cred-foot {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 6.2pt;
+    color: #4C555F;
+    border-top: .6pt solid #E3E6EA;
+    padding-top: 4pt;
+  }
+
+  @page { margin: .35in; }
+}
+
+@media (max-width: 700px) {
+  .adm-head { padding: 12px 16px; }
+  .adm-main { padding: 20px 14px 70px; }
+  .adm-controls { flex-direction: column; align-items: stretch; }
+  .adm-search input { width: 100%; }
+  .team-head { padding: 13px 15px; }
+  .pl { padding: 10px 15px; gap: 11px; }
+  .sh-row { grid-template-columns: 1fr; gap: 2px; }
+  .adm-sheet-panel { padding: 22px 18px 34px; }
+}

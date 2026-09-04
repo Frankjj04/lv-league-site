@@ -1,0 +1,69 @@
+/* =========================================
+   LAS VEGAS SOCCER LEAGUE — Sample roster
+
+   ⚠️  NOT REAL PLAYERS. Invented rows so the roster page can be
+   designed and reviewed before a database exists. admin.js loads this
+   only when /api/players is unavailable, and the page says so on screen.
+   Delete this file once the real endpoint is live.
+   ========================================= */
+
+'use strict';
+
+(function () {
+  /* Initials on a colored ground — a stand-in for the credential headshots,
+     so no invented face is ever shown as if it were a real player. */
+  function avatar(name, hue) {
+    const initials = name.split(' ').slice(0, 2).map((w) => w[0]).join('');
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="180" height="225" viewBox="0 0 180 225">' +
+      '<rect width="180" height="225" fill="hsl(' + hue + ',34%,82%)"/>' +
+      '<circle cx="90" cy="86" r="38" fill="hsl(' + hue + ',30%,68%)"/>' +
+      '<path d="M22 225c0-40 30-66 68-66s68 26 68 66z" fill="hsl(' + hue + ',30%,68%)"/>' +
+      '<text x="90" y="99" text-anchor="middle" font-family="DM Sans,sans-serif" ' +
+      'font-size="42" font-weight="700" fill="hsl(' + hue + ',42%,32%)">' + initials + '</text>' +
+      '</svg>';
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  const rows = [
+    ['martes-open', 'EJEMPLO — Equipo 1', 'Andrés Molina',      '1994-03-12', '7025550118', 'andres.m@example.com',  '412 E Charleston Blvd, Las Vegas, NV 89104', true,  ''],
+    ['martes-open', 'EJEMPLO — Equipo 1', 'Bryan Castellanos',  '1999-11-02', '7025550143', 'bryanc@example.com',    '2210 S Eastern Ave, Las Vegas, NV 89104',   true,  ''],
+    ['martes-open', 'EJEMPLO — Equipo 1', 'Carlos Iriarte',     '2001-06-25', '7025550177', 'c.iriarte@example.com', '905 N Nellis Blvd, Las Vegas, NV 89110',    false, ''],
+    ['martes-open', 'EJEMPLO — Equipo 1', 'Diego Ferrer',       '2009-08-19', '7025550190', 'd.ferrer@example.com',  '3300 W Sahara Ave, Las Vegas, NV 89102',    true,  'Marta Ferrer|7025550191'],
+    ['martes-open', 'EJEMPLO — Equipo 1', 'Emilio Vargas',      '1991-01-30', '7025550122', 'evargas@example.com',   '1750 Karen Ave, Las Vegas, NV 89169',       false, ''],
+    ['martes-open', 'EJEMPLO — Equipo 2', 'Fernando Quiroz',    '1997-09-08', '7025550136', 'fq@example.com',        '6400 W Flamingo Rd, Las Vegas, NV 89103',   true,  ''],
+    ['martes-open', 'EJEMPLO — Equipo 2', 'Gerardo Peña',       '1988-12-14', '7025550154', 'gpena@example.com',     '820 S Decatur Blvd, Las Vegas, NV 89107',   true,  ''],
+    ['martes-open', 'EJEMPLO — Equipo 2', 'Hugo Delgado',       '2003-04-03', '7025550168', 'hdelgado@example.com',  '4455 Boulder Hwy, Las Vegas, NV 89121',     false, ''],
+    ['martes-open', 'EJEMPLO — Equipo 3', 'Iván Rosales',       '1996-07-21', '7025550129', 'ivanr@example.com',     '1201 N Rancho Dr, Las Vegas, NV 89106',     true,  ''],
+    ['martes-open', 'EJEMPLO — Equipo 3', 'Joaquín Beltrán',    '2000-02-17', '7025550183', 'jbeltran@example.com',  '3720 S Maryland Pkwy, Las Vegas, NV 89169', false, ''],
+    ['martes-open', 'EJEMPLO — Equipo 3', 'Kevin Alarcón',      '2010-05-06', '7025550195', 'kalarcon@example.com',  '2900 E Desert Inn Rd, Las Vegas, NV 89121', false, 'Rosa Alarcón|7025550196'],
+    ['domingo-11v11', 'EJEMPLO — Equipo A', 'Luis Maldonado',  '1993-10-11', '7025550107', 'lmaldo@example.com', '5100 W Charleston Blvd, Las Vegas, NV 89146', true, ''],
+    ['domingo-11v11', 'EJEMPLO — Equipo A', 'Mario Zepeda',     '1990-06-29', '7025550112', 'mzepeda@example.com',   '1600 E Bonanza Rd, Las Vegas, NV 89101',    true,  ''],
+    ['domingo-11v11', 'EJEMPLO — Equipo A', 'Néstor Cabrera',   '2002-01-09', '7025550149', 'ncabrera@example.com',  '7250 W Lake Mead Blvd, Las Vegas, NV 89128', false, ''],
+    ['domingo-11v11', 'EJEMPLO — Equipo B', 'Óscar Trejo',      '1998-03-27', '7025550161', 'otrejo@example.com',    '3355 S Valley View Blvd, Las Vegas, NV 89102', true, ''],
+    ['domingo-11v11', 'EJEMPLO — Equipo B', 'Pablo Guerrero',   '1995-11-15', '7025550174', 'pguerrero@example.com', '2075 E Tropicana Ave, Las Vegas, NV 89119', true,  ''],
+  ];
+
+  const base = Date.parse('2026-08-24T17:10:00Z');
+
+  window.LVSL_SAMPLE_ROSTER = rows.map((r, i) => {
+    const [division, team, name, dob, phone, email, address, paid, guardian] = r;
+    const [gName, gPhone] = guardian ? guardian.split('|') : ['', ''];
+    return {
+      id: 1000 + i,
+      division: division,
+      team: team,
+      name: name,
+      dob: dob,
+      phone: phone,
+      email: email,
+      address: address,
+      guardianName: gName,
+      guardianPhone: gPhone,
+      paid: paid,
+      photo: avatar(name, (i * 47) % 360),
+      waiverAcceptedAt: new Date(base + i * 5.4e6).toISOString(),
+      createdAt: new Date(base + i * 5.4e6).toISOString(),
+    };
+  });
+})();

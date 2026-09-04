@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de jugadores — Las Vegas Soccer League</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#0B0B0C" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-body">
+
+<!-- ========== SAMPLE DATA BANNER ========== -->
+<div class="adm-banner" id="sampleBanner" hidden>
+  <strong>DATOS DE EJEMPLO</strong>
+  <span>Estos jugadores son inventados para diseñar la página. No hay base de datos todavía.</span>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header class="adm-head">
+  <a href="index.html" class="adm-brand">
+    <img src="assets/logo.jpg" alt="" />
+    <span>
+      <span class="adm-brand-l1">LAS VEGAS SOCCER LEAGUE</span>
+      <span class="adm-brand-l2">Lista de jugadores</span>
+    </span>
+  </a>
+  <div class="adm-head-actions">
+    <button type="button" class="adm-btn" id="csvBtn">
+      <span aria-hidden="true">&#8681;</span> Descargar CSV
+    </button>
+    <button type="button" class="adm-btn adm-btn--primary" id="printBtn">
+      <span aria-hidden="true">&#9646;</span> Imprimir credenciales
+    </button>
+  </div>
+</header>
+
+<main class="adm-main">
+
+  <!-- ========== SUMMARY ========== -->
+  <section class="adm-stats" id="stats" aria-label="Resumen"></section>
+
+  <!-- ========== CONTROLS ========== -->
+  <div class="adm-controls">
+    <div class="adm-tabs" id="divTabs" role="tablist" aria-label="División"></div>
+    <div class="adm-filters">
+      <label class="adm-search">
+        <span class="visually-hidden">Buscar jugador o equipo</span>
+        <input type="search" id="search" placeholder="Buscar jugador, equipo o teléfono…" autocomplete="off" />
+      </label>
+      <label class="adm-toggle">
+        <input type="checkbox" id="unpaidOnly" />
+        <span>Solo los que deben</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ========== ROSTER ========== -->
+  <div id="roster"></div>
+
+  <p class="adm-empty" id="empty" hidden>Nadie coincide con esa búsqueda.</p>
+
+</main>
+
+<!-- ========== PLAYER DETAIL ========== -->
+<div class="adm-sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetName">
+  <div class="adm-sheet-scrim" data-close></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close aria-label="Cerrar">&times;</button>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- ========== PRINTABLE CREDENTIALS ========== -->
+<div class="cred-sheet" id="credSheet" aria-hidden="true"></div>
+
+<script src="js/league-config.js"></script>
+<script src="js/sample-roster.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
