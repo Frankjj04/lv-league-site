@@ -179,6 +179,14 @@ test('the cookie is HttpOnly, Secure and SameSite=Strict', () => {
   assert.match(c, /SameSite=Strict/);
 });
 
+test('the cookie does not outlive the browser session', () => {
+  // No Max-Age and no Expires, so the browser drops it when it closes and the
+  // coach types the password again. The signed expiry still caps it at an hour.
+  const c = auth.issueCookie();
+  assert.equal(/Max-Age/.test(c), false);
+  assert.equal(/Expires/.test(c), false);
+});
+
 test('no cookie means not signed in', () => {
   assert.equal(auth.isSignedIn({ headers: {} }), false);
   assert.equal(auth.isSignedIn({ headers: { cookie: '' } }), false);
