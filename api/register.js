@@ -23,30 +23,30 @@ export default async function handler(req, res) {
   // a bot cannot tell it was caught.
   if (clean((req.body || {}).website, 80)) return res.status(200).json({ ok: true });
 
-  const { player: p, error } = validatePlayer(req.body);
-  if (error) return res.status(400).json({ error: 'invalid', message: error });
+  // Every refusal carries a code as well as a message. The sign-up form turns
+  // the code into a line in the player's own language and points at the field
+  // to fix, so nobody is left guessing why they could not register.
+  const refuse = (code, message) =>
+    res.status(400).json({ error: 'invalid', code, message });
+
+  const { player: p, error, code } = validatePlayer(req.body);
+  if (error) return refuse(code, error);
 
   // A player signing themselves up ticks the release and supplies a headshot.
   // Both are required here; the coach's form treats them differently.
   if (req.body.waiverAccepted !== true) {
-    return res.status(400).json({ error: 'invalid',
-      message: 'Tienes que aceptar el descargo de responsabilidad.' });
+    return refuse('waiver', 'Tienes que aceptar el descargo de responsabilidad.');
   }
 
+  if (!req.body.photo) return refuse('photo_missing', 'Sube una foto para tu credencial.');
   const photo = decodePhoto(req.body.photo);
-  if (photo.error) return res.status(400).json({ error: 'invalid', message: photo.error });
+  if (photo.error) return refuse('photo_' + photo.code, photo.error);
 
   // The coach requires every player's ID or passport. No ID, no registration —
   // checked here, not just in the form, so nothing can slip in without one.
-  if (!req.body.idPhoto) {
-    return res.status(400).json({ error: 'invalid',
-      message: 'Sube una foto de tu ID o pasaporte.' });
-  }
+  if (!req.body.idPhoto) return refuse('id_missing', 'Sube una foto de tu ID o pasaporte.');
   const idPhoto = decodePhoto(req.body.idPhoto);
-  if (idPhoto.error) {
-    return res.status(400).json({ error: 'invalid',
-      message: 'Foto del ID o pasaporte: ' + idPhoto.error });
-  }
+  if (idPhoto.error) return refuse('id_' + idPhoto.code, 'Foto del ID o pasaporte: ' + idPhoto.error);
 
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || null;
 

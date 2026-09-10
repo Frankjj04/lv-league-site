@@ -9,6 +9,7 @@
 
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 
 // register.js only reaches the database after validation passes, so a fake
 // connection string is enough to get past the "is it configured" check.
@@ -82,20 +83,21 @@ await atest('honeypot is answered 200 and never stored', async () => {
   assert.deepEqual(res.body, { ok: true });
 });
 
-for (const [field, value, why] of [
-  ['division', '', 'no division'],
-  ['team', '', 'no team'],
-  ['name', '', 'no name'],
-  ['address', '', 'no address'],
-  ['phone', '702-555', 'a short phone'],
-  ['email', 'not-an-email', 'a malformed email'],
-  ['dob', '', 'no birth date'],
-  ['dob', '1830-01-01', 'an impossible birth date'],
+for (const [field, value, why, code] of [
+  ['division', '', 'no division', 'division'],
+  ['team', '', 'no team', 'team'],
+  ['name', '', 'no name', 'name'],
+  ['address', '', 'no address', 'address'],
+  ['phone', '702-555', 'a short phone', 'phone'],
+  ['email', 'not-an-email', 'a malformed email', 'email'],
+  ['dob', '', 'no birth date', 'dob'],
+  ['dob', '1830-01-01', 'an impossible birth date', 'dob_bad'],
 ]) {
   await atest('rejects ' + why, async () => {
     const res = await post({ ...adult(), [field]: value });
     assert.equal(res.statusCode, 400, 'expected 400, got ' + res.statusCode);
     assert.equal(res.body.error, 'invalid');
+    assert.equal(res.body.code, code);
     assert.ok(res.body.message, 'a message for the player');
   });
 }
@@ -170,6 +172,53 @@ await atest('a valid minor passes validation and reaches the database', async ()
 await atest('a valid adult passes validation and reaches the database', async () => {
   const res = await post(adult());
   assert.equal(res.statusCode, 500, 'expected to get as far as the insert');
+});
+
+console.log('\napi/register.js — every refusal says which problem it is');
+
+const NOT_AN_IMAGE = 'data:image/jpeg;base64,' + Buffer.from('hello there').toString('base64');
+
+for (const [why, change, code] of [
+  ['an unaccepted waiver',               { waiverAccepted: false },       'waiver'],
+  ['a missing headshot',                 { photo: '' },                   'photo_missing'],
+  ['a headshot that is not an image',    { photo: NOT_AN_IMAGE },         'photo_type'],
+  ['an SVG headshot',                    { photo: 'data:image/svg+xml;base64,PHN2Zy8+' }, 'photo_bad'],
+  ['a missing ID',                       { idPhoto: '' },                 'id_missing'],
+  ['an ID that is not an image',         { idPhoto: NOT_AN_IMAGE },       'id_type'],
+  ['a minor with no guardian',           { dob: '2012-06-01' },           'guardian_name'],
+  ['a minor with a short guardian phone',
+    { dob: '2012-06-01', guardianName: 'Rosa Prueba', guardianPhone: '702' }, 'guardian_phone'],
+]) {
+  await atest(why + ' is refused as ' + code, async () => {
+    const res = await post({ ...adult(), ...change });
+    assert.equal(res.statusCode, 400);
+    assert.equal(res.body.code, code);
+  });
+}
+
+// Every code the server can send, including the ones only a database or
+// Vercel itself produces (duplicate, server_error, not_configured, too_large).
+const SERVER_CODES = [
+  'division', 'team', 'name', 'address', 'phone', 'email', 'dob', 'dob_bad',
+  'guardian_name', 'guardian_phone', 'waiver',
+  'photo_missing', 'photo_bad', 'photo_big', 'photo_type',
+  'id_missing', 'id_bad', 'id_big', 'id_type',
+  'duplicate', 'server_error', 'not_configured', 'too_large',
+];
+
+test('the form has a message, in both languages, for every refusal', () => {
+  const form = readFileSync(new URL('../js/registro.js', import.meta.url), 'utf8');
+  const i18n = readFileSync(new URL('../js/i18n.js', import.meta.url), 'utf8');
+  const start = form.indexOf('const REFUSALS');
+  const table = form.slice(start, form.indexOf('};', start));
+
+  for (const code of SERVER_CODES) {
+    assert.match(table, new RegExp('\\b' + code + ':'), 'the form has no entry for ' + code);
+  }
+  for (const [, key] of table.matchAll(/'(rg_e_\w+)'/g)) {
+    const n = (i18n.match(new RegExp('\\b' + key + ':', 'g')) || []).length;
+    assert.equal(n, 2, key + ' should be in both Spanish and English, found ' + n);
+  }
 });
 
 /* ================= auth ================= */

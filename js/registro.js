@@ -331,10 +331,57 @@
   const submitBtn = $('submitBtn');
   const formError = $('formError');
 
-  function showFormError(msg) {
+  function showFormError(msg, scrollTo) {
     formError.textContent = msg;
     formError.hidden = false;
-    formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (scrollTo || formError).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  /* Why the server refused, keyed by the code it sends: the field to point at
+     and the line to show. The checks above catch nearly everything before the
+     form is sent; these are the cases only the server can know (a duplicate,
+     a photo that arrived broken) or that slipped past the browser. */
+  const REFUSALS = {
+    duplicate:      ['email',         'rg_e_duplicate'],
+    division:       ['division',      'rg_e_division'],
+    team:           ['team',          'rg_e_team'],
+    name:           ['name',          'rg_e_name'],
+    address:        ['address',       'rg_e_address'],
+    phone:          ['phone',         'rg_e_phone_bad'],
+    email:          ['email',         'rg_e_email_bad'],
+    dob:            ['dob',           'rg_e_dob'],
+    dob_bad:        ['dob',           'rg_e_dob_bad'],
+    guardian_name:  ['guardianName',  'rg_e_g_name'],
+    guardian_phone: ['guardianPhone', 'rg_e_phone_bad'],
+    waiver:         ['waiver',        'rg_e_waiver'],
+    photo_missing:  ['photo',         'rg_e_photo'],
+    photo_bad:      ['photo',         'rg_e_photo_read'],
+    photo_big:      ['photo',         'rg_e_photo_big'],
+    photo_type:     ['photo',         'rg_e_photo_type'],
+    id_missing:     ['idPhoto',       'rg_e_id'],
+    id_bad:         ['idPhoto',       'rg_e_id_read'],
+    id_big:         ['idPhoto',       'rg_e_id_big'],
+    id_type:        ['idPhoto',       'rg_e_id_type'],
+    too_large:      [null,            'rg_e_too_large'],
+    server_error:   [null,            'rg_e_server'],
+    not_configured: [null,            'rg_e_unavailable'],
+  };
+
+  function explainRefusal(status, data) {
+    // Vercel itself answers 413, with no JSON, when the whole request is too big.
+    const code = status === 413 ? 'too_large' : (data.code || data.error);
+    const r = REFUSALS[code];
+    const msg = r
+      ? t(r[1], data.message)
+      : data.message || t('rg_e_server', 'No pudimos guardar tu registro. Llámanos al 702-831-9474.');
+
+    // Mark the field too. A typed team name lives in its own box.
+    let el = r && r[0] ? $(r[0]) : null;
+    if (el === teamSel && !otherField.hidden) el = otherInput;
+    if (el) setErr(el, msg);
+
+    const pic = el && pickers.find((x) => x.input === el);
+    showFormError(msg, pic ? pic.preview : el);
   }
 
   form.addEventListener('submit', async (e) => {
@@ -391,15 +438,9 @@
 
       const data = await res.json().catch(() => ({}));
 
-      // The server answered, so this is not a connection problem — say what it
-      // said. A duplicate is the usual case (the same person sending the form
-      // twice) and gets its own translated line; anything else shows the
-      // server's own message.
+      // The server answered, so this is not a connection problem — say why.
       if (!res.ok) {
-        showFormError(res.status === 409
-          ? t('rg_e_duplicate', 'Ya hay un registro con ese email en esta división. Si necesitas cambiar algo, llámanos al 702-831-9474.')
-          : data.message || t('rg_e_submit',
-              'No pudimos enviar tu registro. Revisa tu internet e inténtalo otra vez, o llámanos al 702-831-9474.'));
+        explainRefusal(res.status, data);
         return;
       }
 
