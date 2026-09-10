@@ -284,7 +284,7 @@
     const missing = (kind, show, msg, btn) => !show ? '' :
       '<div class="sh-addphoto">' +
         '<p>' + msg + '</p>' +
-        '<input type="file" id="sheet-' + kind + '" accept="image/*" capture="environment" class="visually-hidden" />' +
+        '<input type="file" id="sheet-' + kind + '" accept="image/*" class="visually-hidden" />' +
         '<label for="sheet-' + kind + '" class="btn btn--ghost">' + btn + '</label>' +
         '<span class="sh-addphoto-status" id="sheet-' + kind + '-status"></span>' +
       '</div>';
