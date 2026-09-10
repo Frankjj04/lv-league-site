@@ -11,11 +11,16 @@ window.LVSL_ADMIN_ADD = (function () {
   const $ = (id) => document.getElementById(id);
 
   let photoDataUrl = null;
+  let idDataUrl = null;
   let onSaved = null;              // handed in by admin.js so it can reload
 
+  // The headshot and the ID are downscaled differently: the ID keeps more
+  // pixels so the name and birth date on it stay readable.
+  const limitsFor = (kind) => (kind === 'id' ? CFG.idPhoto : CFG.photo) || {};
+
   /* ---------- shared photo handling ---------- */
-  function readPhoto(file, preview, clearBtn, done) {
-    const PH = CFG.photo || {};
+  function readPhoto(file, preview, clearBtn, done, PH) {
+    PH = PH || {};
     if (!file || !/^image\//.test(file.type)) return done('Ese archivo no es una imagen.');
     if (PH.maxBytes && file.size > PH.maxBytes) return done('Esa foto pesa demasiado.');
 
@@ -45,6 +50,36 @@ window.LVSL_ADMIN_ADD = (function () {
     reader.readAsDataURL(file);
   }
 
+  /* One picker on the add form: the headshot, or the ID. */
+  const PICKERS = [
+    { kind: 'photo', input: 'a-photo', preview: 'a-photoPreview', clear: 'a-photoClear', empty: 'Sin foto',
+      set: (url) => { photoDataUrl = url; } },
+    { kind: 'id',    input: 'a-id',    preview: 'a-idPreview',    clear: 'a-idClear',    empty: 'Sin ID',
+      set: (url) => { idDataUrl = url; } },
+  ];
+
+  function emptyPicker(pk) {
+    pk.set(null);
+    $(pk.input).value = '';
+    const pv = $(pk.preview);
+    pv.innerHTML = '<span class="photo-preview-empty">' + pk.empty + '</span>';
+    pv.style.backgroundImage = '';
+    pv.classList.remove('has-photo');
+    $(pk.clear).hidden = true;
+  }
+
+  function wirePicker(pk) {
+    $(pk.input).addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      readPhoto(f, $(pk.preview), $(pk.clear), (error, url) => {
+        if (error) { $('a-error').textContent = error; $('a-error').hidden = false; return; }
+        pk.set(url);
+      }, limitsFor(pk.kind));
+    });
+    $(pk.clear).addEventListener('click', () => emptyPicker(pk));
+  }
+
   /* ---------- division -> team ---------- */
   function fillDivisions() {
     const sel = $('a-division');
@@ -61,6 +96,13 @@ window.LVSL_ADMIN_ADD = (function () {
     const div = DIVISIONS.find((d) => d.id === $('a-division').value);
     const sel = $('a-team');
     sel.length = 1;
+
+    // A division with no team list yet: type the name instead of picking it.
+    const typed = !!div && !(div.teams || []).length;
+    sel.closest('.field').hidden = typed;
+    $('a-teamOtherField').hidden = !typed;
+    if (!typed) $('a-teamOther').value = '';
+
     if (!div) { sel.disabled = true; return; }
     (div.teams || []).forEach((name) => {
       const o = document.createElement('option');
@@ -92,12 +134,7 @@ window.LVSL_ADMIN_ADD = (function () {
   /* ---------- open / close ---------- */
   function reset() {
     $('addForm').reset();
-    photoDataUrl = null;
-    const pv = $('a-photoPreview');
-    pv.innerHTML = '<span class="photo-preview-empty">Sin foto</span>';
-    pv.style.backgroundImage = '';
-    pv.classList.remove('has-photo');
-    $('a-photoClear').hidden = true;
+    PICKERS.forEach(emptyPicker);
     $('a-error').hidden = true;
     $('a-team').disabled = true;
     $('a-guardian').hidden = true;
@@ -131,7 +168,9 @@ window.LVSL_ADMIN_ADD = (function () {
 
     const body = {
       division: $('a-division').value,
-      team:     $('a-team').value,
+      team:     $('a-teamOtherField').hidden
+                  ? $('a-team').value
+                  : $('a-teamOther').value.trim().replace(/\s+/g, ' ').toUpperCase(),
       name:     $('a-name').value,
       dob:      $('a-dob').value,
       phone:    $('a-phone').value,
@@ -142,6 +181,7 @@ window.LVSL_ADMIN_ADD = (function () {
       paymentMethod: $('a-method').value,
       note:     $('a-note').value,
       photo:    photoDataUrl || '',
+      idPhoto:  idDataUrl || '',
       waiverAccepted: true,
     };
 
@@ -173,8 +213,9 @@ window.LVSL_ADMIN_ADD = (function () {
     }
   }
 
-  /* ---------- attach a photo to an existing player ---------- */
-  async function uploadPhotoFor(id, file, statusEl) {
+  /* ---------- attach a headshot or an ID to an existing player ---------- */
+  async function uploadPhotoFor(id, file, statusEl, kind) {
+    kind = kind === 'id' ? 'id' : 'photo';
     return new Promise((resolve) => {
       readPhoto(file, null, null, async (error, url) => {
         if (error) { if (statusEl) statusEl.textContent = error; return resolve(false); }
@@ -183,7 +224,7 @@ window.LVSL_ADMIN_ADD = (function () {
           const res = await fetch('/api/player?id=' + encodeURIComponent(id), {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ photo: url }),
+            body: JSON.stringify({ photo: url, kind }),
           });
           if (!res.ok) {
             const d = await res.json().catch(() => ({}));
@@ -196,7 +237,7 @@ window.LVSL_ADMIN_ADD = (function () {
           if (statusEl) statusEl.textContent = 'No se pudo conectar.';
           resolve(false);
         }
-      });
+      }, limitsFor(kind));
     });
   }
 
@@ -217,24 +258,7 @@ window.LVSL_ADMIN_ADD = (function () {
     $('a-dob').addEventListener('change', syncMinor);
     $('a-dob').addEventListener('input', syncMinor);
 
-    $('a-photo').addEventListener('change', (e) => {
-      const f = e.target.files && e.target.files[0];
-      if (!f) return;
-      readPhoto(f, $('a-photoPreview'), $('a-photoClear'), (error, url) => {
-        if (error) { $('a-error').textContent = error; $('a-error').hidden = false; return; }
-        photoDataUrl = url;
-      });
-    });
-
-    $('a-photoClear').addEventListener('click', () => {
-      photoDataUrl = null;
-      $('a-photo').value = '';
-      const pv = $('a-photoPreview');
-      pv.innerHTML = '<span class="photo-preview-empty">Sin foto</span>';
-      pv.style.backgroundImage = '';
-      pv.classList.remove('has-photo');
-      $('a-photoClear').hidden = true;
-    });
+    PICKERS.forEach(wirePicker);
 
     $('addForm').addEventListener('submit', save);
   }

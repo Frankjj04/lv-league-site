@@ -28,7 +28,8 @@ export default async function handler(req, res) {
               guardian_name, guardian_phone, status,
               source, payment_method, added_note,
               waiver_accepted_at, created_at, deleted_at, deleted_reason,
-              (photo IS NOT NULL) AS has_photo
+              (photo IS NOT NULL) AS has_photo,
+              (id_photo IS NOT NULL) AS has_id
          FROM players
         WHERE deleted_at IS ${archived ? 'NOT NULL' : 'NULL'}
         ORDER BY ${archived ? 'deleted_at DESC' : 'division, team, name'}`
@@ -52,6 +53,7 @@ export default async function handler(req, res) {
       paymentMethod: r.payment_method,
       note: r.added_note,
       photo: r.has_photo ? '/api/photo?id=' + r.id : '',
+      idPhoto: r.has_id ? '/api/photo?kind=id&id=' + r.id : '',
       waiverAcceptedAt: r.waiver_accepted_at,
       createdAt: r.created_at,
       deletedAt: r.deleted_at,

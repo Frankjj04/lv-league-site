@@ -13,11 +13,14 @@
 
    Every division is 8v8.
 
+   Division names are just the day plus "Open" or "Over 35" — Frank asked
+   for that on 2026-09-10 so the dropdown is quick to read.
+
    ── STILL UNCONFIRMED ─────────────────────
-   • Saturday's official division name. It shows as plain "Sábado".
-   • Whether the Sunday 11v11 league is still running. It is not on any
-     of the schedules provided, so it is NOT listed here. Add it back if
-     it exists.
+   • Saturday and Sunday: whether each is Open or Over 35. They show as
+     plain "Sábado" / "Domingo" until the coach says.
+   • Sunday's teams. Added 2026-09-10 with an empty list (players type the
+     team name). Its 11v11 format comes from the Costos page, not a schedule.
    ──────────────────────────────────────────
    ========================================= */
 
@@ -28,26 +31,17 @@ window.LVSL_CONFIG = {
   /* Set to false to close registration. The form is replaced by a notice. */
   registrationOpen: true,
 
-  /* Online payment. Off until the coach decides the amount and opens Stripe.
-     When he does: set enabled true and put the amount in each division's fee. */
-  payment: {
-    enabled: false,
-    currency: 'usd',
-  },
-
   /* Every division a player can sign up for.
        id      — NEVER change once players have registered; it is stored on the row
        es / en — what the player sees in the dropdown
        format  — shown under the dropdown, purely informational
-       fee     — what Stripe charges, in whole dollars. Ignored while payment is off.
        teams   — alphabetical, so a player can find theirs in a long list */
   divisions: [
     {
       id: 'martes-over35',
       es: 'Martes — Over 35',
-      en: 'Tuesday — Over 35 Men',
+      en: 'Tuesday — Over 35',
       format: '8v8',
-      fee: 0,
       teams: [
         'BAYERN MUNICH',
         'CHELSEA',
@@ -72,12 +66,10 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'martes-open',
-      es: 'Martes — Open, Super-League',
-      en: 'Tuesday — Open Men, Super-League',
+      es: 'Martes — Open',
+      en: 'Tuesday — Open',
       format: '8v8',
-      fee: 0,
       teams: [
-        'AC MILAN',
         'CHIVAHERMANOS',
         'GUERRERO',
         'JALISCO',
@@ -93,10 +85,9 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'miercoles-premier',
-      es: 'Miércoles — Premier, Open/Libre',
-      en: 'Wednesday — Premier, Men\'s Open',
+      es: 'Miércoles — Open',
+      en: 'Wednesday — Open',
       format: '8v8',
-      fee: 0,
       teams: [
         'AJAX',
         'ALTA VISTA FC',
@@ -123,9 +114,8 @@ window.LVSL_CONFIG = {
     {
       id: 'viernes-open',
       es: 'Viernes — Open',
-      en: 'Friday — Open Men',
+      en: 'Friday — Open',
       format: '8v8',
-      fee: 0,
       teams: [
         'ANTIGUA FC',
         'AVALANCHE',
@@ -137,6 +127,7 @@ window.LVSL_CONFIG = {
         'HOOLIGANS',
         'LOS ANGELES',
         'PARAPENTOS',
+        'PASAC FC',
         'PASTELITOS',
         'PGZ',
         'RISEN',
@@ -152,12 +143,20 @@ window.LVSL_CONFIG = {
       es: 'Sábado',
       en: 'Saturday',
       format: '8v8',
-      fee: 0,
       teams: [
         'EL COMBO DE DRAKE',
         'LUCKY 21',
         'REAL CENTENNIAL',
       ],
+    },
+    {
+      id: 'domingo',
+      es: 'Domingo',
+      en: 'Sunday',
+      format: '11v11',
+      // No team list yet. While it is empty, players (and the coach) type
+      // their team's name instead of picking it. Fill it in when he sends it.
+      teams: [],
     },
   ],
 
@@ -176,5 +175,14 @@ window.LVSL_CONFIG = {
     maxPixels: 900,   // longest edge after downscaling
     quality: 0.86,    // JPEG quality
     maxBytes: 12 * 1024 * 1024,  // reject anything larger before we even read it
+  },
+
+  /* ID or passport photo — required on every online registration.
+     Kept larger than the headshot so the name and birth date stay readable.
+     Never printed on a credential; only the coach sees it, from the player's panel. */
+  idPhoto: {
+    maxPixels: 1600,
+    quality: 0.85,
+    maxBytes: 12 * 1024 * 1024,
   },
 };

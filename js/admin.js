@@ -16,15 +16,9 @@
   let usingSample = false;
   let activeDivision = 'all';
 
-  const paymentOn = () => !!(CFG.payment && CFG.payment.enabled);
+  // Left over from when sign-up included an online payment: a row that never
+  // finished paying. None are created any more, but any old one stays off the roster.
   const isPending = (p) => p.status === 'pending';
-
-  /* Registrations that stopped at the payment screen. They are real people
-     with a real phone number — worth a call, not worth counting as members. */
-  function pendingIn(division) {
-    return players.filter((p) => isPending(p) &&
-      (division === 'all' || p.division === division));
-  }
 
   /* ---------- small helpers ---------- */
   const esc = (s) => String(s == null ? '' : s)
@@ -167,7 +161,7 @@
     const fresh = list.filter((p) => Date.parse(p.createdAt) >= week).length;
 
     // Everyone in this list completed registration, so there is nothing to
-    // mark paid. The number worth watching is the ones who never finished.
+    // mark paid. What is worth watching is who still owes a photo or an ID.
     const tiles = [
       { n: list.length, l: 'Jugadores' },
       { n: teams.size,  l: 'Equipos' },
@@ -178,10 +172,8 @@
     const noPhoto = list.filter((p) => !p.photo).length;
     if (noPhoto) tiles.push({ n: noPhoto, l: 'Sin foto', tone: 'warn' });
 
-    if (paymentOn()) {
-      const stuck = pendingIn(activeDivision).length;
-      tiles.push({ n: stuck, l: 'Sin terminar', tone: stuck ? 'warn' : '' });
-    }
+    const noId = list.filter((p) => !p.idPhoto).length;
+    if (noId) tiles.push({ n: noId, l: 'Sin ID', tone: 'warn' });
 
     $('stats').innerHTML = tiles.map((t) =>
       '<div class="adm-stat' + (t.tone ? ' is-' + t.tone : '') + '">' +
@@ -272,42 +264,12 @@
         '<span class="pl-name">' + esc(p.name) +
           (isMinor(p) ? '<span class="pl-minor" title="Menor de edad">MENOR</span>' : '') +
           (!p.photo ? '<span class="pl-nophoto" title="No se puede imprimir su credencial">FALTA FOTO</span>' : '') +
+          (!p.idPhoto ? '<span class="pl-nophoto" title="Falta la foto de su ID o pasaporte">FALTA ID</span>' : '') +
         '</span>' +
         '<span class="pl-meta">' + age(p.dob) + ' años · ' + esc(phoneFmt(p.phone)) + '</span>' +
       '</span>' +
       '<span class="pl-since">' + esc(dateFmt(p.createdAt)) + '</span>' +
     '</li>';
-  }
-
-  /* ---------- registrations that never finished paying ---------- */
-  function renderPending() {
-    const box = $('pending');
-    if (!paymentOn()) { box.hidden = true; box.innerHTML = ''; return; }
-
-    const q = $('search').value.trim().toLowerCase();
-    const list = pendingIn(activeDivision).filter((p) => matches(p, q));
-
-    if (!list.length) { box.hidden = true; box.innerHTML = ''; return; }
-
-    list.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
-
-    box.hidden = false;
-    box.innerHTML =
-      '<header class="pend-head">' +
-        '<h2>Sin terminar<span class="pend-n">' + list.length + '</span></h2>' +
-        '<p>Llenaron el formulario pero no completaron el pago, así que todavía no están en ' +
-        'ningún equipo. Una llamada normalmente los termina de inscribir.</p>' +
-      '</header>' +
-      '<ul class="pend-list">' + list.map((p) =>
-        '<li class="pend">' +
-          '<span class="pend-main">' +
-            '<span class="pend-name">' + esc(p.name) + '</span>' +
-            '<span class="pend-meta">' + esc(p.team) + ' · ' + esc(divisionLabel(p.division)) + '</span>' +
-          '</span>' +
-          '<span class="pend-when">' + esc(dateFmt(p.createdAt)) + '</span>' +
-          '<a class="pend-call" href="tel:' + esc(p.phone) + '">' + esc(phoneFmt(p.phone)) + '</a>' +
-        '</li>').join('') +
-      '</ul>';
   }
 
   /* ---------- player detail ---------- */
@@ -317,6 +279,15 @@
 
     const row = (label, value) => value
       ? '<div class="sh-row"><dt>' + esc(label) + '</dt><dd>' + value + '</dd></div>' : '';
+
+    // A box asking for whatever is still missing, with a camera button.
+    const missing = (kind, show, msg, btn) => !show ? '' :
+      '<div class="sh-addphoto">' +
+        '<p>' + msg + '</p>' +
+        '<input type="file" id="sheet-' + kind + '" accept="image/*" capture="environment" class="visually-hidden" />' +
+        '<label for="sheet-' + kind + '" class="btn btn--ghost">' + btn + '</label>' +
+        '<span class="sh-addphoto-status" id="sheet-' + kind + '-status"></span>' +
+      '</div>';
 
     $('sheetBody').innerHTML =
       '<div class="sh-top">' +
@@ -337,6 +308,9 @@
         row('Tutor', p.guardianName
           ? esc(p.guardianName) + ' · <a href="tel:' + esc(p.guardianPhone) + '">' +
             esc(phoneFmt(p.guardianPhone)) + '</a>' : '') +
+        row('ID / pasaporte', p.idPhoto
+          ? '<a href="' + esc(p.idPhoto) + '" target="_blank" rel="noopener" title="Abrir en grande">' +
+            '<img src="' + esc(p.idPhoto) + '" alt="ID de ' + esc(p.name) + '" class="sh-id" /></a>' : '') +
         row('Registrado', esc(dateFmt(p.createdAt)) +
           (p.source === 'in_person' ? ' <span class="sh-tag">agregado por la liga</span>' : '')) +
         row('Pago', p.paymentMethod ? esc(payLabel(p.paymentMethod)) : '') +
@@ -354,13 +328,12 @@
           '<button type="button" class="sh-del-go" id="delGo" disabled>Quitar de la lista</button>' +
         '</div>' +
       '</div>' +
-      (p.photo ? '' :
-        '<div class="sh-addphoto">' +
-          '<p><strong>Sin foto.</strong> No se puede imprimir su credencial hasta que tenga una.</p>' +
-          '<input type="file" id="sheetPhoto" accept="image/*" capture="environment" class="visually-hidden" />' +
-          '<label for="sheetPhoto" class="btn btn--ghost">Tomar o subir foto</label>' +
-          '<span class="sh-addphoto-status" id="sheetPhotoStatus"></span>' +
-        '</div>');
+      missing('photo', !p.photo,
+        '<strong>Sin foto.</strong> No se puede imprimir su credencial hasta que tenga una.',
+        'Tomar o subir foto') +
+      missing('id', !p.idPhoto,
+        '<strong>Falta su ID o pasaporte.</strong> Tómale una foto a su identificación.',
+        'Tomar o subir foto del ID');
 
     // The confirm button stays dead until the typed name matches the row.
     const delName = $('delName');
@@ -404,15 +377,16 @@
       }
     });
 
-    const picker = $('sheetPhoto');
-    if (picker) {
+    ['photo', 'id'].forEach((kind) => {
+      const picker = $('sheet-' + kind);
+      if (!picker) return;
       picker.addEventListener('change', async (e) => {
         const f = e.target.files && e.target.files[0];
         if (!f) return;
-        const ok = await window.LVSL_ADMIN_ADD.uploadPhotoFor(p.id, f, $('sheetPhotoStatus'));
+        const ok = await window.LVSL_ADMIN_ADD.uploadPhotoFor(p.id, f, $('sheet-' + kind + '-status'), kind);
         if (ok) { closeSheet(); await load(); }
       });
-    }
+    });
 
     $('sheet').hidden = false;
     document.body.style.overflow = 'hidden';
@@ -509,7 +483,7 @@
   function toCsv(list) {
     const head = ['Division', 'Equipo', 'Nombre', 'Nacimiento', 'Edad', 'Menor',
                   'Telefono', 'Email', 'Direccion', 'Tutor', 'Telefono tutor',
-                  'Estado', 'Registrado', 'Acepto descargo'];
+                  'Estado', 'Foto ID', 'Registrado', 'Acepto descargo'];
 
     // Excel and Sheets both read a quoted field; a quote inside one is doubled.
     const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
@@ -517,7 +491,8 @@
     const rows = list.map((p) => [
       divisionLabel(p.division), p.team, p.name, p.dob, age(p.dob), isMinor(p) ? 'SI' : '',
       phoneFmt(p.phone), p.email, p.address, p.guardianName, phoneFmt(p.guardianPhone),
-      isPending(p) ? 'SIN TERMINAR' : 'INSCRITO', p.createdAt, p.waiverAcceptedAt,
+      isPending(p) ? 'SIN TERMINAR' : 'INSCRITO', p.idPhoto ? 'SI' : 'FALTA',
+      p.createdAt, p.waiverAcceptedAt,
     ].map(cell).join(','));
 
     // BOM so Excel opens the accents correctly.
@@ -566,7 +541,6 @@
     const list = visible();
     renderStats(list);
     renderTabs();
-    renderPending();
     renderRoster(list);
   }
 

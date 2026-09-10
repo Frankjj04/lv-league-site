@@ -77,9 +77,6 @@
     </div>
   </div>
 
-  <!-- ========== NEVER FINISHED PAYING ========== -->
-  <section class="pend-box" id="pending" hidden></section>
-
   <!-- ========== ROSTER ========== -->
   <div id="roster"></div>
 
@@ -125,6 +122,13 @@
       <div class="field">
         <label for="a-team">Equipo <span class="req">*</span></label>
         <select id="a-team" required disabled><option value="">Elige…</option></select>
+      </div>
+
+      <div class="field" id="a-teamOtherField" hidden>
+        <label for="a-teamOther">Nombre del equipo <span class="req">*</span></label>
+        <input type="text" id="a-teamOther" maxlength="60" />
+        <p class="field-help">Esta división todavía no tiene lista de equipos. Escribe el nombre
+          del equipo.</p>
       </div>
 
       <div class="field">
@@ -195,6 +199,20 @@
             <input type="file" id="a-photo" accept="image/*" capture="environment" class="visually-hidden" />
             <label for="a-photo" class="btn btn--ghost">Tomar foto</label>
             <button type="button" class="photo-clear" id="a-photoClear" hidden>Quitar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Foto del ID o pasaporte</label>
+        <p class="field-help">Opcional aquí. Si no la tienes ahora, el jugador queda marcado
+          FALTA ID y la puedes subir después desde su ficha.</p>
+        <div class="photo-field">
+          <div class="photo-preview photo-preview--id" id="a-idPreview"><span class="photo-preview-empty">Sin ID</span></div>
+          <div class="photo-controls">
+            <input type="file" id="a-id" accept="image/*" capture="environment" class="visually-hidden" />
+            <label for="a-id" class="btn btn--ghost">Tomar foto del ID</label>
+            <button type="button" class="photo-clear" id="a-idClear" hidden>Quitar</button>
           </div>
         </div>
       </div>

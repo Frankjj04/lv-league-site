@@ -210,10 +210,33 @@
         <p class="field-err" id="err-photo" hidden></p>
       </fieldset>
 
-      <!-- ---------- 4. WAIVER ---------- -->
+      <!-- ---------- 4. ID / PASSPORT ---------- -->
       <fieldset class="pform-step">
         <legend>
           <span class="pform-step-n">4</span>
+          <span data-i18n="rg_sid_h">Foto de tu ID o pasaporte</span>
+        </legend>
+        <p class="pform-step-note" data-i18n="rg_id_note"><strong>Obligatoria.</strong> Una foto clara de tu identificación con foto o de tu pasaporte, donde se lean tu nombre y tu fecha de nacimiento. Solo la ve la liga: no sale en tu credencial.</p>
+
+        <div class="photo-field">
+          <div class="photo-preview photo-preview--id" id="idPreview" aria-hidden="true">
+            <span class="photo-preview-empty" data-i18n="rg_id_empty">Sin ID</span>
+          </div>
+          <div class="photo-controls">
+            <input type="file" id="idPhoto" name="idPhoto" accept="image/*"
+                   class="visually-hidden" aria-describedby="err-idPhoto" />
+            <label for="idPhoto" class="btn btn--ghost" data-i18n="rg_id_btn">Subir foto del ID</label>
+            <button type="button" class="photo-clear" id="idClear" hidden data-i18n="rg_photo_clear">Quitar</button>
+            <p class="field-help" id="idStatus" data-i18n="rg_id_help">Pon el ID sobre una mesa, con buena luz y sin reflejos.</p>
+          </div>
+        </div>
+        <p class="field-err" id="err-idPhoto" hidden></p>
+      </fieldset>
+
+      <!-- ---------- 5. WAIVER ---------- -->
+      <fieldset class="pform-step">
+        <legend>
+          <span class="pform-step-n">5</span>
           <span data-i18n="rg_s4_h">Descargo de responsabilidad</span>
         </legend>
 

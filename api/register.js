@@ -36,18 +36,30 @@ export default async function handler(req, res) {
   const photo = decodePhoto(req.body.photo);
   if (photo.error) return res.status(400).json({ error: 'invalid', message: photo.error });
 
+  // The coach requires every player's ID or passport. No ID, no registration —
+  // checked here, not just in the form, so nothing can slip in without one.
+  if (!req.body.idPhoto) {
+    return res.status(400).json({ error: 'invalid',
+      message: 'Sube una foto de tu ID o pasaporte.' });
+  }
+  const idPhoto = decodePhoto(req.body.idPhoto);
+  if (idPhoto.error) {
+    return res.status(400).json({ error: 'invalid',
+      message: 'Foto del ID o pasaporte: ' + idPhoto.error });
+  }
+
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || null;
 
   try {
     const { rows } = await query(
       `INSERT INTO players
          (division, team, name, dob, phone, email, address,
-          guardian_name, guardian_phone, photo, photo_type,
+          guardian_name, guardian_phone, photo, photo_type, id_photo, id_photo_type,
           status, source, payment_method, waiver_accepted_at, ip)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
        RETURNING id`,
       [p.division, p.team, p.name, p.dob, p.phone, p.email, p.address,
-       p.guardianName, p.guardianPhone, photo.buf, photo.type,
+       p.guardianName, p.guardianPhone, photo.buf, photo.type, idPhoto.buf, idPhoto.type,
        'active', 'online', '',
        new Date(),           // our clock, not the browser's
        ip]

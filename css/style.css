@@ -1381,8 +1381,12 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   border: 0;
 }
 
+/* the ID is landscape, like the card itself */
+.photo-preview--id { width: 168px; height: 106px; }
+
 .photo-controls .btn:focus-within,
-#photo:focus + .btn { box-shadow: 0 0 0 4px rgba(252, 140, 0, .3); }
+#photo:focus + .btn,
+#idPhoto:focus + .btn { box-shadow: 0 0 0 4px rgba(252, 140, 0, .3); }
 
 /* ---------- waiver ---------- */
 .waiver {
@@ -1483,6 +1487,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .field-row { grid-template-columns: 1fr; }
   .photo-field { gap: 16px; }
   .photo-preview { width: 92px; height: 116px; }
+  .photo-preview--id { width: 136px; height: 86px; }
   .photo-clear { display: block; margin: 10px 0 0; }
 }
 
@@ -1888,6 +1893,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 
 .sh-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 22px; padding-right: 30px; }
 .sh-photo { width: 84px; height: 105px; border-radius: 7px; object-fit: cover; flex-shrink: 0; }
+.sh-id { display: block; width: 100%; max-width: 240px; border-radius: 6px; border: 1px solid var(--line); }
 .sh-top h2 { font-family: var(--font-head); font-size: 1.6rem; margin: 0 0 3px; letter-spacing: .02em; }
 .sh-team { margin: 0 0 10px; font-size: .88rem; color: var(--text-mute); }
 
@@ -2097,6 +2103,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 
 #addSheet .field { margin-bottom: 18px; }
 #addSheet .photo-preview { width: 86px; height: 108px; }
+#addSheet .photo-preview--id { width: 136px; height: 86px; }
 
 /* ---------- missing photo ---------- */
 .pl-photo--none {

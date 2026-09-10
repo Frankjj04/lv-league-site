@@ -70,7 +70,7 @@ bilingual liability release. It adds three things the Google Form could not do:
 
 ### Everything about the league lives in one file
 
-`js/league-config.js` holds the divisions, the teams in each, the fee per division, the age
+`js/league-config.js` holds the divisions, the teams in each, the headshot and ID photo sizes, the age
 that counts as a minor, and an on/off switch for registration. Editing that file is the only
 thing needed to change what the form offers.
 
@@ -95,7 +95,8 @@ code, a text message — still lands on the right page.
 
 The form posts to `/api/register`, **which does not exist yet**. Until it does, a submission
 fails. Still to build: that endpoint, a database behind it, the coach's roster page with CSV
-export and printable credentials, and Stripe payment.
+export and printable credentials. (Online payment through Stripe was dropped in September
+2026 — the coach decided players do not pay at sign-up for now.)
 
 
 ## Branding

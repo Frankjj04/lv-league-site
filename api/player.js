@@ -1,7 +1,8 @@
 /* Managing players from the roster page. All behind the roster password.
 
    POST   /api/player                 create — the coach took $15 in cash
-   PATCH  /api/player?id=N            attach a photo, or restore an archived row
+   PATCH  /api/player?id=N            attach a headshot (or an ID, with kind: 'id'),
+                                      or restore an archived row
    DELETE /api/player?id=N            archive (recoverable)
    DELETE /api/player?id=N&purge=1    remove for good, archived rows only
 
@@ -76,20 +77,31 @@ async function create(req, res) {
     photoType = photo.type;
   }
 
+  // Same for the ID or passport: the roster flags FALTA ID until he adds one.
+  let idBuf = null, idType = 'image/jpeg';
+  if (req.body.idPhoto) {
+    const idPhoto = decodePhoto(req.body.idPhoto);
+    if (idPhoto.error) return res.status(400).json({ error: 'invalid',
+      message: 'Foto del ID: ' + idPhoto.error });
+    idBuf = idPhoto.buf;
+    idType = idPhoto.type;
+  }
+
   try {
     const { rows } = await query(
       `INSERT INTO players
          (division, team, name, dob, phone, email, address,
-          guardian_name, guardian_phone, photo, photo_type,
+          guardian_name, guardian_phone, photo, photo_type, id_photo, id_photo_type,
           status, source, payment_method, added_note, waiver_accepted_at, ip)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
        RETURNING id`,
       [p.division, p.team, p.name, p.dob, p.phone, p.email, p.address,
-       p.guardianName, p.guardianPhone, photoBuf, photoType,
+       p.guardianName, p.guardianPhone, photoBuf, photoType, idBuf, idType,
        'active', 'in_person', method, note, new Date(), null]
     );
 
-    return res.status(201).json({ ok: true, id: Number(rows[0].id), needsPhoto: !photoBuf });
+    return res.status(201).json({ ok: true, id: Number(rows[0].id),
+      needsPhoto: !photoBuf, needsId: !idBuf });
   } catch (err) {
     if (err && err.code === '23505') {
       return res.status(409).json({ error: 'duplicate',
@@ -128,9 +140,14 @@ async function patch(req, res) {
   const photo = decodePhoto((req.body || {}).photo);
   if (photo.error) return res.status(400).json({ error: 'invalid', message: photo.error });
 
+  // The column names are fixed strings, never taken from the request.
+  const isId = (req.body || {}).kind === 'id';
+
   try {
     const { rowCount } = await query(
-      `UPDATE players SET photo = $1, photo_type = $2, updated_at = NOW() WHERE id = $3`,
+      isId
+        ? `UPDATE players SET id_photo = $1, id_photo_type = $2, updated_at = NOW() WHERE id = $3`
+        : `UPDATE players SET photo = $1, photo_type = $2, updated_at = NOW() WHERE id = $3`,
       [photo.buf, photo.type, id]
     );
     if (!rowCount) return res.status(404).json({ error: 'not_found' });

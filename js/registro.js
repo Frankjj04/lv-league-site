@@ -1,7 +1,7 @@
 /* =========================================
    LAS VEGAS SOCCER LEAGUE — Player Registration
 
-   Divisions, teams, fees and the minor age all come from
+   Divisions, teams, photo limits and the minor age all come from
    js/league-config.js. Nothing about the league is hard-coded here.
    ========================================= */
 
@@ -35,6 +35,7 @@
   const teamSel     = $('team');
   const otherField  = $('otherTeamField');
   const otherInput  = $('teamOther');
+  const teamField   = teamSel.closest('.field');
 
   function fillDivisions() {
     const keep = divisionSel.value;
@@ -55,18 +56,20 @@
 
     if (!div) {
       teamSel.disabled = true;
+      teamField.hidden = false;
       showOther(false);
       return;
     }
 
-    (div.teams || []).forEach((name) => {
+    const teams = div.teams || [];
+    teams.forEach((name) => {
       const o = document.createElement('option');
       o.value = name;
       o.textContent = name;
       teamSel.appendChild(o);
     });
 
-    if (CFG.allowOtherTeam) {
+    if (CFG.allowOtherTeam || !teams.length) {
       const o = document.createElement('option');
       o.value = OTHER;
       o.textContent = t('rg_team_other_opt', 'Mi equipo no está en la lista');
@@ -76,6 +79,12 @@
     teamSel.disabled = false;
     // Only restore the old pick if this division actually has it.
     teamSel.value = Array.from(teamSel.options).some((o) => o.value === keep) ? keep : '';
+
+    // A division with no team list yet: skip the empty dropdown and ask for
+    // the team's name straight away.
+    teamField.hidden = !teams.length;
+    if (!teams.length) teamSel.value = OTHER;
+
     showOther(teamSel.value === OTHER);
   }
 
@@ -126,84 +135,110 @@
   dob.min = '1930-01-01';
   dob.max = new Date(Date.now() - 4 * 365.25 * 864e5).toISOString().slice(0, 10);
 
-  /* ===================== PHOTO ===================== */
-  const photoInput = $('photo');
-  const preview    = $('photoPreview');
-  const clearBtn   = $('photoClear');
-  const photoStatus = $('photoStatus');
-  const PH = CFG.photo || {};
-  let photoDataUrl = null;
+  /* ===================== PHOTOS ===================== */
+  /* Two pickers share this: the credential headshot and the ID or passport.
+     Both are downscaled in the browser before upload; the ID less so, because
+     its name and birth date have to stay readable. */
+  function photoPicker(o) {
+    const input    = $(o.input);
+    const preview  = $(o.preview);
+    const clearBtn = $(o.clear);
+    const status   = $(o.status);
+    const LIM = o.limits || {};
+    let url = null;
 
-  function resetPhoto() {
-    photoDataUrl = null;
-    photoInput.value = '';
-    preview.innerHTML = '<span class="photo-preview-empty">' + t('rg_photo_empty', 'Sin foto') + '</span>';
-    preview.style.backgroundImage = '';
-    preview.classList.remove('has-photo');
-    clearBtn.hidden = true;
-    photoStatus.textContent = t('rg_photo_help', 'JPG o PNG. La ajustamos automáticamente, no importa el tamaño.');
+    // Tagged with its key so the language switch translates it like everything else.
+    const empty = () => '<span class="photo-preview-empty" data-i18n="' + o.emptyKey + '">' +
+      t(o.emptyKey, o.emptyText) + '</span>';
+    const idle  = () => t(o.helpKey, o.helpText);
+    const ready = () => t(o.readyKey, o.readyText);
+
+    function reset() {
+      url = null;
+      input.value = '';
+      preview.innerHTML = empty();
+      preview.style.backgroundImage = '';
+      preview.classList.remove('has-photo');
+      clearBtn.hidden = true;
+      status.textContent = idle();
+    }
+
+    clearBtn.addEventListener('click', reset);
+
+    // applyLang() rewrites the status line from its data-i18n key on every
+    // language switch, which would wipe "Foto lista." — put it back.
+    document.querySelectorAll('.lang-btn').forEach((b) =>
+      b.addEventListener('click', () => setTimeout(() => {
+        status.textContent = url ? ready() : idle();
+        if (!url) preview.innerHTML = empty();
+      }, 0)));
+
+    input.addEventListener('change', () => {
+      const file = input.files && input.files[0];
+      if (!file) return reset();
+
+      if (!/^image\//.test(file.type)) {
+        setErr(input, t('rg_e_photo_type', 'Ese archivo no es una imagen.'));
+        return reset();
+      }
+      if (LIM.maxBytes && file.size > LIM.maxBytes) {
+        setErr(input, t('rg_e_photo_big', 'Esa foto pesa demasiado. Toma una nueva con la cámara.'));
+        return reset();
+      }
+
+      clearErr(input);
+      status.textContent = t('rg_photo_working', 'Preparando la foto…');
+
+      const reader = new FileReader();
+      reader.onerror = () => { setErr(input, t('rg_e_photo_read', 'No pudimos leer esa foto.')); reset(); };
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => { setErr(input, t('rg_e_photo_read', 'No pudimos leer esa foto.')); reset(); };
+        img.onload = () => {
+          const max = LIM.maxPixels || 900;
+          const scale = Math.min(1, max / Math.max(img.width, img.height));
+          const w = Math.max(1, Math.round(img.width * scale));
+          const h = Math.max(1, Math.round(img.height * scale));
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          url = canvas.toDataURL('image/jpeg', LIM.quality || 0.86);
+          preview.innerHTML = '';
+          preview.style.backgroundImage = 'url("' + url + '")';
+          preview.classList.add('has-photo');
+          clearBtn.hidden = false;
+          status.textContent = ready();
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    reset();
+    return { input, preview, get: () => url };
   }
 
-  clearBtn.addEventListener('click', resetPhoto);
-
-  // applyLang() rewrites the status line from its data-i18n key on every
-  // language switch, which would wipe "Foto lista." — put it back.
-  document.querySelectorAll('.lang-btn').forEach((b) =>
-    b.addEventListener('click', () => setTimeout(() => {
-      photoStatus.textContent = photoDataUrl
-        ? t('rg_photo_ready', 'Foto lista.')
-        : t('rg_photo_help', 'JPG o PNG. La ajustamos automáticamente, no importa el tamaño.');
-      if (!photoDataUrl) {
-        preview.innerHTML = '<span class="photo-preview-empty">' + t('rg_photo_empty', 'Sin foto') + '</span>';
-      }
-    }, 0)));
-
-  photoInput.addEventListener('change', () => {
-    const file = photoInput.files && photoInput.files[0];
-    if (!file) return resetPhoto();
-
-    if (!/^image\//.test(file.type)) {
-      setErr(photoInput, t('rg_e_photo_type', 'Ese archivo no es una imagen.'));
-      return resetPhoto();
-    }
-    if (PH.maxBytes && file.size > PH.maxBytes) {
-      setErr(photoInput, t('rg_e_photo_big', 'Esa foto pesa demasiado. Toma una nueva con la cámara.'));
-      return resetPhoto();
-    }
-
-    clearErr(photoInput);
-    photoStatus.textContent = t('rg_photo_working', 'Preparando la foto…');
-
-    const reader = new FileReader();
-    reader.onerror = () => { setErr(photoInput, t('rg_e_photo_read', 'No pudimos leer esa foto.')); resetPhoto(); };
-    reader.onload = () => {
-      const img = new Image();
-      img.onerror = () => { setErr(photoInput, t('rg_e_photo_read', 'No pudimos leer esa foto.')); resetPhoto(); };
-      img.onload = () => {
-        const max = PH.maxPixels || 900;
-        const scale = Math.min(1, max / Math.max(img.width, img.height));
-        const w = Math.max(1, Math.round(img.width * scale));
-        const h = Math.max(1, Math.round(img.height * scale));
-
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-
-        photoDataUrl = canvas.toDataURL('image/jpeg', PH.quality || 0.86);
-        preview.innerHTML = '';
-        preview.style.backgroundImage = 'url("' + photoDataUrl + '")';
-        preview.classList.add('has-photo');
-        clearBtn.hidden = false;
-        photoStatus.textContent = t('rg_photo_ready', 'Foto lista.');
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
+  const headshot = photoPicker({
+    input: 'photo', preview: 'photoPreview', clear: 'photoClear', status: 'photoStatus',
+    limits: CFG.photo,
+    emptyKey: 'rg_photo_empty', emptyText: 'Sin foto',
+    helpKey:  'rg_photo_help',  helpText:  'JPG o PNG. La ajustamos automáticamente, no importa el tamaño.',
+    readyKey: 'rg_photo_ready', readyText: 'Foto lista.',
   });
 
-  resetPhoto();
+  const idDoc = photoPicker({
+    input: 'idPhoto', preview: 'idPreview', clear: 'idClear', status: 'idStatus',
+    limits: CFG.idPhoto,
+    emptyKey: 'rg_id_empty', emptyText: 'Sin ID',
+    helpKey:  'rg_id_help',  helpText:  'Pon el ID sobre una mesa, con buena luz y sin reflejos.',
+    readyKey: 'rg_id_ready', readyText: 'ID lista.',
+  });
+
+  const pickers = [headshot, idDoc];
 
   /* ===================== VALIDATION ===================== */
   function setErr(el, msg) {
@@ -269,12 +304,12 @@
       }
     }
 
-    if (!photoDataUrl) {
-      setErr(photoInput, t('rg_e_photo', 'Sube una foto para tu credencial.'));
-      errs.push(photoInput);
-    } else {
-      clearErr(photoInput);
-    }
+    [[headshot, 'rg_e_photo', 'Sube una foto para tu credencial.'],
+     [idDoc,    'rg_e_id',    'Sube una foto de tu ID o pasaporte. Sin ella no se puede completar el registro.'],
+    ].forEach(([pic, key, fallback]) => {
+      if (!pic.get()) { setErr(pic.input, t(key, fallback)); errs.push(pic.input); }
+      else clearErr(pic.input);
+    });
 
     const waiver = $('waiver');
     if (!waiver.checked) {
@@ -303,9 +338,10 @@
     const errs = validate();
     if (errs.length) {
       const first = errs[0];
-      // The photo input is visually hidden; scroll to its section instead.
-      (first === photoInput ? preview : first).scrollIntoView({ behavior: 'smooth', block: 'center' });
-      if (first !== photoInput) first.focus({ preventScroll: true });
+      // The photo inputs are visually hidden; scroll to their preview instead.
+      const pic = pickers.find((x) => x.input === first);
+      (pic ? pic.preview : first).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!pic) first.focus({ preventScroll: true });
       return;
     }
 
@@ -313,7 +349,11 @@
     const payload = {
       division:      divisionSel.value,
       divisionLabel: div ? div.es : divisionSel.value,
-      team:          teamSel.value === OTHER ? otherInput.value.trim() : teamSel.value,
+      // Typed names are uppercased like the listed ones, so "los tigres" and
+      // "LOS TIGRES" land on the same team in the coach's roster.
+      team:          teamSel.value === OTHER
+                       ? otherInput.value.trim().replace(/\s+/g, ' ').toUpperCase()
+                       : teamSel.value,
       teamIsNew:     teamSel.value === OTHER,
       name:          $('name').value.trim(),
       dob:           dob.value,
@@ -324,7 +364,8 @@
       guardianPhone: guardianStep.hidden ? '' : digits(guardianPhone.value).slice(-10),
       waiverAccepted: true,
       waiverAcceptedAt: new Date().toISOString(),
-      photo:         photoDataUrl,
+      photo:         headshot.get(),
+      idPhoto:       idDoc.get(),
       website:       $('website').value,   // honeypot
       lang:          lang(),
     };
@@ -345,11 +386,6 @@
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) throw new Error(data.message || 'HTTP ' + res.status);
-
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;   // Stripe, once it is turned on
-        return;
-      }
 
       form.hidden = true;
       const ok = $('regSuccess');

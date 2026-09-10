@@ -57,6 +57,7 @@ const adult = () => ({
   address: '123 Main St, Las Vegas, NV',
   waiverAccepted: true,
   photo: JPEG_1PX,
+  idPhoto: JPEG_1PX,
   website: '',
 });
 
@@ -120,6 +121,28 @@ await atest('rejects an SVG dressed as a photo', async () => {
   const svg = 'data:image/svg+xml;base64,' + Buffer.from('<svg onload="x()"/>').toString('base64');
   const res = await post({ ...adult(), photo: svg });
   assert.equal(res.statusCode, 400);
+});
+
+console.log('\napi/register.js — ID or passport');
+
+await atest('rejects a registration with no ID photo', async () => {
+  const res = await post({ ...adult(), idPhoto: '' });
+  assert.equal(res.statusCode, 400);
+  assert.match(res.body.message, /ID o pasaporte/);
+});
+
+await atest('rejects a registration whose ID field is missing entirely', async () => {
+  const body = adult();
+  delete body.idPhoto;
+  const res = await post(body);
+  assert.equal(res.statusCode, 400);
+});
+
+await atest('rejects an ID photo that is not really an image', async () => {
+  const notAnImage = 'data:image/jpeg;base64,' + Buffer.from('hello there').toString('base64');
+  const res = await post({ ...adult(), idPhoto: notAnImage });
+  assert.equal(res.statusCode, 400);
+  assert.match(res.body.message, /ID/);
 });
 
 console.log('\napi/register.js — minors');
