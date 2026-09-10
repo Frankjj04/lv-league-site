@@ -168,6 +168,7 @@ window.LVSL_TRANSLATIONS = {
     rg_e_photo_big: 'Esa foto pesa demasiado. Toma una nueva con la cámara.',
     rg_e_photo_read: 'No pudimos leer esa foto.',
     rg_e_id:       'Sube una foto de tu ID o pasaporte. Sin ella no se puede completar el registro.',
+    rg_e_duplicate: 'Ya hay un registro con ese email en esta división. Si necesitas cambiar algo, llámanos al 702-831-9474.',
     rg_e_waiver:   'Tienes que aceptar el descargo de responsabilidad.',
     rg_e_submit:   'No pudimos enviar tu registro. Revisa tu internet e inténtalo otra vez, o llámanos al 702-831-9474.',
 
@@ -332,6 +333,7 @@ window.LVSL_TRANSLATIONS = {
     rg_e_photo_big: 'That photo is too large. Take a new one with the camera.',
     rg_e_photo_read: 'We could not read that photo.',
     rg_e_id:       'Add a photo of your ID or passport. You cannot finish registering without it.',
+    rg_e_duplicate: 'That email is already registered in this division. If you need to change something, call us at 702-831-9474.',
     rg_e_waiver:   'You have to accept the liability release.',
     rg_e_submit:   'We could not send your registration. Check your connection and try again, or call us at 702-831-9474.',
 

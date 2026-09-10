@@ -331,6 +331,12 @@
   const submitBtn = $('submitBtn');
   const formError = $('formError');
 
+  function showFormError(msg) {
+    formError.textContent = msg;
+    formError.hidden = false;
+    formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     formError.hidden = true;
@@ -385,7 +391,17 @@
 
       const data = await res.json().catch(() => ({}));
 
-      if (!res.ok) throw new Error(data.message || 'HTTP ' + res.status);
+      // The server answered, so this is not a connection problem — say what it
+      // said. A duplicate is the usual case (the same person sending the form
+      // twice) and gets its own translated line; anything else shows the
+      // server's own message.
+      if (!res.ok) {
+        showFormError(res.status === 409
+          ? t('rg_e_duplicate', 'Ya hay un registro con ese email en esta división. Si necesitas cambiar algo, llámanos al 702-831-9474.')
+          : data.message || t('rg_e_submit',
+              'No pudimos enviar tu registro. Revisa tu internet e inténtalo otra vez, o llámanos al 702-831-9474.'));
+        return;
+      }
 
       form.hidden = true;
       const ok = $('regSuccess');
@@ -395,10 +411,9 @@
       ok.focus();
       ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
-      formError.textContent = t('rg_e_submit',
-        'No pudimos enviar tu registro. Revisa tu internet e inténtalo otra vez, o llámanos al 702-831-9474.');
-      formError.hidden = false;
-      formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Only reached when the request got no answer at all: a real connection problem.
+      showFormError(t('rg_e_submit',
+        'No pudimos enviar tu registro. Revisa tu internet e inténtalo otra vez, o llámanos al 702-831-9474.'));
     } finally {
       submitBtn.disabled = false;
       submitBtn.classList.remove('is-loading');
