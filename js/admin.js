@@ -332,7 +332,8 @@
         '<strong>Sin foto.</strong> No se puede imprimir su credencial hasta que tenga una.',
         'Tomar o subir foto') +
       missing('id', !p.idPhoto,
-        '<strong>Falta su ID o pasaporte.</strong> Tómale una foto a su identificación.',
+        '<strong>Falta su ID o pasaporte.</strong> Tómale una foto a su identificación.' +
+          (isMinor(p) ? ' Por ser menor de edad, también sirve su ID de la escuela.' : ''),
         'Tomar o subir foto del ID');
 
     // The confirm button stays dead until the typed name matches the row.

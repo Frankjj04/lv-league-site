@@ -120,6 +120,17 @@
     return a;
   }
 
+  const idTitle = $('idStepTitle');
+  const idNote  = $('idStepNote');
+
+  // Point a translated block at another key. applyLang() re-renders from
+  // data-i18n, so a later language switch keeps the variant.
+  function setVariant(el, key) {
+    if (el.dataset.i18n === key) return;
+    el.dataset.i18n = key;
+    el.innerHTML = t(key, el.innerHTML);
+  }
+
   function syncGuardian() {
     const a = ageOn(dob.value);
     const minor = a !== null && a < MINOR_AGE && a >= 0;
@@ -127,7 +138,13 @@
     guardianName.required = minor;
     guardianPhone.required = minor;
     if (!minor) { guardianName.value = ''; guardianPhone.value = ''; }
+
+    // Minors may use a school ID; the ID step says so once the birth date shows it.
+    setVariant(idTitle, minor ? 'rg_sid_h_minor' : 'rg_sid_h');
+    setVariant(idNote,  minor ? 'rg_id_note_minor' : 'rg_id_note');
   }
+
+  const isMinorNow = () => !guardianStep.hidden;
 
   dob.addEventListener('change', () => { syncGuardian(); clearErr(dob); });
   dob.addEventListener('input', syncGuardian);
@@ -305,7 +322,8 @@
     }
 
     [[headshot, 'rg_e_photo', 'Sube una foto para tu credencial.'],
-     [idDoc,    'rg_e_id',    'Sube una foto de tu ID o pasaporte. Sin ella no se puede completar el registro.'],
+     [idDoc,    isMinorNow() ? 'rg_e_id_minor' : 'rg_e_id',
+                'Sube una foto de tu ID o pasaporte. Sin ella no se puede completar el registro.'],
     ].forEach(([pic, key, fallback]) => {
       if (!pic.get()) { setErr(pic.input, t(key, fallback)); errs.push(pic.input); }
       else clearErr(pic.input);
@@ -371,8 +389,9 @@
     // Vercel itself answers 413, with no JSON, when the whole request is too big.
     const code = status === 413 ? 'too_large' : (data.code || data.error);
     const r = REFUSALS[code];
+    const key = r && (r[1] === 'rg_e_id' && isMinorNow() ? 'rg_e_id_minor' : r[1]);
     const msg = r
-      ? t(r[1], data.message)
+      ? t(key, data.message)
       : data.message || t('rg_e_server', 'No pudimos guardar tu registro. Llámanos al 702-831-9474.');
 
     // Mark the field too. A typed team name lives in its own box.

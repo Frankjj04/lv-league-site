@@ -206,7 +206,7 @@ const SERVER_CODES = [
   'duplicate', 'server_error', 'not_configured', 'too_large',
 ];
 
-test('the form has a message, in both languages, for every refusal', () => {
+test('the form has a line, in both languages, for every refusal and everything it shows', () => {
   const form = readFileSync(new URL('../js/registro.js', import.meta.url), 'utf8');
   const i18n = readFileSync(new URL('../js/i18n.js', import.meta.url), 'utf8');
   const start = form.indexOf('const REFUSALS');
@@ -215,7 +215,9 @@ test('the form has a message, in both languages, for every refusal', () => {
   for (const code of SERVER_CODES) {
     assert.match(table, new RegExp('\\b' + code + ':'), 'the form has no entry for ' + code);
   }
-  for (const [, key] of table.matchAll(/'(rg_e_\w+)'/g)) {
+  // Every key the form script names anywhere — refusals, the minor variants,
+  // photo labels — has to exist in both languages.
+  for (const key of new Set([...form.matchAll(/'(rg_\w+)'/g)].map((m) => m[1]))) {
     const n = (i18n.match(new RegExp('\\b' + key + ':', 'g')) || []).length;
     assert.equal(n, 2, key + ' should be in both Spanish and English, found ' + n);
   }
