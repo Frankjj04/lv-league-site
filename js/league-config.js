@@ -11,16 +11,17 @@
    capitalised exactly as they appear on his schedules, so a player sees
    the same string on the form that he sees on the schedule.
 
-   Every division is 8v8.
+   Every division is 8v8 except Sunday, which is 11v11.
 
    Division names are just the day plus "Open" or "Over 35" — Frank asked
    for that on 2026-09-10 so the dropdown is quick to read.
 
    ── STILL UNCONFIRMED ─────────────────────
-   • Saturday and Sunday: whether each is Open or Over 35. They show as
-     plain "Sábado" / "Domingo" until the coach says.
    • Sunday's teams. Added 2026-09-10 with an empty list (players type the
-     team name). Its 11v11 format comes from the Costos page, not a schedule.
+     team name).
+
+   Confirmed by the coach 2026-09-10: Saturday is Open, 8v8; Sunday is
+   Open, 11v11.
    ──────────────────────────────────────────
    ========================================= */
 
@@ -140,8 +141,8 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'sabado',
-      es: 'Sábado',
-      en: 'Saturday',
+      es: 'Sábado — Open',
+      en: 'Saturday — Open',
       format: '8v8',
       teams: [
         'EL COMBO DE DRAKE',
@@ -151,8 +152,9 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'domingo',
-      es: 'Domingo',
-      en: 'Sunday',
+      // The only 11v11 division, so it says so in the dropdown.
+      es: 'Domingo — Open 11v11',
+      en: 'Sunday — Open 11v11',
       format: '11v11',
       // No team list yet. While it is empty, players (and the coach) type
       // their team's name instead of picking it. Fill it in when he sends it.
