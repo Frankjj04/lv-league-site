@@ -172,8 +172,13 @@ window.LVSL_CONFIG = {
   /* Credential headshot limits. Photos are downscaled in the browser
      before upload, so a phone photo of any size is fine. */
   photo: {
-    maxPixels: 900,   // longest edge after downscaling
-    quality: 0.86,    // JPEG quality
+    // Sized for the database, which is Neon's free plan (about 0.5 GB). At
+    // these settings a player costs about 300 KB for both photos, so ~1,000
+    // players fit with room to spare; at the first settings (900px / 1600px)
+    // they cost ~850 KB and the league would not have fit. 500px is still
+    // sharper than the ~1in photo printed on a credential.
+    maxPixels: 500,   // longest edge after downscaling
+    quality: 0.8,     // JPEG quality
     maxBytes: 12 * 1024 * 1024,  // reject anything larger before we even read it
   },
 
@@ -181,8 +186,8 @@ window.LVSL_CONFIG = {
      Kept larger than the headshot so the name and birth date stay readable.
      Never printed on a credential; only the coach sees it, from the player's panel. */
   idPhoto: {
-    maxPixels: 1600,
-    quality: 0.85,
+    maxPixels: 1200,  // not lower: below this the address lines start to blur
+    quality: 0.8,
     maxBytes: 12 * 1024 * 1024,
   },
 };
