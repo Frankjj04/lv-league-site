@@ -251,7 +251,7 @@
     input: 'idPhoto', preview: 'idPreview', clear: 'idClear', status: 'idStatus',
     limits: CFG.idPhoto,
     emptyKey: 'rg_id_empty', emptyText: 'Sin ID',
-    helpKey:  'rg_id_help',  helpText:  'Pon el ID sobre una mesa, con buena luz y sin reflejos.',
+    helpKey:  'rg_id_help',  helpText:  'Que se vea clara y completa.',
     readyKey: 'rg_id_ready', readyText: 'ID lista.',
   });
 
