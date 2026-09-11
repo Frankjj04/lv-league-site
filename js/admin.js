@@ -228,7 +228,7 @@
           ? 'Todavía no hay jugadores en esta división.'
           : '<strong>Todavía no se ha registrado nadie.</strong><br>' +
             'Los jugadores van a aparecer aquí, agrupados por equipo, en cuanto llenen ' +
-            'el formulario en lvsl.futbol/registro.html';
+            'el formulario en lvsl.futbol/registro';
     }
 
     $('roster').innerHTML = sorted.map(([key, members]) => {

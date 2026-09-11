@@ -1,8 +1,19 @@
 {
+  "cleanUrls": true,
   "redirects": [
     {
+      "source": "/register",
+      "destination": "/registro",
+      "permanent": false
+    },
+    {
       "source": "/register.html",
-      "destination": "/registro.html",
+      "destination": "/registro",
+      "permanent": false
+    },
+    {
+      "source": "/league",
+      "destination": "/",
       "permanent": false
     },
     {
@@ -11,7 +22,17 @@
       "permanent": false
     },
     {
+      "source": "/schedule",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/schedule.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/contact",
       "destination": "/",
       "permanent": false
     },
