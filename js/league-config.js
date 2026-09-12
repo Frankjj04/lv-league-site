@@ -106,6 +106,7 @@ window.LVSL_CONFIG = {
         'MARQUENSE',
         'MINEROS',
         'PROS',
+        'PUMAS FC',
         'RESACA FC',
         'RIVALS FC',
         'SANTOS',
