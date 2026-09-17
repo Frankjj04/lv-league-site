@@ -16,9 +16,7 @@
    Division names are just the day plus "Open" or "Over 35" — Frank asked
    for that on 2026-09-10 so the dropdown is quick to read.
 
-   ── STILL UNCONFIRMED ─────────────────────
-   • Sunday's teams. Added 2026-09-10 with an empty list (players type the
-     team name).
+   Sunday's teams came from the coach 2026-09-16.
 
    Confirmed by the coach 2026-09-10: Saturday is Open, 8v8; Sunday is
    Open, 11v11.
@@ -157,9 +155,11 @@ window.LVSL_CONFIG = {
       es: 'Domingo — Open 11v11',
       en: 'Sunday — Open 11v11',
       format: '11v11',
-      // No team list yet. While it is empty, players (and the coach) type
-      // their team's name instead of picking it. Fill it in when he sends it.
-      teams: [],
+      // Sent by the coach 2026-09-16.
+      teams: [
+        'BEPRO FC',
+        'LUCKY 21',
+      ],
     },
   ],
 
