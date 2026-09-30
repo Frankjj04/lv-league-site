@@ -30,6 +30,18 @@ window.LVSL_TRANSLATIONS = {
     footer_about: 'Liga de fútbol amateur en Las Vegas, Nevada. Organizada por y para la comunidad futbolera del valle.',
     footer_nav_h: 'Navegación',
     footer_made: 'Todos los derechos reservados.',
+    footer_privacy: 'Privacidad',
+    footer_terms: 'Términos',
+
+    /* ── PRIVACIDAD / TÉRMINOS ── */
+    meta_title_privacy: 'Aviso de privacidad — Las Vegas Soccer League',
+    meta_title_terms: 'Términos y condiciones — Las Vegas Soccer League',
+    pv_eyebrow: 'Privacidad',
+    pv_h1: 'AVISO DE <span class="accent">PRIVACIDAD</span>',
+    pv_sub: 'Qué datos te pedimos al registrarte, para qué los usamos, quién los ve y cómo los cuidamos.',
+    tm_eyebrow: 'Términos',
+    tm_h1: 'TÉRMINOS Y <span class="accent">CONDICIONES</span>',
+    tm_sub: 'Las reglas para registrarte, jugar en la liga y usar este sitio.',
 
     /* ── REGLAMENTO ── */
     rl_eyebrow: 'Reglamento',
@@ -146,6 +158,7 @@ window.LVSL_TRANSLATIONS = {
     rg_id_note_minor: 'Sube una foto de tu ID, pasaporte o ID de la escuela. Es obligatoria para registrarte.',
     rg_s4_h:       'Descargo de responsabilidad',
     rg_waiver_stamp: 'Guardamos la fecha y la hora en que aceptas, junto con tu registro.',
+    rg_legal: 'Al registrarte también aceptas los <a href="terminos.html" target="_blank">Términos y condiciones</a> y el <a href="privacidad.html" target="_blank">Aviso de privacidad</a>.',
     rg_submit:     'Enviar mi registro',
     rg_sending:    'Enviando…',
     rg_submit_legal: 'Tus datos son solo para la liga. No los vendemos ni los compartimos.',
@@ -204,6 +217,18 @@ window.LVSL_TRANSLATIONS = {
     footer_about: 'Amateur soccer league in Las Vegas, Nevada. Run by and for the valley\'s soccer community.',
     footer_nav_h: 'Navigation',
     footer_made: 'All rights reserved.',
+    footer_privacy: 'Privacy',
+    footer_terms: 'Terms',
+
+    /* ── PRIVACY / TERMS ── */
+    meta_title_privacy: 'Privacy Notice — Las Vegas Soccer League',
+    meta_title_terms: 'Terms and Conditions — Las Vegas Soccer League',
+    pv_eyebrow: 'Privacy',
+    pv_h1: 'PRIVACY <span class="accent">NOTICE</span>',
+    pv_sub: 'What we ask for when you register, what we use it for, who sees it and how we keep it safe.',
+    tm_eyebrow: 'Terms',
+    tm_h1: 'TERMS AND <span class="accent">CONDITIONS</span>',
+    tm_sub: 'The rules for registering, playing in the league and using this website.',
 
     /* ── RULES ── */
     rl_eyebrow: 'Rules',
@@ -320,6 +345,7 @@ window.LVSL_TRANSLATIONS = {
     rg_id_note_minor: 'Upload a photo of your ID, passport or school ID. It is required to sign up.',
     rg_s4_h:       'Liability release',
     rg_waiver_stamp: 'We save the date and time you accept, together with your registration.',
+    rg_legal: 'By registering you also accept the <a href="terminos.html" target="_blank">Terms and Conditions</a> and the <a href="privacidad.html" target="_blank">Privacy Notice</a>.',
     rg_submit:     'Send my registration',
     rg_sending:    'Sending…',
     rg_submit_legal: 'Your details are for the league only. We do not sell or share them.',

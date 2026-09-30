@@ -27,6 +27,12 @@ function applyLang(lang) {
     if (val !== undefined) el.innerHTML = val;
   });
 
+  // Long pages (privacy, terms) keep each language as its own block of HTML
+  // instead of dozens of keys: show the block for this language, hide the rest.
+  document.querySelectorAll('[data-lang-block]').forEach((el) => {
+    el.hidden = el.dataset.langBlock !== lang;
+  });
+
   // Attribute translations: data-i18n-attr="placeholder:key, aria-label:key"
   document.querySelectorAll('[data-i18n-attr]').forEach((el) => {
     el.dataset.i18nAttr.split(',').forEach((pair) => {
