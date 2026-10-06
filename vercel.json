@@ -23,12 +23,12 @@
     },
     {
       "source": "/schedule",
-      "destination": "/",
+      "destination": "/calendario",
       "permanent": false
     },
     {
       "source": "/schedule.html",
-      "destination": "/",
+      "destination": "/calendario",
       "permanent": false
     },
     {
@@ -49,6 +49,11 @@
     {
       "source": "/terms",
       "destination": "/terminos",
+      "permanent": false
+    },
+    {
+      "source": "/ref",
+      "destination": "/arbitro",
       "permanent": false
     }
   ],

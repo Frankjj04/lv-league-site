@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Árbitros — Las Vegas Soccer League</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#0B0B0C" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-body">
+
+<!-- ========== PASSWORD GATE ========== -->
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gateForm">
+    <img src="assets/logo.jpg" alt="" class="gate-crest" />
+    <h1>Árbitros</h1>
+    <p>Escribe la contraseña de árbitros para poner los marcadores.</p>
+    <label class="visually-hidden" for="gatePass">Contraseña</label>
+    <input type="password" id="gatePass" autocomplete="current-password" required />
+    <p class="gate-err" id="gateErr" hidden role="alert"></p>
+    <button type="submit" class="adm-btn adm-btn--primary" id="gateBtn">Entrar</button>
+  </form>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header class="adm-head" id="admHead" hidden>
+  <a href="calendario.html" class="adm-brand">
+    <img src="assets/logo.jpg" alt="" />
+    <span>
+      <span class="adm-brand-l1">LAS VEGAS SOCCER LEAGUE</span>
+      <span class="adm-brand-l2">Marcadores · Árbitros</span>
+    </span>
+  </a>
+  <div class="adm-head-actions">
+    <button type="button" class="adm-btn adm-btn--quiet" id="outBtn">Salir</button>
+  </div>
+</header>
+
+<main class="rf-main" id="admMain" hidden>
+  <p class="rf-intro">Pon el marcador al terminar el partido. Sale en el calendario de la liga
+    al momento. Aquí salen los partidos de hoy y de ayer.</p>
+
+  <div class="field rf-name">
+    <label for="refName">Tu nombre</label>
+    <input type="text" id="refName" maxlength="60" autocomplete="name" placeholder="Para que el coach sepa quién lo puso" />
+  </div>
+
+  <div class="adm-tabs" id="divTabs" role="tablist" aria-label="División" style="margin-bottom:16px"></div>
+
+  <div id="list"></div>
+  <p class="adm-empty" id="empty" hidden></p>
+</main>
+
+<script src="js/league-config.js"></script>
+<script src="js/arbitro.js"></script>
+</body>
+</html>

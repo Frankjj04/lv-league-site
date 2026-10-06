@@ -16,9 +16,13 @@ import { readFileSync } from 'node:fs';
 process.env.DATABASE_URL = 'postgres://test/test';
 process.env.ADMIN_PASSWORD = 'correct-horse';
 process.env.SESSION_SECRET = 'test-secret-not-a-real-one';
+process.env.REF_PASSWORD = 'whistle-blue';
 
 const { default: register } = await import('../api/register.js');
 const auth = await import('../lib/auth.js');
+const gamesLib = await import('../lib/games.js');
+const { default: gameApi } = await import('../api/game.js');
+const { default: gamesApi } = await import('../api/games.js');
 
 let passed = 0, failed = 0;
 
@@ -289,6 +293,155 @@ test('an expired cookie is rejected', () => {
 
 test('signing out clears the cookie', () => {
   assert.match(auth.clearCookie(), /Max-Age=0/);
+});
+
+/* ================= referees ================= */
+console.log('\nlib/auth.js — referees');
+
+const refCookie = () => auth.issueRefCookie().split(';')[0];
+const adminCookie = () => auth.issueCookie().split(';')[0];
+
+test('the referee password signs a referee in', () => {
+  assert.equal(auth.checkRefPassword('whistle-blue'), true);
+  assert.equal(auth.checkRefPassword('wrong'), false);
+  assert.equal(auth.checkRefPassword(''), false);
+});
+
+test('the coach password also works on the referee page', () => {
+  assert.equal(auth.checkRefPassword('correct-horse'), true);
+});
+
+test('the referee password does NOT open the roster', () => {
+  assert.equal(auth.checkPassword('whistle-blue'), false);
+});
+
+test('a referee cookie is not a coach cookie', () => {
+  assert.equal(auth.isRefSignedIn({ headers: { cookie: refCookie() } }), true);
+  assert.equal(auth.isSignedIn({ headers: { cookie: refCookie().replace('lvsl_ref=', 'lvsl_admin=') } }), false);
+});
+
+test('a coach cookie is not a referee cookie', () => {
+  assert.equal(auth.isRefSignedIn({ headers: { cookie: adminCookie().replace('lvsl_admin=', 'lvsl_ref=') } }), false);
+});
+
+test('the referee cookie is HttpOnly, Secure, SameSite=Strict and session-only', () => {
+  const c = auth.issueRefCookie();
+  assert.match(c, /HttpOnly/);
+  assert.match(c, /Secure/);
+  assert.match(c, /SameSite=Strict/);
+  assert.equal(/Max-Age|Expires/.test(c), false);
+});
+
+/* ================= games: validation ================= */
+console.log('\nlib/games.js');
+
+const aGame = (over) => Object.assign({
+  division: 'miercoles-premier', home: 'Ajax', away: 'ELITE',
+  date: '2026-10-07', time: '19:30', field: 'Parque Sunset', status: 'scheduled',
+}, over);
+
+test('a normal game is accepted and team names are uppercased', () => {
+  const { game, error } = gamesLib.validateGame(aGame());
+  assert.equal(error, undefined);
+  assert.equal(game.home, 'AJAX');
+});
+
+test('a team cannot play itself', () => {
+  assert.equal(gamesLib.validateGame(aGame({ away: 'ajax' })).code, 'same_team');
+});
+
+test('dates and times must be real', () => {
+  assert.equal(gamesLib.validateGame(aGame({ date: '2026-02-30' })).code, 'date');
+  assert.equal(gamesLib.validateGame(aGame({ date: '' })).code, 'date');
+  assert.equal(gamesLib.validateGame(aGame({ time: '25:00' })).code, 'time');
+  assert.equal(gamesLib.validateGame(aGame({ time: '' })).error, undefined);
+});
+
+test('a final needs both scores, and only whole numbers 0–99', () => {
+  assert.equal(gamesLib.validateGame(aGame({ status: 'final', homeScore: 2 })).code, 'score_missing');
+  assert.equal(gamesLib.validateGame(aGame({ status: 'final', homeScore: 2, awayScore: -1 })).code, 'score_bad');
+  assert.equal(gamesLib.validateGame(aGame({ status: 'final', homeScore: 2.5, awayScore: 1 })).code, 'score_bad');
+  const { game } = gamesLib.validateGame(aGame({ status: 'final', homeScore: '3', awayScore: '0' }));
+  assert.deepEqual([game.homeScore, game.awayScore], [3, 0]);
+});
+
+test('a game that is not final never keeps a score', () => {
+  const { game } = gamesLib.validateGame(aGame({ status: 'cancelled', homeScore: 3, awayScore: 0 }));
+  assert.deepEqual([game.homeScore, game.awayScore], [null, null]);
+});
+
+test('referees may score today and yesterday only (Las Vegas time)', () => {
+  // 2026-10-08 05:00 UTC is still the evening of Oct 7 in Las Vegas.
+  const now = new Date('2026-10-08T05:00:00Z');
+  assert.equal(gamesLib.todayInVegas(now), '2026-10-07');
+  assert.equal(gamesLib.refMayScore('2026-10-07', now), true);
+  assert.equal(gamesLib.refMayScore('2026-10-06', now), true);
+  assert.equal(gamesLib.refMayScore('2026-10-05', now), false);
+  assert.equal(gamesLib.refMayScore('2026-10-08', now), false);
+});
+
+test('the public view hides who entered the score', () => {
+  const row = { id: '4', division: 'd', home: 'A', away: 'B', game_date: '2026-10-07', game_time: '19:00',
+    field: '', status: 'final', home_score: 2, away_score: 1, note: '', score_by: 'ref', score_name: 'Luis', score_at: null };
+  const pub = gamesLib.gameOut(row);
+  assert.equal('scoreName' in pub, false);
+  assert.equal('scoreBy' in pub, false);
+  assert.equal(gamesLib.gameOut(row, { full: true }).scoreName, 'Luis');
+});
+
+/* ================= games: who may change what ================= */
+console.log('\napi/game.js — permissions (refused before any database call)');
+
+async function callGame(method, cookie, body, id) {
+  const res = mockRes();
+  await gameApi({ method, body: body || {}, query: id ? { id: String(id) } : {},
+    headers: cookie ? { cookie } : {} }, res);
+  return res;
+}
+
+await atest('nobody signed in cannot add, edit, score or delete', async () => {
+  assert.equal((await callGame('POST', null, aGame())).statusCode, 401);
+  assert.equal((await callGame('PATCH', null, aGame(), 1)).statusCode, 401);
+  assert.equal((await callGame('PATCH', null, { mode: 'score', homeScore: 1, awayScore: 0 }, 1)).statusCode, 401);
+  assert.equal((await callGame('DELETE', null, {}, 1)).statusCode, 401);
+});
+
+await atest('a referee cannot add, edit or delete a game', async () => {
+  assert.equal((await callGame('POST', refCookie(), aGame())).statusCode, 401);
+  assert.equal((await callGame('PATCH', refCookie(), aGame(), 1)).statusCode, 401);
+  assert.equal((await callGame('DELETE', refCookie(), {}, 1)).statusCode, 401);
+});
+
+await atest('a referee sending a bad score is refused before the database', async () => {
+  const res = await callGame('PATCH', refCookie(), { mode: 'score', homeScore: '', awayScore: 2 }, 1);
+  assert.equal(res.statusCode, 400);
+  assert.equal(res.body.code, 'score_missing');
+});
+
+await atest('the coach sending an invalid game is refused with a reason', async () => {
+  const res = await callGame('POST', adminCookie(), aGame({ away: 'AJAX' }));
+  assert.equal(res.statusCode, 400);
+  assert.equal(res.body.code, 'same_team');
+});
+
+await atest('the referee list needs a referee or coach session', async () => {
+  const res = mockRes();
+  await gamesApi({ method: 'GET', query: { ref: '1' }, headers: {} }, res);
+  assert.equal(res.statusCode, 401);
+});
+
+test('every schedule text the page uses exists in Spanish and English', () => {
+  const page = readFileSync(new URL('../js/calendario.js', import.meta.url), 'utf8') +
+    readFileSync(new URL('../calendario.html', import.meta.url), 'utf8');
+  const i18n = readFileSync(new URL('../js/i18n.js', import.meta.url), 'utf8');
+  const keys = new Set([...page.matchAll(/['"](sc_\w+)['"]/g)].map((m) => m[1]).filter((k) => !k.endsWith('_')));
+  // calendario.js builds the header keys as 'sc_th_' + column.
+  ['p', 'w', 'd', 'l', 'gf', 'ga', 'gd', 'pts'].forEach((c) => keys.add('sc_th_' + c));
+  keys.add('nav_schedule');
+  for (const key of keys) {
+    const n = (i18n.match(new RegExp('\\b' + key + ':', 'g')) || []).length;
+    assert.equal(n, 2, key + ' should be in both Spanish and English, found ' + n);
+  }
 });
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');

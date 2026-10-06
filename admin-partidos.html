@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partidos — Las Vegas Soccer League</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#0B0B0C" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-body">
+
+<!-- ========== PASSWORD GATE ========== -->
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gateForm">
+    <img src="assets/logo.jpg" alt="" class="gate-crest" />
+    <h1>Partidos</h1>
+    <p>Esta página es privada. Escribe la contraseña de la liga.</p>
+    <label class="visually-hidden" for="gatePass">Contraseña</label>
+    <input type="password" id="gatePass" autocomplete="current-password" required />
+    <p class="gate-err" id="gateErr" hidden role="alert"></p>
+    <button type="submit" class="adm-btn adm-btn--primary" id="gateBtn">Entrar</button>
+  </form>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header class="adm-head" id="admHead" hidden>
+  <a href="index.html" class="adm-brand">
+    <img src="assets/logo.jpg" alt="" />
+    <span>
+      <span class="adm-brand-l1">LAS VEGAS SOCCER LEAGUE</span>
+      <span class="adm-brand-l2">Partidos y marcadores</span>
+    </span>
+  </a>
+  <div class="adm-head-actions">
+    <button type="button" class="adm-btn adm-btn--primary" id="addBtn">
+      <span aria-hidden="true">&#43;</span> Agregar partido
+    </button>
+    <a class="adm-btn" href="calendario.html" target="_blank" rel="noopener">Ver calendario</a>
+    <a class="adm-btn" href="admin.html">Jugadores</a>
+    <button type="button" class="adm-btn adm-btn--quiet" id="outBtn">Salir</button>
+  </div>
+</header>
+
+<main class="adm-main" id="admMain" hidden>
+
+  <section class="adm-stats" id="stats" aria-label="Resumen"></section>
+
+  <div class="adm-controls">
+    <div class="adm-tabs" id="divTabs" role="tablist" aria-label="División"></div>
+    <div class="adm-tabs" id="whenTabs" role="tablist" aria-label="Qué partidos">
+      <button type="button" class="adm-tab active" data-when="next">Próximos</button>
+      <button type="button" class="adm-tab" data-when="missing">Sin marcador</button>
+      <button type="button" class="adm-tab" data-when="played">Jugados</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+  <p class="adm-empty" id="empty" hidden></p>
+
+</main>
+
+<!-- ========== ADD / EDIT A GAME ========== -->
+<div class="adm-sheet" id="gameSheet" hidden role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <div class="adm-sheet-scrim" data-close></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close aria-label="Cerrar">&times;</button>
+    <h2 id="gTitle" class="add-title">Agregar partido</h2>
+    <p class="add-lede" id="gLede">Sale en el calendario en cuanto lo guardes.</p>
+
+    <form id="gForm" novalidate>
+      <div class="field">
+        <label for="g-division">División <span class="req">*</span></label>
+        <select id="g-division" required><option value="">Elige…</option></select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="g-date">Fecha <span class="req">*</span></label>
+          <input type="date" id="g-date" required />
+        </div>
+        <div class="field">
+          <label for="g-time">Hora</label>
+          <input type="time" id="g-time" step="300" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="g-home">Equipo local <span class="req">*</span></label>
+        <select id="g-home" required disabled><option value="">Elige la división primero</option></select>
+      </div>
+
+      <div class="field">
+        <label for="g-away">Equipo visitante <span class="req">*</span></label>
+        <select id="g-away" required disabled><option value="">Elige la división primero</option></select>
+      </div>
+
+      <div class="field">
+        <label for="g-field">Cancha</label>
+        <input type="text" id="g-field" maxlength="120" list="g-fields" placeholder="Nombre del parque o cancha" />
+        <datalist id="g-fields"></datalist>
+        <p class="field-help">Los jugadores pueden tocarla para abrir el mapa. Escríbela igual cada vez.</p>
+      </div>
+
+      <div class="field">
+        <label for="g-status">Estado</label>
+        <select id="g-status">
+          <option value="scheduled">Programado</option>
+          <option value="final">Terminado (con marcador)</option>
+          <option value="cancelled">Cancelado</option>
+        </select>
+      </div>
+
+      <div class="gx-score-row" id="g-scoreRow" hidden>
+        <div class="field">
+          <label for="g-hs" id="g-hsLabel">Local</label>
+          <input type="number" id="g-hs" min="0" max="99" inputmode="numeric" />
+        </div>
+        <span class="gx-score-dash">–</span>
+        <div class="field">
+          <label for="g-as" id="g-asLabel">Visitante</label>
+          <input type="number" id="g-as" min="0" max="99" inputmode="numeric" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="g-note">Nota pública (opcional)</label>
+        <input type="text" id="g-note" maxlength="160" placeholder="Ej. Se cambió a la cancha 2" />
+        <p class="field-help">Sale debajo del partido en el calendario.</p>
+      </div>
+
+      <p class="form-error" id="g-error" hidden role="alert"></p>
+      <button type="submit" class="adm-btn adm-btn--primary adm-btn--wide" id="g-save">Guardar partido</button>
+      <button type="button" class="gx-btn adm-btn--wide" id="g-saveMore" style="margin-top:10px;width:100%">
+        Guardar y agregar otro el mismo día
+      </button>
+
+      <div class="gx-del" id="g-delBox" hidden>
+        <button type="button" id="g-del">Borrar este partido</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========== QUICK SCORE ========== -->
+<div class="adm-sheet" id="scoreSheet" hidden role="dialog" aria-modal="true" aria-labelledby="sTitle">
+  <div class="adm-sheet-scrim" data-close-score></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close-score aria-label="Cerrar">&times;</button>
+    <h2 id="sTitle" class="add-title">Marcador</h2>
+    <p class="add-lede" id="sLede"></p>
+    <form id="sForm" novalidate>
+      <div class="gx-score-row">
+        <div class="field">
+          <label for="s-hs" id="s-hsLabel">Local</label>
+          <input type="number" id="s-hs" min="0" max="99" inputmode="numeric" required />
+        </div>
+        <span class="gx-score-dash">–</span>
+        <div class="field">
+          <label for="s-as" id="s-asLabel">Visitante</label>
+          <input type="number" id="s-as" min="0" max="99" inputmode="numeric" required />
+        </div>
+      </div>
+      <p class="form-error" id="s-error" hidden role="alert"></p>
+      <button type="submit" class="adm-btn adm-btn--primary adm-btn--wide" id="s-save">Guardar marcador</button>
+    </form>
+  </div>
+</div>
+
+<div class="gx-saved" id="toast" hidden role="status"></div>
+
+<script src="js/league-config.js"></script>
+<script src="js/admin-partidos.js"></script>
+</body>
+</html>

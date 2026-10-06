@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendario y resultados — Las Vegas Soccer League</title>
+  <meta name="description" content="Calendario de partidos, marcadores y tabla de posiciones de la Las Vegas Soccer League, por división." />
+  <meta property="og:title" content="Calendario y resultados — Las Vegas Soccer League" />
+  <meta property="og:description" content="A qué hora juegas, contra quién, en qué cancha, y los marcadores de cada partido." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lvsl.futbol/calendario" />
+  <meta property="og:site_name" content="Las Vegas Soccer League" />
+  <meta property="og:locale" content="es_MX" />
+  <meta property="og:image" content="https://lvsl.futbol/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Las Vegas Soccer League — Regístrate con tu equipo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://lvsl.futbol/assets/og.png" />
+  <link rel="canonical" href="https://lvsl.futbol/calendario" />
+  <link rel="icon" href="assets/logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/logo.jpg" />
+  <meta name="theme-color" content="#FC8C00" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page-title-key="meta_title_schedule">
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+  <a href="index.html" class="logo" aria-label="Las Vegas Soccer League">
+    <img src="assets/logo.jpg" alt="" class="logo-mark" />
+    <span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+    <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+    <li><a href="calendario.html" class="active" data-i18n="nav_schedule">Calendario</a></li>
+    <li><a href="costos.html" data-i18n="nav_costs">Costos</a></li>
+    <li><a href="registro.html" class="nav-cta" data-i18n="nav_register">Registrarme</a></li>
+  </ul>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="hamburger" role="button" tabindex="0" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <a href="index.html" data-i18n="nav_home">Inicio</a>
+  <a href="rules.html" data-i18n="nav_rules">Reglamento</a>
+  <a href="calendario.html" class="active" data-i18n="nav_schedule">Calendario</a>
+  <a href="costos.html" data-i18n="nav_costs">Costos</a>
+  <a href="registro.html" class="nav-cta" data-i18n="nav_register">Registrarme</a>
+</div>
+
+<!-- ========== PAGE HEAD ========== -->
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="sc_eyebrow">Calendario</span>
+    <h1 data-i18n="sc_h1">CALENDARIO <span class="accent">Y RESULTADOS</span></h1>
+    <p data-i18n="sc_sub">Elige tu división para ver a qué hora juegas, contra quién y en qué cancha. Los marcadores salen al terminar cada partido.</p>
+  </div>
+</header>
+
+<!-- ========== SCHEDULE ========== -->
+<section class="section sched-section">
+  <div class="wrap">
+
+    <div class="sched-bar">
+      <div class="adm-tabs sched-divs" id="divTabs" role="tablist" aria-label="División"></div>
+      <label class="sched-team">
+        <span data-i18n="sc_team_label">Tu equipo</span>
+        <select id="teamPick"><option value="" data-i18n="sc_team_all">Todos los equipos</option></select>
+      </label>
+    </div>
+
+    <div class="sched-views" role="tablist" aria-label="Vista">
+      <button type="button" class="sched-view active" data-view="games" role="tab" aria-selected="true" data-i18n="sc_view_games">Partidos</button>
+      <button type="button" class="sched-view" data-view="results" role="tab" aria-selected="false" data-i18n="sc_view_results">Resultados</button>
+      <button type="button" class="sched-view" data-view="table" role="tab" aria-selected="false" data-i18n="sc_view_table">Tabla</button>
+    </div>
+
+    <div id="sched" class="sched" aria-live="polite">
+      <p class="sched-empty" data-i18n="sc_loading">Cargando el calendario…</p>
+    </div>
+
+    <p class="sched-live"><span class="sched-dot" aria-hidden="true"></span><span data-i18n="sc_live">Se actualiza solo cada minuto.</span></p>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid footer-grid--slim">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><img src="assets/logo.jpg" alt="" class="logo-mark" /><span class="logo-word"><span class="l1">LAS VEGAS</span><span class="l2">SOCCER LEAGUE</span></span></a>
+        <p data-i18n="footer_about">Liga de fútbol amateur en Las Vegas, Nevada. Organizada por y para la comunidad futbolera del valle.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_nav_h">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="index.html" data-i18n="nav_home">Inicio</a></li>
+          <li><a href="rules.html" data-i18n="nav_rules">Reglamento</a></li>
+          <li><a href="calendario.html" data-i18n="nav_schedule">Calendario</a></li>
+          <li><a href="costos.html" data-i18n="nav_costs">Costos</a></li>
+          <li><a href="registro.html" data-i18n="nav_register">Registrarme</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_h">Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+17028319474">702-831-9474</a></li>
+          <li><a href="mailto:info.lvsleague@gmail.com">info.lvsleague@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/lvsleague" target="_blank" rel="noopener">@lvsleague</a></li>
+          <li><span data-i18n="footer_city">Las Vegas, NV</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Las Vegas Soccer League</span>
+      <span class="footer-legal"><a href="privacidad.html" data-i18n="footer_privacy">Privacidad</a><span aria-hidden="true">·</span><a href="terminos.html" data-i18n="footer_terms">Términos</a></span>
+      <span data-i18n="footer_made">Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+<script src="js/league-config.js"></script>
+<script src="js/calendario.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<!-- Vercel Web Analytics — cookieless page counts, no personal data -->
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
