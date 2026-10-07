@@ -2682,3 +2682,9 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .rf-status.is-ok { color: var(--green); }
 .rf-status.is-err { color: var(--maroon); }
 .rf-foot .gx-btn { padding: 11px 20px; font-size: .92rem; }
+
+/* "Sample games" notice on /calendario?demo */
+.sched-demo {
+  border-radius: 10px;
+  margin-bottom: 18px;
+}

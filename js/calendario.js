@@ -17,6 +17,10 @@
   const KEY_TEAM = 'lvsl-sched-team';
   const POLL_MS = 60 * 1000;
 
+  // ?demo shows made-up games (js/sample-games.js) and never calls the API,
+  // so the page can be shown to someone before any real game exists.
+  const DEMO = new URLSearchParams(location.search).has('demo');
+
   let games = [];
   let loaded = false;
   let failed = false;
@@ -249,6 +253,15 @@
 
   /* ---------- load ---------- */
   async function load() {
+    if (DEMO) {
+      games = (window.LVSL_SAMPLE_GAMES || []).slice();
+      if (!loaded) {
+        loaded = true;
+        division = defaultDivision();
+        team = store.get(KEY_TEAM);
+      }
+      return render();
+    }
     try {
       const res = await fetch('/api/games', { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error('HTTP ' + res.status);

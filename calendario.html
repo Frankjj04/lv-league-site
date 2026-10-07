@@ -71,6 +71,11 @@
 <section class="section sched-section">
   <div class="wrap">
 
+    <div class="adm-banner sched-demo" id="demoBanner" hidden>
+      <strong data-i18n="sc_demo_title">PARTIDOS DE EJEMPLO</strong>
+      <span data-i18n="sc_demo_text">Estos partidos y marcadores son inventados, solo para mostrar cómo se verá el calendario.</span>
+    </div>
+
     <div class="sched-bar">
       <div class="adm-tabs sched-divs" id="divTabs" role="tablist" aria-label="División"></div>
       <label class="sched-team">
@@ -132,6 +137,13 @@
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 <script src="js/league-config.js"></script>
+<script>
+  // Demo mode: load the made-up games and show the banner (see js/calendario.js).
+  if (new URLSearchParams(location.search).has('demo')) {
+    document.getElementById('demoBanner').hidden = false;
+    document.write('<script src="js/sample-games.js"><\/script>');
+  }
+</script>
 <script src="js/calendario.js"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
