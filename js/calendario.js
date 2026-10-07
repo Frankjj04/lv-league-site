@@ -28,6 +28,11 @@
   let team = '';
   let view = 'games';
 
+  // Results show the most recent game days first; "Ver más" adds this many
+  // more each tap. Most divisions play one night a week, so 3 ≈ 3 weeks.
+  const RESULT_DAYS = 3;
+  let resultDays = RESULT_DAYS;
+
   /* ---------- small helpers ---------- */
   const esc = (s) => String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -189,7 +194,14 @@
     const list = forTeam(inDivision())
       .filter((g) => g.status === 'final' || (g.date < now && g.status !== 'cancelled'))
       .sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
-    return list.length ? byDay(list) : empty('sc_empty_results');
+    if (!list.length) return empty('sc_empty_results');
+
+    const days = Array.from(new Set(list.map((g) => g.date)));
+    const shown = new Set(days.slice(0, resultDays));
+    return byDay(list.filter((g) => shown.has(g.date))) +
+      (days.length > resultDays
+        ? '<button type="button" class="sched-more" data-more>' + esc(t('sc_more')) + '</button>'
+        : '');
   }
 
   /* ---------- standings ---------- */
@@ -286,6 +298,7 @@
     if (!b) return;
     division = b.dataset.div;
     team = '';
+    resultDays = RESULT_DAYS;
     store.set(KEY_DIV, division);
     store.set(KEY_TEAM, '');
     render();
@@ -293,12 +306,19 @@
 
   $('teamPick').addEventListener('change', (e) => {
     team = e.target.value;
+    resultDays = RESULT_DAYS;
     store.set(KEY_TEAM, team);
     render();
   });
 
   document.querySelectorAll('.sched-view').forEach((b) => {
-    b.addEventListener('click', () => { view = b.dataset.view; render(); });
+    b.addEventListener('click', () => { view = b.dataset.view; resultDays = RESULT_DAYS; render(); });
+  });
+
+  $('sched').addEventListener('click', (e) => {
+    if (!e.target.closest('[data-more]')) return;
+    resultDays += RESULT_DAYS;
+    render();
   });
 
   // main.js switches the language by setting <html lang>; follow it.

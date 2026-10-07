@@ -2419,6 +2419,22 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   background: var(--orange);
 }
 
+/* "Ver más resultados" under the latest results */
+.sched-more {
+  display: block;
+  margin: 8px auto 0;
+  padding: 12px 26px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sched-more:hover { border-color: var(--orange); }
+
 .sched-empty {
   padding: 46px 20px;
   text-align: center;
