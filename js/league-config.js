@@ -34,7 +34,13 @@ window.LVSL_CONFIG = {
        id      — NEVER change once players have registered; it is stored on the row
        es / en — what the player sees in the dropdown
        format  — shown under the dropdown, purely informational
-       teams   — alphabetical, so a player can find theirs in a long list */
+       teams   — alphabetical, so a player can find theirs in a long list
+       standingsStart — optional: the coach's table from before the site's
+                 schedule began, so the standings continue from it instead of
+                 zero. One entry per team, names spelled as in `teams`:
+                   'LV UNITED': { p: 5, w: 3, d: 1, l: 1, gf: 12, ga: 6 },
+                 p played, w/d/l won/drawn/lost, gf/ga goals for/against,
+                 adj (optional) points to add or take away beyond 3/1/0. */
   divisions: [
     {
       id: 'martes-over35',

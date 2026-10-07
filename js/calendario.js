@@ -204,14 +204,24 @@
         : '');
   }
 
-  /* ---------- standings ---------- */
+  /* ---------- standings ----------
+     A division that was already under way when the site's schedule started
+     carries its table over in league-config.js (`standingsStart`): each
+     team's numbers so far. Games entered on the site add on top. `adj` is
+     for points that don't follow 3/1/0 (a penalty, a forfeit). */
+  const startTable = () => (DIVISIONS.find((x) => x.id === division) || {}).standingsStart || {};
+
   function standings() {
     const rows = new Map();
     const row = (n) => {
-      if (!rows.has(n)) rows.set(n, { team: n, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0 });
+      if (!rows.has(n)) rows.set(n, { team: n, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, adj: 0 });
       return rows.get(n);
     };
     divisionTeams().forEach(row);
+    Object.entries(startTable()).forEach(([n, s]) => {
+      const r = row(n);
+      ['p', 'w', 'd', 'l', 'gf', 'ga', 'adj'].forEach((k) => { r[k] += Number(s[k]) || 0; });
+    });
 
     inDivision().filter((g) => g.status === 'final').forEach((g) => {
       const h = row(g.home), a = row(g.away);
@@ -224,12 +234,12 @@
     });
 
     return Array.from(rows.values())
-      .map((r) => Object.assign(r, { gd: r.gf - r.ga, pts: r.w * 3 + r.d }))
+      .map((r) => Object.assign(r, { gd: r.gf - r.ga, pts: r.w * 3 + r.d + r.adj }))
       .sort((x, y) => y.pts - x.pts || y.gd - x.gd || y.gf - x.gf || x.team.localeCompare(y.team));
   }
 
   function renderTable() {
-    if (!inDivision().some((g) => g.status === 'final')) {
+    if (!inDivision().some((g) => g.status === 'final') && !Object.keys(startTable()).length) {
       return '<p class="sched-empty">' + esc(t('sc_empty_table')) + '</p>';
     }
     const cols = ['p', 'w', 'd', 'l', 'gf', 'ga', 'gd', 'pts'];
