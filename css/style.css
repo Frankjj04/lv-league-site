@@ -1537,6 +1537,28 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   color: #fff;
 }
 
+/* Jugadores | Partidos — the two halves of the coach's page */
+.adm-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 0 22px 12px;
+  background: var(--ink);
+}
+.adm-switch-btn {
+  padding: 11px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .7);
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+.adm-switch-btn.active { background: var(--orange); color: var(--ink); }
+.adm-switch-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
 .adm-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .adm-brand img { width: 40px; height: 40px; border-radius: 7px; object-fit: cover; }
 .adm-brand span { display: flex; flex-direction: column; line-height: 1.2; }
@@ -1931,7 +1953,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .cred-sheet { display: none; }
 
 @media print {
-  .adm-banner, .adm-head, .adm-main, .adm-sheet, .pend-box { display: none !important; }
+  .adm-banner, .adm-head, .adm-switch, .adm-main, .adm-sheet, .pend-box { display: none !important; }
 
   .admin-body { background: #fff; }
 
@@ -2003,6 +2025,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 
 @media (max-width: 700px) {
   .adm-head { padding: 12px 16px; }
+  .adm-switch { padding: 0 16px 12px; }
   .adm-main { padding: 20px 14px 70px; }
   .adm-controls { flex-direction: column; align-items: stretch; }
   .adm-search input { width: 100%; }

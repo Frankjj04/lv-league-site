@@ -55,6 +55,16 @@
       "source": "/ref",
       "destination": "/arbitro",
       "permanent": false
+    },
+    {
+      "source": "/admin-partidos",
+      "destination": "/admin?tab=partidos",
+      "permanent": false
+    },
+    {
+      "source": "/admin-partidos.html",
+      "destination": "/admin?tab=partidos",
+      "permanent": false
     }
   ],
   "headers": [

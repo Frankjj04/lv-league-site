@@ -59,8 +59,7 @@
   /* ---------- sign in ---------- */
   function showGate(msg) {
     $('gate').hidden = false;
-    $('admHead').hidden = true;
-    $('admMain').hidden = true;
+    ['admHead', 'admSwitch', 'admMain', 'gmMain'].forEach((id) => { $(id).hidden = true; });
     if (msg) { $('gateErr').textContent = msg; $('gateErr').hidden = false; }
     $('gatePass').focus();
   }
@@ -68,8 +67,46 @@
   function showRoster() {
     $('gate').hidden = true;
     $('admHead').hidden = false;
-    $('admMain').hidden = false;
+    $('admSwitch').hidden = false;
+    setPanel(firstPanel());
   }
+
+  /* ---------- Jugadores | Partidos ----------
+     One page, one password. The games tab lives in js/admin-partidos.js and
+     reloads its list every time it opens. ?tab=partidos (where the old
+     /admin-partidos link now lands) opens it directly; otherwise the coach
+     gets whichever tab he used last. */
+  const KEY_PANEL = 'lvsl-admin-panel';
+  const PANELS = ['jugadores', 'partidos'];
+
+  function firstPanel() {
+    const asked = new URLSearchParams(location.search).get('tab');
+    if (PANELS.includes(asked)) return asked;
+    try { const last = localStorage.getItem(KEY_PANEL); if (PANELS.includes(last)) return last; } catch (e) { /* private mode */ }
+    return 'jugadores';
+  }
+
+  function setPanel(name) {
+    const games = name === 'partidos';
+    $('admMain').hidden = games;
+    $('gmMain').hidden = !games;
+    $('plActions').hidden = games;
+    $('gmActions').hidden = !games;
+    $('admSwitch').querySelectorAll('[data-panel]').forEach((b) => {
+      const on = b.dataset.panel === name;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    try { localStorage.setItem(KEY_PANEL, name); } catch (e) { /* private mode */ }
+    if (games && window.LVSL_GAMES) window.LVSL_GAMES.show();
+  }
+
+  $('admSwitch').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-panel]');
+    if (b) setPanel(b.dataset.panel);
+  });
+
+  window.LVSL_ADMIN = { showGate };
 
   $('gateForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -93,12 +130,12 @@
     }
   });
 
-  $('outBtn').addEventListener('click', async () => {
+  document.querySelectorAll('[data-signout]').forEach((b) => b.addEventListener('click', async () => {
     try { await fetch('/api/login', { method: 'DELETE' }); } catch (e) { /* sign out anyway */ }
     players = [];
     showGate('');
     $('gateErr').hidden = true;
-  });
+  }));
 
   /* ---------- load ---------- */
   async function load() {

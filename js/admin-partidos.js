@@ -1,8 +1,10 @@
 /* =========================================
    LAS VEGAS SOCCER LEAGUE — Games page (coach)
 
-   Behind the same password as the roster. Adds, edits and removes games
-   and puts scores on them. Everything saved here is public on /calendario.
+   The "Partidos" tab of /admin. admin.js owns the password gate and the
+   tab switch, and calls LVSL_GAMES.show() when this tab opens. Adds, edits
+   and removes games and puts scores on them. Everything saved here is
+   public on /calendario.
    ========================================= */
 
 'use strict';
@@ -65,77 +67,26 @@
       body: body ? JSON.stringify(body) : undefined,
     });
     const data = await res.json().catch(() => ({}));
-    if (res.status === 401) { showGate('Se cerró tu sesión. Entra otra vez.'); throw new Error('signed_out'); }
+    if (res.status === 401) { window.LVSL_ADMIN.showGate('Se cerró tu sesión. Entra otra vez.'); throw new Error('signed_out'); }
     if (!res.ok) throw new Error(data.message || 'No se pudo guardar. Inténtalo otra vez.');
     return data;
   }
-
-  /* ---------- sign in (same password and session as the roster) ---------- */
-  function showGate(msg) {
-    $('gate').hidden = false;
-    $('admHead').hidden = true;
-    $('admMain').hidden = true;
-    $('gateErr').hidden = !msg;
-    $('gateErr').textContent = msg || '';
-    $('gatePass').focus();
-  }
-
-  function showPage() {
-    $('gate').hidden = true;
-    $('admHead').hidden = false;
-    $('admMain').hidden = false;
-  }
-
-  $('gateForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    $('gateBtn').disabled = true;
-    try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: $('gatePass').value }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) { showGate(data.message || 'Contraseña incorrecta.'); return; }
-      $('gatePass').value = '';
-      showPage();
-      await load();
-    } catch (err) {
-      showGate('No se pudo conectar. Inténtalo otra vez.');
-    } finally {
-      $('gateBtn').disabled = false;
-    }
-  });
-
-  $('outBtn').addEventListener('click', async () => {
-    try { await fetch('/api/login', { method: 'DELETE' }); } catch (e) { /* sign out anyway */ }
-    games = [];
-    showGate('');
-  });
 
   /* ---------- load ---------- */
   async function load() {
     try {
       const res = await fetch('/api/games?full=1', { headers: { Accept: 'application/json' } });
+      if (res.status === 401) { window.LVSL_ADMIN.showGate('Se cerró tu sesión. Entra otra vez.'); return; }
       if (!res.ok) throw new Error('HTTP ' + res.status);
       games = await res.json();
     } catch (e) {
       games = [];
       $('list').innerHTML = '';
-      $('empty').hidden = false;
-      $('empty').innerHTML = '<strong>No se pudieron cargar los partidos.</strong>Revisa tu internet y recarga la página.';
+      $('gEmpty').hidden = false;
+      $('gEmpty').innerHTML = '<strong>No se pudieron cargar los partidos.</strong>Revisa tu internet y recarga la página.';
       return;
     }
     render();
-  }
-
-  async function start() {
-    try {
-      const res = await fetch('/api/login', { headers: { Accept: 'application/json' } });
-      const state = res.ok ? await res.json() : null;
-      if (state && state.signedIn) { showPage(); await load(); return; }
-    } catch (e) { /* fall through to the gate */ }
-    showGate('');
   }
 
   /* ---------- list ---------- */
@@ -161,7 +112,7 @@
     const next = inDiv.filter((g) => g.date >= now && g.status !== 'final').length;
     const missing = inDiv.filter(isMissing).length;
     const played = inDiv.filter((g) => g.status === 'final').length;
-    $('stats').innerHTML =
+    $('gStats').innerHTML =
       '<div class="adm-stat is-note"><span class="adm-stat-n">' + next + '</span><span class="adm-stat-l">Próximos</span></div>' +
       '<div class="adm-stat' + (missing ? ' is-warn' : ' is-good') + '"><span class="adm-stat-n">' + missing + '</span><span class="adm-stat-l">Sin marcador</span></div>' +
       '<div class="adm-stat is-good"><span class="adm-stat-n">' + played + '</span><span class="adm-stat-l">Jugados</span></div>';
@@ -172,7 +123,7 @@
     const tab = (id, label) =>
       '<button type="button" class="adm-tab' + (id === activeDivision ? ' active' : '') + '" data-div="' + esc(id) + '">' +
       esc(label) + ' <span class="adm-tab-n">' + count(id) + '</span></button>';
-    $('divTabs').innerHTML = tab('all', 'Todas') + DIVISIONS.map((d) => tab(d.id, d.es)).join('');
+    $('gDivTabs').innerHTML = tab('all', 'Todas') + DIVISIONS.map((d) => tab(d.id, d.es)).join('');
     document.querySelectorAll('#whenTabs .adm-tab').forEach((b) => b.classList.toggle('active', b.dataset.when === when));
   }
 
@@ -215,9 +166,9 @@
       '<ul class="gx-list">' + gs.map(row).join('') + '</ul></section>'
     ).join('');
 
-    $('empty').hidden = list.length > 0;
+    $('gEmpty').hidden = list.length > 0;
     if (!list.length) {
-      $('empty').innerHTML = when === 'missing'
+      $('gEmpty').innerHTML = when === 'missing'
         ? '<strong>Todo al día.</strong>No falta ningún marcador.'
         : when === 'played'
           ? '<strong>Todavía no hay partidos jugados.</strong>'
@@ -225,7 +176,7 @@
     }
   }
 
-  $('divTabs').addEventListener('click', (e) => {
+  $('gDivTabs').addEventListener('click', (e) => {
     const b = e.target.closest('[data-div]');
     if (b) { activeDivision = b.dataset.div; render(); }
   });
@@ -300,10 +251,10 @@
 
   const closeGame = () => { $('gameSheet').hidden = true; editing = null; };
 
-  $('addBtn').addEventListener('click', () => openGame(null));
+  $('gAddBtn').addEventListener('click', () => openGame(null));
   $('g-division').addEventListener('change', () => { fillTeams($('g-division').value); syncScoreRow(); });
   ['g-status', 'g-home', 'g-away'].forEach((id) => $(id).addEventListener('change', syncScoreRow));
-  document.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', closeGame));
+  document.querySelectorAll('[data-close-game]').forEach((el) => el.addEventListener('click', closeGame));
 
   function formBody() {
     return {
@@ -405,5 +356,7 @@
     else if (!$('gameSheet').hidden) closeGame();
   });
 
-  start();
+  /* Called by admin.js each time the Partidos tab opens, so a score a referee
+     typed since the last look is already there. */
+  window.LVSL_GAMES = { show: load };
 })();
