@@ -40,13 +40,13 @@ window.LVSL_SAMPLE_GAMES = (function () {
 
   return [
     g(M, 'LV UNITED', 'JALISCO',   tue[0], '19:00', F1, played(tue[0], fin(3, 1))),
-    g(M, 'LA BANDA',  'MARINEROS', tue[0], '20:00', F1, played(tue[0], fin(2, 2))),
+    g(M, 'LA BANDA',  'NATIONAL' , tue[0], '20:00', F1, played(tue[0], fin(2, 2))),
     g(M, 'LEGACY',    'GUERRERO',  tue[0], '21:00', F2, played(tue[0], fin(0, 4))),
     g(M, 'JALISCO',   'LA BANDA',  tue[1], '19:00', F1, played(tue[1], fin(1, 2))),
     g(M, 'GUERRERO',  'LV UNITED', tue[1], '20:00', F1, played(tue[1], fin(2, 2))),
-    g(M, 'MARINEROS', 'LEGACY',    tue[1], '21:00', F2, played(tue[1], fin(5, 3))),
+    g(M, 'NATIONAL' , 'LEGACY',    tue[1], '21:00', F2, played(tue[1], fin(5, 3))),
     g(M, 'LV UNITED', 'LA BANDA',  tue[2], '19:00', F1),
-    g(M, 'GUERRERO',  'MARINEROS', tue[2], '20:00', F1),
+    g(M, 'GUERRERO',  'NATIONAL' , tue[2], '20:00', F1),
     g(M, 'JALISCO',   'LEGACY',    tue[2], '21:00', F2),
 
     g(W, 'AJAX',         'AMERICA',      wed[0], '19:30', F2, played(wed[0], fin(2, 1))),
