@@ -69,8 +69,8 @@ window.LVSL_CONFIG = {
         'UNION',
       ],
       // The coach's table as of 2026-10-07; games on the site add on top.
-      // Waiting on him about LV KINGS, FLAMING FC, GAP, AC MILAN,
-      // REAL CUBA FC and CHIVAS NLV, which are in his tables but not here.
+      // Where his numbers didn't add up he said to use the correct ones, so
+      // games played = W+D+L, and goal difference is always worked out.
       standingsStart: {
         'LOS ÑOÑOS': { p: 18, w: 14, d: 3, l: 1, gf: 55, ga: 19 },
         'BAYERN MUNICH': { p: 18, w: 13, d: 0, l: 5, gf: 45, ga: 29 },
@@ -99,21 +99,25 @@ window.LVSL_CONFIG = {
       en: 'Tuesday — Open',
       format: '8v8',
       teams: [
+        'AC MILAN',
         'CHIVAHERMANOS',
+        'FLAMING FC',
+        'GAP',
         'GUERRERO',
         'JALISCO',
         'LA BANDA',
         'LA BOLA 8',
         'LEGACY',
         'LV GAMBLERS',
+        'LV KINGS',
         'LV UNITED',
         'MARINEROS',
         'NATIONAL',
         'UNITED KINGS',
       ],
       // The coach's table as of 2026-10-07; games on the site add on top.
-      // Waiting on him about LV KINGS, FLAMING FC, GAP, AC MILAN,
-      // REAL CUBA FC and CHIVAS NLV, which are in his tables but not here.
+      // Where his numbers didn't add up he said to use the correct ones, so
+      // games played = W+D+L, and goal difference is always worked out.
       standingsStart: {
         'JALISCO': { p: 17, w: 12, d: 2, l: 3, gf: 80, ga: 43 },
         'LEGACY': { p: 18, w: 12, d: 2, l: 4, gf: 67, ga: 41 },
@@ -123,8 +127,12 @@ window.LVSL_CONFIG = {
         'LV GAMBLERS': { p: 14, w: 5, d: 6, l: 3, gf: 34, ga: 33 },
         'LA BOLA 8': { p: 14, w: 6, d: 2, l: 6, gf: 31, ga: 36 },
         'LV UNITED': { p: 16, w: 6, d: 1, l: 9, gf: 26, ga: 53 },
-        'CHIVAHERMANOS': { p: 16, w: 4, d: 6, l: 7, gf: 43, ga: 63 },
+        'CHIVAHERMANOS': { p: 17, w: 4, d: 6, l: 7, gf: 43, ga: 63 },
         'GUERRERO': { p: 17, w: 3, d: 3, l: 11, gf: 39, ga: 56 },
+        'LV KINGS': { p: 18, w: 5, d: 2, l: 11, gf: 42, ga: 54 },
+        'FLAMING FC': { p: 13, w: 4, d: 2, l: 7, gf: 25, ga: 63 },
+        'GAP': { p: 3, w: 0, d: 0, l: 3, gf: 0, ga: 3 },
+        'AC MILAN': { p: 18, w: 5, d: 3, l: 10, gf: 43, ga: 47 },
       },
     },
     {
@@ -137,6 +145,7 @@ window.LVSL_CONFIG = {
         'AMERICA',
         'BAD COMPANY',
         'BORUSSIA DORTMUND',
+        'CHIVAS NLV',
         'EL COMBO DE DRAKE',
         'ELITE',
         'FC BARCELONA',
@@ -147,14 +156,15 @@ window.LVSL_CONFIG = {
         'MINEROS',
         'PROS',
         'PUMAS FC',
+        'REAL CUBA FC',
         'RESACA FC',
         'RIVALS FC',
         'SANTOS',
         'WINCHESTER',
       ],
       // The coach's table as of 2026-10-07; games on the site add on top.
-      // Waiting on him about LV KINGS, FLAMING FC, GAP, AC MILAN,
-      // REAL CUBA FC and CHIVAS NLV, which are in his tables but not here.
+      // Where his numbers didn't add up he said to use the correct ones, so
+      // games played = W+D+L, and goal difference is always worked out.
       standingsStart: {
         'RESACA FC': { p: 2, w: 2, d: 0, l: 0, gf: 10, ga: 1 },
         'MINEROS': { p: 2, w: 2, d: 0, l: 0, gf: 13, ga: 4 },
@@ -171,6 +181,8 @@ window.LVSL_CONFIG = {
         'LACKRA FC': { p: 2, w: 0, d: 0, l: 2, gf: 1, ga: 3 },
         'ELITE': { p: 1, w: 0, d: 0, l: 1, gf: 4, ga: 12 },
         'PUMAS FC': { p: 2, w: 0, d: 0, l: 2, gf: 3, ga: 12 },
+        'REAL CUBA FC': { p: 1, w: 0, d: 0, l: 1, gf: 1, ga: 2 },
+        'CHIVAS NLV': { p: 2, w: 0, d: 0, l: 2, gf: 0, ga: 8 },
       },
     },
     {
@@ -200,8 +212,8 @@ window.LVSL_CONFIG = {
         'VERACRUZ',
       ],
       // The coach's table as of 2026-10-07; games on the site add on top.
-      // Waiting on him about LV KINGS, FLAMING FC, GAP, AC MILAN,
-      // REAL CUBA FC and CHIVAS NLV, which are in his tables but not here.
+      // Where his numbers didn't add up he said to use the correct ones, so
+      // games played = W+D+L, and goal difference is always worked out.
       standingsStart: {
         'HOOLIGANS': { p: 19, w: 13, d: 2, l: 4, gf: 32, ga: 19 },
         'TORO FC': { p: 19, w: 12, d: 4, l: 3, gf: 49, ga: 16 },
@@ -215,7 +227,7 @@ window.LVSL_CONFIG = {
         'SIN CITY': { p: 19, w: 7, d: 4, l: 8, gf: 29, ga: 27 },
         'FC UNITED': { p: 19, w: 6, d: 7, l: 6, gf: 25, ga: 24 },
         'TOROS NEZA': { p: 19, w: 8, d: 1, l: 10, gf: 28, ga: 27 },
-        'TIGRES DEL SUR': { p: 18, w: 7, d: 3, l: 10, gf: 23, ga: 25 },
+        'TIGRES DEL SUR': { p: 20, w: 7, d: 3, l: 10, gf: 23, ga: 25 },
         'ANTIGUA FC': { p: 19, w: 6, d: 4, l: 9, gf: 24, ga: 31 },
         'LOS ANGELES': { p: 19, w: 4, d: 5, l: 10, gf: 18, ga: 52 },
         'DVO. MI RENDICION': { p: 18, w: 4, d: 4, l: 10, gf: 23, ga: 36 },
