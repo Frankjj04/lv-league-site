@@ -302,10 +302,11 @@
       </div>
 
       <div class="field">
-        <label for="g-field">Cancha</label>
+        <label for="g-field" id="g-fieldLabel">Cancha</label>
+        <select id="g-fieldPick" hidden></select>
         <input type="text" id="g-field" maxlength="120" list="g-fields" placeholder="Nombre del parque o cancha" />
         <datalist id="g-fields"></datalist>
-        <p class="field-help">Los jugadores pueden tocarla para abrir el mapa. Escríbela igual cada vez.</p>
+        <p class="field-help" id="g-fieldHelp">Los jugadores pueden tocarla para abrir el mapa. Escríbela igual cada vez.</p>
       </div>
 
       <div class="field">

@@ -212,10 +212,33 @@
     });
   }
 
-  function fillFields() {
-    const seen = Array.from(new Set(games.map((g) => g.field).filter(Boolean))).sort();
-    $('g-fields').innerHTML = seen.map((f) => '<option value="' + esc(f) + '">').join('');
+  /* A division with its own field list gets a pick-list; the others keep the
+     box to type in, suggesting what was typed before. A field on an old game
+     that isn't in the list stays as an option, so editing never changes it. */
+  function fillFields(divId, keep) {
+    const d = divisionOf(divId);
+    const list = (d && d.fields) || [];
+    const pick = list.length > 0;
+    $('g-fieldPick').hidden = !pick;
+    $('g-field').hidden = pick;
+    $('g-fieldLabel').htmlFor = pick ? 'g-fieldPick' : 'g-field';
+    $('g-fieldHelp').textContent = pick
+      ? 'Los jugadores pueden tocarla para abrir el mapa del parque.'
+      : 'Los jugadores pueden tocarla para abrir el mapa. Escríbela igual cada vez.';
+    if (pick) {
+      const names = list.slice();
+      if (keep && !names.includes(keep)) names.push(keep);
+      $('g-fieldPick').innerHTML = '<option value="">Elige…</option>' +
+        names.map((n) => '<option>' + esc(n) + '</option>').join('');
+      $('g-fieldPick').value = keep || '';
+    } else {
+      const seen = Array.from(new Set(games.map((g) => g.field).filter(Boolean))).sort();
+      $('g-fields').innerHTML = seen.map((f) => '<option value="' + esc(f) + '">').join('');
+      $('g-field').value = keep || '';
+    }
   }
+
+  const fieldValue = () => ($('g-fieldPick').hidden ? $('g-field') : $('g-fieldPick')).value;
 
   function syncScoreRow() {
     $('g-scoreRow').hidden = $('g-status').value !== 'final';
@@ -231,12 +254,11 @@
                                : 'Sale en el calendario en cuanto lo guardes.';
     $('g-division').value = v.division || (activeDivision !== 'all' ? activeDivision : '');
     fillTeams($('g-division').value, [v.home, v.away]);
-    fillFields();
+    fillFields($('g-division').value, v.field || '');
     $('g-home').value = v.home || '';
     $('g-away').value = v.away || '';
     $('g-date').value = v.date || '';
     $('g-time').value = v.time || '';
-    $('g-field').value = v.field || '';
     $('g-status').value = v.status || 'scheduled';
     $('g-hs').value = v.homeScore == null ? '' : v.homeScore;
     $('g-as').value = v.awayScore == null ? '' : v.awayScore;
@@ -252,7 +274,11 @@
   const closeGame = () => { $('gameSheet').hidden = true; editing = null; };
 
   $('gAddBtn').addEventListener('click', () => openGame(null));
-  $('g-division').addEventListener('change', () => { fillTeams($('g-division').value); syncScoreRow(); });
+  $('g-division').addEventListener('change', () => {
+    fillTeams($('g-division').value);
+    fillFields($('g-division').value, '');
+    syncScoreRow();
+  });
   ['g-status', 'g-home', 'g-away'].forEach((id) => $(id).addEventListener('change', syncScoreRow));
   document.querySelectorAll('[data-close-game]').forEach((el) => el.addEventListener('click', closeGame));
 
@@ -263,7 +289,7 @@
       time: $('g-time').value,
       home: $('g-home').value,
       away: $('g-away').value,
-      field: $('g-field').value,
+      field: fieldValue(),
       status: $('g-status').value,
       homeScore: $('g-hs').value,
       awayScore: $('g-as').value,

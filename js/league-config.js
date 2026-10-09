@@ -40,10 +40,24 @@ window.LVSL_CONFIG = {
                  zero. One entry per team, names spelled as in `teams`:
                    'LV UNITED': { p: 5, w: 3, d: 1, l: 1, gf: 12, ga: 6 },
                  p played, w/d/l won/drawn/lost, gf/ga goals for/against,
-                 adj (optional) points to add or take away beyond 3/1/0. */
+                 adj (optional) points to add or take away beyond 3/1/0.
+       fields  — optional: the fields this division plays on. The coach picks
+                 one from this list when he adds a game; a division without
+                 it gets a box to type in. Each name must start with one of
+                 the `places` below, so the map opens the right park. */
+  /* Where the fields are. A game's field opens the map at the address of the
+     place its name starts with (longest match first, so "Freedom Park 2"
+     isn't mistaken for another park). */
+  places: [
+    { name: 'KZ', address: 'Kellogg Zaher Sports Complex, 7901 W Washington Ave, Las Vegas, NV 89128' },
+    { name: 'Freedom Park', address: 'Gary Reese Freedom Park, 850 N Mojave Rd, Las Vegas, NV 89101' },
+  ],
+
   divisions: [
     {
       id: 'martes-over35',
+      // Fields the coach picks from when he adds a game (sent 2026-10-09).
+      fields: ['KZ 3 y 4 · Campo 1', 'KZ 3 y 4 · Campo 2', 'KZ 3 y 4 · Campo 3', 'KZ 3 y 4 · Campo 4', 'KZ 3 y 4 · Campo 5', 'KZ 3 y 4 · Campo 6'],
       es: 'Martes — Over 35',
       en: 'Tuesday — Over 35',
       format: '8v8',
@@ -95,6 +109,8 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'martes-open',
+      // Fields the coach picks from when he adds a game (sent 2026-10-09).
+      fields: ['KZ 1 · Campo 1', 'KZ 1 · Campo 2'],
       es: 'Martes — Open',
       en: 'Tuesday — Open',
       format: '8v8',
@@ -136,6 +152,8 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'miercoles-premier',
+      // Fields the coach picks from when he adds a game (sent 2026-10-09).
+      fields: ['Freedom Park · Campo 1', 'Freedom Park · Campo 2', 'Freedom Park · Campo 3', 'Freedom Park · Campo 4', 'Freedom Park · Campo 5', 'Freedom Park · Campo 6'],
       es: 'Miércoles — Open',
       en: 'Wednesday — Open',
       format: '8v8',
@@ -184,6 +202,8 @@ window.LVSL_CONFIG = {
     },
     {
       id: 'viernes-open',
+      // Fields the coach picks from when he adds a game (sent 2026-10-09).
+      fields: ['Freedom Park 2 · Campo 1', 'Freedom Park 2 · Campo 2', 'Freedom Park 2 · Campo 3'],
       es: 'Viernes — Open',
       en: 'Friday — Open',
       format: '8v8',

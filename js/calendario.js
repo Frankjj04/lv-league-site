@@ -77,8 +77,14 @@
   }
 
   const divLabel = (d) => (lang() === 'en' ? d.en : d.es);
-  const mapsUrl = (place) => 'https://www.google.com/maps/search/?api=1&query=' +
-    encodeURIComponent(place + ', Las Vegas, NV');
+  /* A field from the coach's list ("KZ 1 · Campo 2") opens its park's address;
+     anything else he typed is searched as written. */
+  const PLACES = (window.LVSL_CONFIG.places || []).slice().sort((a, b) => b.name.length - a.name.length);
+  const mapsUrl = (field) => {
+    const place = PLACES.find((p) => field.startsWith(p.name));
+    return 'https://www.google.com/maps/search/?api=1&query=' +
+      encodeURIComponent(place ? place.address : field + ', Las Vegas, NV');
+  };
 
   const inDivision = () => games.filter((g) => g.division === division);
   const forTeam = (list) => (team ? list.filter((g) => g.home === team || g.away === team) : list);
