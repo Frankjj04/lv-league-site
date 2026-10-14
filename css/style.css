@@ -1952,8 +1952,40 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 /* ---------- printable credentials ---------- */
 .cred-sheet { display: none; }
 
+.team-print {
+  margin-left: auto;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.team-print:hover { color: var(--ink); border-color: var(--text-mute); }
+
+.pr-choices { display: grid; gap: 10px; margin: 18px 0 16px; }
+.pr-choice {
+  display: grid;
+  gap: 3px;
+  text-align: left;
+  font: inherit;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.pr-choice strong { font-size: 16px; color: var(--ink); }
+.pr-choice span { font-size: 13.5px; color: var(--text-dim); }
+.pr-choice:hover:not(:disabled) { border-color: var(--orange); background: var(--orange-soft); }
+.pr-choice:disabled { opacity: .45; cursor: not-allowed; }
+.pr-tip { font-size: 13.5px; line-height: 1.5; color: var(--text-dim); background: var(--surface-2); border-radius: 10px; padding: 12px 14px; margin: 0; }
+
 @media print {
-  .adm-banner, .adm-head, .adm-switch, .adm-main, .adm-sheet, .pend-box { display: none !important; }
+  .adm-banner, .adm-head, .adm-switch, .adm-main, .adm-sheet, .pend-box, .gx-saved { display: none !important; }
 
   .admin-body { background: #fff; }
 
@@ -2020,7 +2052,38 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
     padding-top: 4pt;
   }
 
-  @page { margin: .35in; }
+  .cred-sheet, .cred-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* Magicard 300: each card is its own CR80 page, printed edge to edge, so no
+     outline or rounded corners (the blank card already has them). The page
+     size itself is set from js/admin.js. */
+  body[data-print="card"] .cred-sheet { display: block; padding: 0; }
+  body[data-print="card"] .cred {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    break-after: page;
+    page-break-after: always;
+  }
+  body[data-print="card"] .cred:last-child { break-after: auto; page-break-after: auto; }
+  body[data-print="card"] .cred-top {
+    background: #0B0B0C;
+    border-bottom: 3pt solid #FC8C00;
+    padding: .12in .14in;
+    margin-bottom: .13in;
+    gap: 7pt;
+  }
+  body[data-print="card"] .cred-crest { width: 26pt; height: 26pt; }
+  body[data-print="card"] .cred-league { color: #fff; font-size: 10pt; }
+  body[data-print="card"] .cred-photo { width: 1.25in; height: 1.55in; margin-bottom: .09in; }
+  body[data-print="card"] .cred-name { font-size: 15pt; padding: 0 .1in; }
+  body[data-print="card"] .cred-team { font-size: 9pt; color: #0B0B0C; font-weight: 600; }
+  body[data-print="card"] .cred-foot {
+    font-size: 7pt;
+    padding: 5pt .14in .12in;
+    border-top: 0;
+    background: #FFF1DC;
+  }
 }
 
 @media (max-width: 700px) {

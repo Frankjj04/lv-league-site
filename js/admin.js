@@ -279,6 +279,7 @@
           '<h2 class="team-name">' + esc(team) + '</h2>' +
           '<span class="team-div">' + esc(divisionLabel(div)) + '</span>' +
           '<span class="team-count">' + members.length + ' jugador' + (members.length === 1 ? '' : 'es') + '</span>' +
+          '<button type="button" class="team-print" data-print-team="' + esc(key) + '">Imprimir credenciales</button>' +
         '</header>' +
         '<ul class="team-list">' + members.map(playerRow).join('') + '</ul>' +
       '</section>';
@@ -551,12 +552,26 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 
-  /* ---------- printable credentials ---------- */
-  $('printBtn').addEventListener('click', () => {
-    const list = visible();
-    if (!list.length) return;
+  /* ---------- printable credentials ----------
+     Two ways out: the league's Magicard 300 (one CR80 card per page, edge to
+     edge) or plain paper (9 per letter sheet to cut). Players without a photo
+     are left out, since a credential without one can't identify anyone. */
+  let printList = [];
 
-    $('credSheet').innerHTML = list.map((p) =>
+  function openPrint(list) {
+    printList = list.filter((p) => p.photo);
+    const missing = list.length - printList.length;
+    const n = printList.length;
+    $('prLede').textContent = (n ? n + ' credencial' + (n === 1 ? '' : 'es') : 'Nadie tiene foto todavía') +
+      (missing ? ' · ' + missing + ' sin foto no se imprime' + (missing === 1 ? '' : 'n') : '');
+    document.querySelectorAll('[data-print-mode]').forEach((b) => { b.disabled = !n; });
+    $('printSheet').hidden = false;
+  }
+
+  function closePrint() { $('printSheet').hidden = true; }
+
+  function printCards(mode) {
+    $('credSheet').innerHTML = printList.map((p) =>
       '<div class="cred">' +
         '<div class="cred-top">' +
           '<img src="assets/logo.jpg" alt="" class="cred-crest" />' +
@@ -571,7 +586,37 @@
         '</div>' +
       '</div>').join('');
 
-    window.print();
+    // @page can't be scoped by a class, so the page size for this print is
+    // swapped in here: one card per page for the Magicard, letter otherwise.
+    document.body.dataset.print = mode;
+    $('pageSize').textContent = mode === 'card'
+      ? '@page { size: 2.125in 3.375in; margin: 0; }'
+      : '@page { margin: .35in; }';
+    closePrint();
+
+    // Print only once every photo has loaded, or cards come out blank.
+    const imgs = [...$('credSheet').querySelectorAll('img')];
+    Promise.all(imgs.map((i) => i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; })))
+      .then(() => window.print());
+  }
+
+  $('printBtn').addEventListener('click', () => {
+    const list = visible();
+    if (list.length) openPrint(list);
+  });
+
+  // Each team's header has its own print button (playoffs go team by team).
+  $('roster').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-print-team]');
+    if (!b) return;
+    const [div, team] = b.dataset.printTeam.split('||');
+    openPrint(visible().filter((p) => p.division === div && p.team === team));
+  });
+
+  $('printSheet').addEventListener('click', (e) => {
+    if (e.target.closest('[data-close-print]')) return closePrint();
+    const b = e.target.closest('[data-print-mode]');
+    if (b && !b.disabled) printCards(b.dataset.printMode);
   });
 
   /* ---------- wire up ---------- */

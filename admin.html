@@ -376,8 +376,32 @@
 
 <div class="gx-saved" id="toast" hidden role="status"></div>
 
+<!-- ========== PRINT CREDENTIALS: card printer or paper ========== -->
+<div class="adm-sheet" id="printSheet" hidden role="dialog" aria-modal="true" aria-labelledby="prTitle">
+  <div class="adm-sheet-scrim" data-close-print></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close-print aria-label="Cerrar">&times;</button>
+    <h2 id="prTitle" class="add-title">Imprimir credenciales</h2>
+    <p class="add-lede" id="prLede"></p>
+    <div class="pr-choices">
+      <button type="button" class="pr-choice" data-print-mode="card">
+        <strong>Impresora de tarjetas</strong>
+        <span>Magicard 300 · una tarjeta por jugador, de orilla a orilla</span>
+      </button>
+      <button type="button" class="pr-choice" data-print-mode="sheet">
+        <strong>Hojas de papel</strong>
+        <span>Impresora normal · 9 por hoja, para recortar</span>
+      </button>
+    </div>
+    <p class="pr-tip"><strong>En la Magicard:</strong> en la ventana de imprimir elige la impresora
+      Magicard, tamaño de papel <strong>CR80</strong>, orientación <strong>vertical</strong>,
+      márgenes <strong>ninguno</strong> y escala <strong>100%</strong>.</p>
+  </div>
+</div>
+
 <!-- ========== PRINTABLE CREDENTIALS ========== -->
 <div class="cred-sheet" id="credSheet" aria-hidden="true"></div>
+<style id="pageSize"></style>
 
 <script src="js/league-config.js"></script>
 <script src="js/sample-roster.js"></script>
