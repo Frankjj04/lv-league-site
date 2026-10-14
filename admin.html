@@ -79,6 +79,10 @@
   <div class="adm-controls">
     <div class="adm-tabs" id="divTabs" role="tablist" aria-label="División"></div>
     <div class="adm-filters">
+      <label class="adm-team">
+        <span class="visually-hidden">Ver un equipo</span>
+        <select id="teamPick"><option value="">Todos los equipos</option></select>
+      </label>
       <label class="adm-search">
         <span class="visually-hidden">Buscar jugador o equipo</span>
         <input type="search" id="search" placeholder="Buscar jugador, equipo o teléfono…" autocomplete="off" />
@@ -88,6 +92,15 @@
         <span>Solo menores de edad</span>
       </label>
     </div>
+  </div>
+
+  <!-- Shown when one team is picked: print the whole team in one click. -->
+  <div class="team-bar" id="teamBar" hidden>
+    <div>
+      <strong id="teamBarName"></strong>
+      <span id="teamBarInfo"></span>
+    </div>
+    <button type="button" class="adm-btn adm-btn--primary" id="teamBarPrint">Imprimir credenciales del equipo</button>
   </div>
 
   <!-- ========== ROSTER ========== -->

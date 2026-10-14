@@ -15,6 +15,7 @@
   let players = [];
   let usingSample = false;
   let activeDivision = 'all';
+  let activeTeam = '';               // 'division||TEAM' from the team picker, '' = all
 
   // Left over from when sign-up included an online payment: a row that never
   // finished paying. None are created any more, but any old one stays off the roster.
@@ -185,6 +186,7 @@
     return players.filter((p) => {
       if (isPending(p)) return false;                    // not a member yet
       if (activeDivision !== 'all' && p.division !== activeDivision) return false;
+      if (activeTeam && p.division + '||' + p.team !== activeTeam) return false;
       if (minorsOnly && !isMinor(p)) return false;
       return matches(p, q);
     });
@@ -239,6 +241,38 @@
     });
   }
 
+  /* ---------- team picker ----------
+     Lists the teams that have players in the current division. Picking one
+     shows only that team, with a bar to print all of its credentials. */
+  function renderTeamPick() {
+    const keys = new Set(players
+      .filter((p) => !isPending(p) && (activeDivision === 'all' || p.division === activeDivision))
+      .map((p) => p.division + '||' + p.team));
+    if (activeTeam && !keys.has(activeTeam)) activeTeam = '';
+
+    const opts = [...keys].sort((a, b) => a.split('||')[1].localeCompare(b.split('||')[1], 'es') || a.localeCompare(b));
+    $('teamPick').innerHTML = '<option value="">Todos los equipos</option>' + opts.map((k) => {
+      const [div, team] = k.split('||');
+      // With every division showing, the same club can appear twice (SANTOS…).
+      const label = activeDivision === 'all' ? team + ' · ' + divisionLabel(div) : team;
+      return '<option value="' + esc(k) + '"' + (k === activeTeam ? ' selected' : '') + '>' + esc(label) + '</option>';
+    }).join('');
+  }
+
+  function renderTeamBar(list) {
+    $('teamBar').hidden = !activeTeam;
+    if (!activeTeam) return;
+    const [div, team] = activeTeam.split('||');
+    const withPhoto = list.filter((p) => p.photo).length;
+    $('teamBarName').textContent = team;
+    $('teamBarInfo').textContent = divisionLabel(div) + ' · ' + list.length + ' jugador' + (list.length === 1 ? '' : 'es') +
+      (withPhoto < list.length ? ' · ' + (list.length - withPhoto) + ' sin foto' : '');
+    $('teamBarPrint').disabled = !withPhoto;
+  }
+
+  $('teamPick').addEventListener('change', () => { activeTeam = $('teamPick').value; render(); });
+  $('teamBarPrint').addEventListener('click', () => openPrint(visible()));
+
   /* ---------- roster, grouped by team ---------- */
   function renderRoster(list) {
     const groups = new Map();
@@ -279,7 +313,8 @@
           '<h2 class="team-name">' + esc(team) + '</h2>' +
           '<span class="team-div">' + esc(divisionLabel(div)) + '</span>' +
           '<span class="team-count">' + members.length + ' jugador' + (members.length === 1 ? '' : 'es') + '</span>' +
-          '<button type="button" class="team-print" data-print-team="' + esc(key) + '">Imprimir credenciales</button>' +
+          // With one team picked, the team bar above already has the print button.
+          (activeTeam ? '' : '<button type="button" class="team-print" data-print-team="' + esc(key) + '">Imprimir credenciales</button>') +
         '</header>' +
         '<ul class="team-list">' + members.map(playerRow).join('') + '</ul>' +
       '</section>';
@@ -621,9 +656,11 @@
 
   /* ---------- wire up ---------- */
   function render() {
+    renderTeamPick();
     const list = visible();
     renderStats(list);
     renderTabs();
+    renderTeamBar(list);
     renderRoster(list);
   }
 

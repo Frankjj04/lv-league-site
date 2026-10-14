@@ -1952,6 +1952,33 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 /* ---------- printable credentials ---------- */
 .cred-sheet { display: none; }
 
+.adm-team select {
+  padding: 10px 34px 10px 14px;
+  font-family: var(--font-body);
+  font-size: .92rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  max-width: 100%;
+}
+.adm-team select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(252,140,0,.18); }
+
+.team-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  background: var(--orange-soft);
+  border: 1px solid var(--orange-line);
+  border-radius: var(--radius);
+}
+.team-bar strong { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .02em; line-height: 1.1; color: var(--ink); }
+.team-bar span { font-size: .9rem; color: var(--text-dim); }
+
 .team-print {
   margin-left: auto;
   font: inherit;
@@ -2092,6 +2119,8 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .adm-main { padding: 20px 14px 70px; }
   .adm-controls { flex-direction: column; align-items: stretch; }
   .adm-search input { width: 100%; }
+  .adm-team select { width: 100%; }
+  .team-bar .adm-btn { width: 100%; justify-content: center; }
   .team-head { padding: 13px 15px; }
   .pl { padding: 10px 15px; gap: 11px; }
   .sh-row { grid-template-columns: 1fr; gap: 2px; }
