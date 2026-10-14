@@ -373,6 +373,9 @@
             : '<span class="sh-pill is-paid">Inscrito</span>') +
         '</div>' +
       '</div>' +
+      // One card: a lost credential or a late sign-up.
+      (p.photo && !isPending(p)
+        ? '<button type="button" class="btn btn--ghost sh-print" id="shPrint">Imprimir su credencial</button>' : '') +
       '<dl class="sh-rows">' +
         row('Nacimiento', esc(p.dob) + ' (' + age(p.dob) + ' años)') +
         row('Teléfono', '<a href="tel:' + esc(p.phone) + '">' + esc(phoneFmt(p.phone)) + '</a>') +
@@ -408,6 +411,8 @@
         '<strong>Falta su ID o pasaporte.</strong> Tómale una foto a su identificación.' +
           (isMinor(p) ? ' Por ser menor de edad, también sirve su ID de la escuela.' : ''),
         'Tomar o subir foto del ID');
+
+    if ($('shPrint')) $('shPrint').addEventListener('click', () => { closeSheet(); openPrint([p]); });
 
     // The confirm button stays dead until the typed name matches the row.
     const delName = $('delName');
@@ -591,8 +596,8 @@
      Two ways out: the league's Magicard 300 (one CR80 card per page, edge to
      edge) or plain paper (9 per letter sheet to cut). Players without a photo
      are left out, since a credential without one can't identify anyone.
-     Printing is per team only; there is no print-all, so one click can't
-     send the whole league to the card printer. */
+     Printing is per team or per player (from their panel); there is no
+     print-all, so one click can't send the whole league to the card printer. */
   let printList = [];
 
   function openPrint(list) {

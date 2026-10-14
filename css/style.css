@@ -1993,6 +1993,8 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 }
 .team-print:hover { color: var(--ink); border-color: var(--text-mute); }
 
+.sh-print { width: 100%; margin: 4px 0 18px; justify-content: center; }
+
 .pr-choices { display: grid; gap: 10px; margin: 18px 0 16px; }
 .pr-choice {
   display: grid;
