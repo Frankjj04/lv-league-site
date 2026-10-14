@@ -600,6 +600,30 @@
      print-all, so one click can't send the whole league to the card printer. */
   let printList = [];
 
+  // Bands are SVG so they print even with "Print backgrounds" off.
+  const BAND_TOP = '<svg class="cred-band cred-band--top" viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true">' +
+    '<rect width="100" height="58" fill="#0B0B0C"/><rect y="58" width="100" height="4" fill="#FC8C00"/></svg>';
+  const BAND_FOOT = '<svg class="cred-band cred-band--foot" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">' +
+    '<rect width="100" height="30" fill="#FFF1DC"/></svg>';
+
+  const credHtml = (p) =>
+    '<div class="cred">' + BAND_TOP + BAND_FOOT +
+      '<div class="cred-top">' +
+        '<img src="assets/logo.jpg" alt="" class="cred-crest" />' +
+        '<span class="cred-league">LAS VEGAS<br>SOCCER LEAGUE</span>' +
+      '</div>' +
+      '<img src="' + esc(p.photo) + '" alt="" class="cred-photo" />' +
+      '<div class="cred-name">' + esc(p.name) + '</div>' +
+      '<div class="cred-team">' + esc(p.team) + '</div>' +
+      '<div class="cred-foot">' +
+        '<span>' + esc(divisionLabel(p.division)) + '</span>' +
+        '<span>' + esc(p.dob) + '</span>' +
+      '</div>' +
+    '</div>';
+
+  // Safari ignores the card page size and prints each card on a letter page.
+  const isSafari = /^((?!chrome|chromium|crios|fxios|android|edg).)*safari/i.test(navigator.userAgent);
+
   function openPrint(list) {
     printList = list.filter((p) => p.photo);
     const missing = list.length - printList.length;
@@ -607,26 +631,16 @@
     $('prLede').textContent = (n ? n + ' credencial' + (n === 1 ? '' : 'es') : 'Nadie tiene foto todavía') +
       (missing ? ' · ' + missing + ' sin foto no se imprime' + (missing === 1 ? '' : 'n') : '');
     document.querySelectorAll('[data-print-mode]').forEach((b) => { b.disabled = !n; });
+    $('prPreview').innerHTML = printList.map(credHtml).join('');
+    $('prPreview').hidden = !n;
+    $('prSafari').hidden = !isSafari;
     $('printSheet').hidden = false;
   }
 
   function closePrint() { $('printSheet').hidden = true; }
 
   function printCards(mode) {
-    $('credSheet').innerHTML = printList.map((p) =>
-      '<div class="cred">' +
-        '<div class="cred-top">' +
-          '<img src="assets/logo.jpg" alt="" class="cred-crest" />' +
-          '<span class="cred-league">LAS VEGAS<br>SOCCER LEAGUE</span>' +
-        '</div>' +
-        '<img src="' + esc(p.photo) + '" alt="" class="cred-photo" />' +
-        '<div class="cred-name">' + esc(p.name) + '</div>' +
-        '<div class="cred-team">' + esc(p.team) + '</div>' +
-        '<div class="cred-foot">' +
-          '<span>' + esc(divisionLabel(p.division)) + '</span>' +
-          '<span>' + esc(p.dob) + '</span>' +
-        '</div>' +
-      '</div>').join('');
+    $('credSheet').innerHTML = printList.map(credHtml).join('');
 
     // @page can't be scoped by a class, so the page size for this print is
     // swapped in here: one card per page for the Magicard, letter otherwise.
