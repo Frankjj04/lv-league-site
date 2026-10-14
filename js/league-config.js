@@ -161,6 +161,7 @@ window.LVSL_CONFIG = {
         'AJAX',
         'AMERICA',
         'BAD COMPANY',
+        'BAYERN MUNICH',
         'BORUSSIA DORTMUND',
         'CHIVAS NLV',
         'EL COMBO DE DRAKE',
