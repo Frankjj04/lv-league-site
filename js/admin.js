@@ -590,7 +590,9 @@
   /* ---------- printable credentials ----------
      Two ways out: the league's Magicard 300 (one CR80 card per page, edge to
      edge) or plain paper (9 per letter sheet to cut). Players without a photo
-     are left out, since a credential without one can't identify anyone. */
+     are left out, since a credential without one can't identify anyone.
+     Printing is per team only; there is no print-all, so one click can't
+     send the whole league to the card printer. */
   let printList = [];
 
   function openPrint(list) {
@@ -634,11 +636,6 @@
     Promise.all(imgs.map((i) => i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; })))
       .then(() => window.print());
   }
-
-  $('printBtn').addEventListener('click', () => {
-    const list = visible();
-    if (list.length) openPrint(list);
-  });
 
   // Each team's header has its own print button (playoffs go team by team).
   $('roster').addEventListener('click', (e) => {
