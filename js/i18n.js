@@ -88,6 +88,11 @@ window.LVSL_TRANSLATIONS = {
     home_h1: 'BUSCA TU EQUIPO.<br><span class="hl">REGÍSTRATE</span><br>Y A JUGAR.',
     home_note: 'Inscripciones abiertas — los cupos por división son limitados.',
     home_sub: 'Liga de fútbol amateur en Las Vegas, Nevada. Regístrate con tu equipo y juega esta temporada.',
+    hm_eyebrow: 'Las Vegas, Nevada',
+    hm_h1: 'LAS VEGAS<br><span class="hl">SOCCER LEAGUE</span>',
+    hm_sub: 'Partidos, resultados y tabla de cada división. Busca tu equipo y mira cuándo te toca jugar.',
+    hm_cta_games: 'Ver partidos',
+    hm_cta_reg: 'Registrarme',
     nav_home: 'Inicio',
 
 
@@ -314,6 +319,11 @@ window.LVSL_TRANSLATIONS = {
     home_h1: 'FIND YOUR TEAM.<br><span class="hl">SIGN UP.</span><br>PLAY BALL.',
     home_note: 'Registration is open — spots per division are limited.',
     home_sub: 'Amateur soccer league in Las Vegas, Nevada. Sign up with your team and play this season.',
+    hm_eyebrow: 'Las Vegas, Nevada',
+    hm_h1: 'LAS VEGAS<br><span class="hl">SOCCER LEAGUE</span>',
+    hm_sub: 'Games, results and standings for every division. Find your team and see when you play.',
+    hm_cta_games: 'See games',
+    hm_cta_reg: 'Sign up',
     nav_home: 'Home',
 
 

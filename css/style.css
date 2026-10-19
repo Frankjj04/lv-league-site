@@ -469,6 +469,16 @@ section { position: relative; }
 .hero-scape .wheel-rim    { stroke-width: 9; }
 .hero-scape .wheel-spokes { stroke-width: 2.5; }
 
+/* Home = the schedule (coach, 2026-10-19): a shorter hero so the games
+   start right below it, then the schedule's own heading. */
+.hero--home { min-height: 0; padding: 150px 0 calc(20.8vw + 36px); } /* skyline is 300/1440 of the width */
+.hero--home h1 { font-size: clamp(2.9rem, 8vw, 5.6rem); line-height: .92; }
+.hero--home .hero-sub { margin-bottom: 28px; }
+#calendario { scroll-margin-top: 80px; }
+.sched-head { margin-bottom: 26px; }
+.sched-head h2 { font-size: clamp(2rem, 5vw, 3.2rem); margin: 6px 0 12px; }
+.sched-head p { max-width: 640px; margin: 0; color: var(--text-dim); }
+
 /* ===================== PAGE HEADER (inner pages) ===================== */
 .page-head {
   position: relative;
@@ -1056,6 +1066,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .logo-word .l2 { font-size: .68rem; }
   .logo-mark { width: 40px; height: 40px; }
   .hero { padding-bottom: 140px; }
+  .hero--home { padding: 118px 0 calc(20.8vw + 28px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
