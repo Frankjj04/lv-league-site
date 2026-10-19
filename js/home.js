@@ -57,6 +57,9 @@
     return d ? (lang() === 'en' ? d.en : d.es) : '';
   };
 
+  // A played game shows its score next to each team.
+  const score = (g, k) => (g.status === 'final' && g[k] != null ? ' <span class="wk-score">' + esc(g[k]) + '</span>' : '');
+
   function render() {
     if (games === null) return;
     const now = today();
@@ -64,10 +67,23 @@
     const upcoming = games
       .filter((g) => g.status !== 'final' && g.date >= now)
       .sort((a, b) => (a.date + (a.time || '99')).localeCompare(b.date + (b.time || '99')));
-    // This week first; if nothing is scheduled this week, show the next games.
+    // This week first; if nothing is scheduled this week, the next games;
+    // with nothing coming up at all, the most recent game day(s) instead of
+    // an empty section.
     let list = upcoming.filter((g) => g.date <= end);
     if (!list.length) list = upcoming;
+    let recent = false;
+    if (!list.length) {
+      const past = games.filter((g) => g.date < now).sort((a, b) =>
+        (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')));
+      const days = [...new Set(past.map((g) => g.date))].slice(0, 2);
+      list = past.filter((g) => days.includes(g.date))
+        .sort((a, b) => (a.date + (a.time || '99')).localeCompare(b.date + (b.time || '99')));
+      recent = list.length > 0;
+    }
     list = list.slice(0, MAX);
+    const h2 = document.getElementById('weekTitle');
+    if (h2) h2.innerHTML = t(recent ? 'hm_last_h2' : 'hm_week_h2');
 
     if (!list.length) {
       box.innerHTML = '<p class="sched-empty">' + esc(t('hm_week_empty')) + '</p>';
@@ -78,9 +94,9 @@
         '<div class="wk-when"><span class="wk-day">' + esc(dayLabel(g.date)) + '</span>' +
           '<span class="wk-time">' + esc(timeLabel(g.time)) + '</span></div>' +
         '<p class="wk-div">' + esc(divLabel(g.division)) + '</p>' +
-        '<p class="wk-team">' + esc(g.home) + '</p>' +
+        '<p class="wk-team">' + esc(g.home) + score(g, 'homeScore') + '</p>' +
         '<p class="wk-vs">vs</p>' +
-        '<p class="wk-team">' + esc(g.away) + '</p>' +
+        '<p class="wk-team">' + esc(g.away) + score(g, 'awayScore') + '</p>' +
         (g.field ? '<p class="wk-field">' + esc(g.field) + '</p>' : '') +
       '</article>'
     ).join('');
