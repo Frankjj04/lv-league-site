@@ -432,7 +432,7 @@ await atest('the referee list needs a referee or coach session', async () => {
 
 test('every schedule text the page uses exists in Spanish and English', () => {
   const page = readFileSync(new URL('../js/calendario.js', import.meta.url), 'utf8') +
-    readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+    readFileSync(new URL('../calendario.html', import.meta.url), 'utf8');
   const i18n = readFileSync(new URL('../js/i18n.js', import.meta.url), 'utf8');
   const keys = new Set([...page.matchAll(/['"](sc_\w+)['"]/g)].map((m) => m[1]).filter((k) => !k.endsWith('_')));
   // calendario.js builds the header keys as 'sc_th_' + column.

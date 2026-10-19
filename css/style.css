@@ -469,15 +469,54 @@ section { position: relative; }
 .hero-scape .wheel-rim    { stroke-width: 9; }
 .hero-scape .wheel-spokes { stroke-width: 2.5; }
 
-/* Home = the schedule (coach, 2026-10-19): a shorter hero so the games
-   start right below it, then the schedule's own heading. */
-.hero--home { min-height: 0; padding: 150px 0 calc(20.8vw + 36px); } /* skyline is 300/1440 of the width */
-.hero--home h1 { font-size: clamp(2.9rem, 8vw, 5.6rem); line-height: .92; }
-.hero--home .hero-sub { margin-bottom: 28px; }
-#calendario { scroll-margin-top: 80px; }
-.sched-head { margin-bottom: 26px; }
-.sched-head h2 { font-size: clamp(2rem, 5vw, 3.2rem); margin: 6px 0 12px; }
-.sched-head p { max-width: 640px; margin: 0; color: var(--text-dim); }
+/* ===================== HOME: dark poster + this week (2026-10-19) ===================== */
+.poster {
+  position: relative;
+  background: radial-gradient(120% 90% at 50% 0%, #1D1D20 0%, var(--ink) 62%);
+  color: #fff;
+  text-align: center;
+  padding: 140px 0 84px;
+  border-bottom: 6px solid var(--orange);
+  overflow: hidden;
+}
+.poster-inner { display: flex; flex-direction: column; align-items: center; }
+.poster-crest {
+  width: 112px; height: 112px; border-radius: 22px; object-fit: cover;
+  box-shadow: 0 0 0 6px rgba(252,140,0,.16), 0 18px 50px rgba(0,0,0,.5);
+  margin-bottom: 26px;
+}
+.poster-eyebrow { color: rgba(255,255,255,.72); justify-content: center; }
+.poster-title { color: #fff; font-size: clamp(3rem, 9vw, 6.4rem); line-height: .9; margin: 14px 0 18px; }
+.poster-season {
+  display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .14em;
+  color: var(--orange); border: 1.5px solid rgba(252,140,0,.55); border-radius: 999px; padding: 4px 18px 2px; margin-bottom: 34px;
+}
+.poster-season:empty { display: none; }
+.poster-actions { justify-content: center; }
+.poster-ghost { color: #fff !important; border-color: rgba(255,255,255,.55) !important; }
+.poster-ghost:hover { border-color: #fff !important; background: rgba(255,255,255,.06) !important; }
+
+.week { background: var(--bg, #fff); }
+.week-head { text-align: center; margin-bottom: 30px; }
+.week-head .eyebrow { justify-content: center; }
+.week-head h2 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); margin-top: 6px; }
+.week-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }  /* 3 per row; a short last row is centered */
+.week-grid .sched-empty { width: 100%; text-align: center; }
+.wk-card { width: calc(33.333% - 11px); box-sizing: border-box; }
+@media (max-width: 900px) { .wk-card { width: calc(50% - 8px); } }
+.wk-card {
+  background: #fff; border: 1px solid var(--line, #E6E8EB); border-top: 4px solid var(--orange);
+  border-radius: 14px; padding: 18px 20px 16px; text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
+}
+.wk-when { display: flex; justify-content: space-between; align-items: baseline; font-family: 'Bebas Neue', sans-serif; letter-spacing: .04em; }
+.wk-day { font-size: 1.15rem; color: var(--maroon); }
+.wk-time { font-size: 1.35rem; color: var(--ink); }
+.wk-div { font-size: .74rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-dim); margin: 4px 0 12px; text-align: left; }
+.wk-team { font-family: 'Bebas Neue', sans-serif; font-size: 1.55rem; line-height: 1.05; color: var(--ink); margin: 0; }
+.wk-vs { font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: var(--text-dim); margin: 4px 0; }
+.wk-field { font-size: .8rem; color: var(--text-dim); margin: 12px 0 0; border-top: 1px dashed var(--line, #E6E8EB); padding-top: 10px; }
+.week-more { text-align: center; margin-top: 30px; }
 
 /* ===================== PAGE HEADER (inner pages) ===================== */
 .page-head {
@@ -1066,7 +1105,17 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .logo-word .l2 { font-size: .68rem; }
   .logo-mark { width: 40px; height: 40px; }
   .hero { padding-bottom: 140px; }
-  .hero--home { padding: 118px 0 calc(20.8vw + 28px); }
+  .poster { padding: 118px 0 64px; }
+  /* Phone: one compact row per game — time on the left, teams on the right. */
+  .wk-card { width: 100%; display: grid; grid-template-columns: 92px 1fr; column-gap: 14px; text-align: left; padding: 14px 16px; }
+  .wk-when { grid-row: 1 / span 5; flex-direction: column; justify-content: center; gap: 2px; border-right: 1px solid var(--line, #E6E8EB); padding-right: 10px; }
+  .wk-day { font-size: 1rem; }
+  .wk-time { font-size: 1.2rem; }
+  .wk-div { margin: 0 0 4px; font-size: .68rem; }
+  .wk-team { font-size: 1.25rem; }
+  .wk-vs { margin: 1px 0; font-size: .64rem; }
+  .wk-field { margin-top: 6px; padding-top: 6px; font-size: .74rem; }
+  .poster-crest { width: 92px; height: 92px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
