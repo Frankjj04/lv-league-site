@@ -23,12 +23,12 @@
     },
     {
       "source": "/schedule",
-      "destination": "/calendario",
+      "destination": "/",
       "permanent": false
     },
     {
       "source": "/schedule.html",
-      "destination": "/calendario",
+      "destination": "/",
       "permanent": false
     },
     {
@@ -64,6 +64,16 @@
     {
       "source": "/admin-partidos.html",
       "destination": "/admin?tab=partidos",
+      "permanent": false
+    },
+    {
+      "source": "/calendario",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/calendario.html",
+      "destination": "/",
       "permanent": false
     }
   ],
