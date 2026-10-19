@@ -13,7 +13,7 @@
   const DIVISIONS = CFG.divisions || [];
   const DEMO = new URLSearchParams(location.search).has('demo');
   const DAYS = 7;   // "this week" = today plus the next 6 days
-  const MAX = 9;    // cards on the home page; the rest are on /calendario
+  const MAX = 15;   // cards on the home page (rows of 3); the rest are on /calendario
   const box = document.getElementById('week');
   let games = null;
 
