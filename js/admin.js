@@ -594,31 +594,41 @@
 
   /* ---------- printable credentials ----------
      Two ways out: the league's Magicard 300 (one CR80 card per page, edge to
-     edge) or plain paper (9 per letter sheet to cut). Players without a photo
+     edge, landscape) or plain paper (8 per letter sheet to cut). Players without a photo
      are left out, since a credential without one can't identify anyone.
      Printing is per team or per player (from their panel); there is no
      print-all, so one click can't send the whole league to the card printer. */
   let printList = [];
 
-  // Bands are SVG so they print even with "Print backgrounds" off.
-  const BAND_TOP = '<svg class="cred-band cred-band--top" viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true">' +
-    '<rect width="100" height="58" fill="#0B0B0C"/><rect y="58" width="100" height="4" fill="#FC8C00"/></svg>';
+  // Horizontal CR80 card (3.375 x 2.125in). Bands are SVG so they print even
+  // with "Print backgrounds" off.
+  const BAND_TOP = '<svg class="cred-band cred-band--top" viewBox="0 0 100 52" preserveAspectRatio="none" aria-hidden="true">' +
+    '<rect width="100" height="48" fill="#0B0B0C"/><rect y="48" width="100" height="4" fill="#FC8C00"/></svg>';
   const BAND_FOOT = '<svg class="cred-band cred-band--foot" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">' +
     '<rect width="100" height="30" fill="#FFF1DC"/></svg>';
+
+  const dobFmt = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ''); return m ? m[2] + '/' + m[3] + '/' + m[1] : (d || ''); };
 
   const credHtml = (p) =>
     '<div class="cred">' + BAND_TOP + BAND_FOOT +
       '<div class="cred-top">' +
         '<img src="assets/logo.jpg" alt="" class="cred-crest" />' +
-        '<span class="cred-league">LAS VEGAS<br>SOCCER LEAGUE</span>' +
+        '<span class="cred-league">LAS VEGAS SOCCER LEAGUE</span>' +
+        (CFG.season ? '<span class="cred-season">' + esc(CFG.season) + '</span>' : '') +
       '</div>' +
-      '<img src="' + esc(p.photo) + '" alt="" class="cred-photo" />' +
-      '<div class="cred-name">' + esc(p.name) + '</div>' +
-      '<div class="cred-team">' + esc(p.team) + '</div>' +
-      '<div class="cred-foot">' +
-        '<span>' + esc(divisionLabel(p.division)) + '</span>' +
-        '<span>' + esc(p.dob) + '</span>' +
+      '<div class="cred-body">' +
+        '<img src="' + esc(p.photo) + '" alt="" class="cred-photo" />' +
+        '<div class="cred-info">' +
+          // Long names get a smaller size so they stay within two lines.
+          '<div class="cred-name' + (p.name.length > 30 ? ' cred-name--xl' : p.name.length > 20 ? ' cred-name--long' : '') + '">' + esc(p.name) + '</div>' +
+          '<div class="cred-team">' + esc(p.team) + '</div>' +
+          '<dl class="cred-facts">' +
+            '<dt>División</dt><dd>' + esc(divisionLabel(p.division)) + '</dd>' +
+            '<dt>Nacimiento</dt><dd>' + esc(dobFmt(p.dob)) + '</dd>' +
+          '</dl>' +
+        '</div>' +
       '</div>' +
+      '<div class="cred-foot"><span>lvsl.futbol</span><span>#' + esc(String(p.id || '')) + '</span></div>' +
     '</div>';
 
   // Safari ignores the card page size and prints each card on a letter page.
@@ -646,7 +656,7 @@
     // swapped in here: one card per page for the Magicard, letter otherwise.
     document.body.dataset.print = mode;
     $('pageSize').textContent = mode === 'card'
-      ? '@page { size: 2.125in 3.375in; margin: 0; }'
+      ? '@page { size: 3.375in 2.125in; margin: 0; }'
       : '@page { margin: .35in; }';
     closePrint();
 

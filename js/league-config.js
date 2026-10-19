@@ -30,6 +30,10 @@ window.LVSL_CONFIG = {
   /* Set to false to close registration. The form is replaced by a notice. */
   registrationOpen: true,
 
+  /* The season printed on every player credential. Change it when a new
+     season starts (coach, 2026-10-19: "Fall 2026" / "Winter 2026"…). */
+  season: 'FALL 2026',
+
   /* Every division a player can sign up for.
        id      — NEVER change once players have registered; it is stored on the row
        es / en — what the player sees in the dropdown

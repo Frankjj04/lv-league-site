@@ -1958,12 +1958,10 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .cred {
   position: relative;
   box-sizing: border-box;
-  width: 2.125in;
-  height: 3.375in;
+  width: 3.375in;   /* horizontal CR80 (coach asked for landscape, 2026-10-19) */
+  height: 2.125in;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   overflow: hidden;
   background: #fff;
   color: #0B0B0C;
@@ -1971,8 +1969,8 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   page-break-inside: avoid;
 }
 .cred-band { position: absolute; left: 0; width: 100%; z-index: 0; display: block; }
-.cred-band--top { top: 0; height: .62in; }
-.cred-band--foot { bottom: 0; height: .3in; }
+.cred-band--top { top: 0; height: .52in; }
+.cred-band--foot { bottom: 0; height: .22in; }
 .cred-top {
   position: relative;
   z-index: 1;
@@ -1981,47 +1979,78 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   align-items: center;
   gap: 7pt;
   width: 100%;
-  height: .62in;
-  padding: 0 .14in .03in;
-  margin-bottom: .13in;
+  height: .52in;
+  padding: 0 .14in .04in;
 }
-.cred-crest { width: 26pt; height: 26pt; border-radius: 3pt; object-fit: cover; }
+.cred-crest { width: 24pt; height: 24pt; border-radius: 3pt; object-fit: cover; flex: none; }
 .cred-league {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 10pt;
-  line-height: 1.05;
-  letter-spacing: .04em;
-  text-align: left;
+  font-size: 12pt;
+  line-height: 1;
+  letter-spacing: .05em;
   color: #fff;
+  white-space: nowrap;
+}
+.cred-season {
+  margin-left: auto;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11pt;
+  line-height: 1;
+  letter-spacing: .06em;
+  color: #FC8C00;
+  white-space: nowrap;
+}
+.cred-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: .14in;
+  padding: .08in .14in;
+  min-height: 0;
 }
 .cred-photo {
-  width: 1.25in;
-  height: 1.55in;
+  flex: none;
+  width: 1.02in;
+  height: 1.24in;
   object-fit: cover;
   border-radius: 4pt;
   border: .8pt solid #0B0B0C;
-  margin-bottom: .09in;
 }
+.cred-info { min-width: 0; display: flex; flex-direction: column; }
 .cred-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 15pt;
-  line-height: 1.1;
+  font-size: 16pt;
+  line-height: 1.02;
   letter-spacing: .02em;
-  padding: 0 .1in;
+  overflow-wrap: anywhere;
 }
-.cred-team { font-size: 9pt; font-weight: 600; margin-top: 2pt; }
+.cred-name--long { font-size: 13.5pt; }
+.cred-name--xl { font-size: 11.5pt; }
+.cred-info { overflow: hidden; max-height: 100%; }
+.cred-team { font-size: 9pt; font-weight: 700; line-height: 1.2; margin-top: 3pt; overflow-wrap: anywhere; }
+.cred-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1pt 6pt;
+  margin: 6pt 0 0;
+  font-size: 7pt;
+  line-height: 1.25;
+}
+.cred-facts dt { color: #4C555F; text-transform: uppercase; letter-spacing: .04em; font-size: 6pt; align-self: center; }
+.cred-facts dd { margin: 0; font-weight: 600; }
 .cred-foot {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  margin-top: auto;
   width: 100%;
-  height: .3in;
+  height: .22in;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 .14in;
-  font-size: 7pt;
+  font-size: 6.5pt;
   color: #4C555F;
 }
 
@@ -2116,10 +2145,10 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 
   .cred-sheet, .cred-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-  /* Paper: 9 per letter sheet with a light outline to cut along. */
+  /* Paper: 8 per letter sheet (2 across, 4 down) with a light outline to cut along. */
   .cred-sheet {
     display: grid;
-    grid-template-columns: repeat(3, 2.125in);
+    grid-template-columns: repeat(2, 3.375in);
     gap: .22in;
     padding: .3in;
   }
