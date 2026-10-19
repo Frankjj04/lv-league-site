@@ -499,7 +499,12 @@ section { position: relative; }
 .poster-ghost { color: var(--ink) !important; background: rgba(255,255,255,.9) !important; border-color: var(--ink) !important; }
 .poster-ghost:hover { background: #fff !important; }
 
-.week { background: var(--bg, #fff); }
+.week { background: var(--ink); }   /* black section under the poster (Frank, 2026-10-19) */
+.week-head h2 { color: #fff; }
+.week-head h2 .accent { color: var(--orange); }
+.week-head .eyebrow { color: rgba(255,255,255,.8); }
+.week .sched-empty { color: rgba(255,255,255,.75); }
+.week .wk-card { border-color: transparent; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 .week-head { text-align: center; margin-bottom: 30px; }
 .week-head .eyebrow { justify-content: center; }
 .week-head h2 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); margin-top: 6px; }
