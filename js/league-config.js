@@ -32,7 +32,7 @@ window.LVSL_CONFIG = {
 
   /* The season printed on every player credential. Change it when a new
      season starts (coach, 2026-10-19: "Fall 2026" / "Winter 2026"…). */
-  season: 'FALL 2026',
+  season: 'WINTER 2026',
 
   /* Every division a player can sign up for.
        id      — NEVER change once players have registered; it is stored on the row
