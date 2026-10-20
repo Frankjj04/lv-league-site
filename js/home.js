@@ -64,26 +64,18 @@
     if (games === null) return;
     const now = today();
     const end = addDays(now, DAYS - 1);
+    // Today's games (even once they're played, with the score) and upcoming
+    // ones. Never past days (Frank, 2026-10-19).
     const upcoming = games
-      .filter((g) => g.status !== 'final' && g.date >= now)
+      .filter((g) => g.date === now || (g.date > now && g.status !== 'final'))
       .sort((a, b) => (a.date + (a.time || '99')).localeCompare(b.date + (b.time || '99')));
-    // This week first; if nothing is scheduled this week, the next games;
-    // with nothing coming up at all, the most recent game day(s) instead of
-    // an empty section.
+    // This week first; if nothing is scheduled this week, the next games.
     let list = upcoming.filter((g) => g.date <= end);
-    if (!list.length) list = upcoming;
-    let recent = false;
-    if (!list.length) {
-      const past = games.filter((g) => g.date < now).sort((a, b) =>
-        (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')));
-      const days = [...new Set(past.map((g) => g.date))].slice(0, 2);
-      list = past.filter((g) => days.includes(g.date))
-        .sort((a, b) => (a.date + (a.time || '99')).localeCompare(b.date + (b.time || '99')));
-      recent = list.length > 0;
-    }
+    const later = !list.length && upcoming.length > 0;
+    if (later) list = upcoming;
     list = list.slice(0, MAX);
     const h2 = document.getElementById('weekTitle');
-    if (h2) h2.innerHTML = t(recent ? 'hm_last_h2' : 'hm_week_h2');
+    if (h2) h2.innerHTML = t(later ? 'hm_next_h2' : 'hm_week_h2');
 
     if (!list.length) {
       box.innerHTML = '<p class="sched-empty">' + esc(t('hm_week_empty')) + '</p>';
