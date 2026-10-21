@@ -1620,7 +1620,7 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 /* Jugadores | Partidos — the two halves of the coach's page */
 .adm-switch {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
   padding: 0 22px 12px;
   background: var(--ink);
@@ -2946,4 +2946,20 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
 .sched-demo {
   border-radius: 10px;
   margin-bottom: 18px;
+}
+
+/* ===================== STANDINGS ADMIN (Tabla) ===================== */
+.tb-help { margin: 0 0 16px; font-size: .88rem; color: var(--text-dim); max-width: 640px; }
+.tb-table tbody tr { cursor: pointer; }
+.tb-table tbody tr:hover td, .tb-table tbody tr:focus-visible td { background: var(--orange-soft); }
+.tb-table tbody tr:focus-visible { outline: none; }
+.tb-table td.tb-edit { width: 1%; white-space: nowrap; font-size: .8rem; font-weight: 600; color: var(--orange-deep); text-decoration: underline; padding-right: 16px; }
+.tb-table th.tb-edit-h { width: 1%; }
+.tb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 12px; }
+.tb-grid .field input { text-align: center; font-variant-numeric: tabular-nums; }
+#t-sums { margin: -4px 0 6px; font-weight: 600; color: var(--ink); }
+
+@media (max-width: 620px) {
+  .tb-table td.tb-edit, .tb-table th.tb-edit-h { display: none; }
+  .tb-grid { grid-template-columns: repeat(2, 1fr); }
 }

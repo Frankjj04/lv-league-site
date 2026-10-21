@@ -59,12 +59,20 @@
     <a class="adm-btn" href="calendario.html" target="_blank" rel="noopener">Ver calendario</a>
     <button type="button" class="adm-btn adm-btn--quiet" data-signout>Salir</button>
   </div>
+  <div class="adm-head-actions" id="tbActions" hidden>
+    <button type="button" class="adm-btn adm-btn--primary" id="tAddBtn">
+      <span aria-hidden="true">&#43;</span> Agregar equipo
+    </button>
+    <a class="adm-btn" href="calendario.html" target="_blank" rel="noopener">Ver calendario</a>
+    <button type="button" class="adm-btn adm-btn--quiet" data-signout>Salir</button>
+  </div>
 </header>
 
 <!-- ========== JUGADORES | PARTIDOS ========== -->
 <nav class="adm-switch" id="admSwitch" hidden aria-label="Sección">
   <button type="button" class="adm-switch-btn active" data-panel="jugadores" aria-pressed="true">Jugadores</button>
   <button type="button" class="adm-switch-btn" data-panel="partidos" aria-pressed="false">Partidos</button>
+  <button type="button" class="adm-switch-btn" data-panel="tabla" aria-pressed="false">Tabla</button>
 </nav>
 
 <main class="adm-main" id="admMain" hidden>
@@ -123,6 +131,21 @@
 
   <div id="list"></div>
   <p class="adm-empty" id="gEmpty" hidden></p>
+
+</main>
+
+<!-- ========== TABLA (standings and teams, js/admin-tabla.js) ========== -->
+<main class="adm-main" id="tbMain" hidden>
+
+  <div class="adm-controls">
+    <div class="adm-tabs" id="tDivTabs" role="tablist" aria-label="División"></div>
+  </div>
+
+  <p class="tb-help">Toca un equipo para corregir sus números o quitarlo. Los partidos que
+    marques como terminados se suman solos: aquí solo corriges lo que esté mal.</p>
+
+  <div id="tTable"></div>
+  <p class="adm-empty" id="tEmpty" hidden></p>
 
 </main>
 
@@ -359,6 +382,42 @@
   </div>
 </div>
 
+<!-- ========== ONE TEAM IN THE TABLE (edit or add) ========== -->
+<div class="adm-sheet" id="teamSheet" hidden role="dialog" aria-modal="true" aria-labelledby="tTitle">
+  <div class="adm-sheet-scrim" data-close-team></div>
+  <div class="adm-sheet-panel">
+    <button type="button" class="adm-sheet-x" data-close-team aria-label="Cerrar">&times;</button>
+    <h2 id="tTitle" class="add-title">Equipo</h2>
+    <p class="add-lede" id="tLede"></p>
+
+    <form id="tForm" novalidate>
+      <div class="field" id="t-nameBox">
+        <label for="t-name">Nombre del equipo <span class="req">*</span></label>
+        <input type="text" id="t-name" maxlength="80" autocomplete="off" autocapitalize="characters" />
+      </div>
+
+      <div class="tb-grid">
+        <div class="field"><label for="t-w">Ganados</label><input type="number" id="t-w" min="0" inputmode="numeric" /></div>
+        <div class="field"><label for="t-d">Empatados</label><input type="number" id="t-d" min="0" inputmode="numeric" /></div>
+        <div class="field"><label for="t-l">Perdidos</label><input type="number" id="t-l" min="0" inputmode="numeric" /></div>
+        <div class="field"><label for="t-gf">Goles a favor</label><input type="number" id="t-gf" min="0" inputmode="numeric" /></div>
+        <div class="field"><label for="t-ga">Goles en contra</label><input type="number" id="t-ga" min="0" inputmode="numeric" /></div>
+        <div class="field"><label for="t-pts">Puntos</label><input type="number" id="t-pts" inputmode="numeric" /></div>
+      </div>
+      <p class="field-help" id="t-sums"></p>
+      <p class="field-help">Los puntos se calculan solos (3 por ganado, 1 por empate). Cámbialos
+        solo si hay una sanción.</p>
+
+      <p class="form-error" id="t-error" hidden role="alert"></p>
+      <button type="submit" class="adm-btn adm-btn--primary adm-btn--wide" id="t-save">Guardar</button>
+
+      <div class="gx-del" id="t-delBox" hidden>
+        <button type="button" id="t-del">Quitar este equipo de la división</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- ========== QUICK SCORE ========== -->
 <div class="adm-sheet" id="scoreSheet" hidden role="dialog" aria-modal="true" aria-labelledby="sTitle">
   <div class="adm-sheet-scrim" data-close-score></div>
@@ -418,9 +477,11 @@
 <style id="pageSize"></style>
 
 <script src="js/league-config.js"></script>
+<script src="/api/league?js=1&amp;fresh=1"></script>
 <script src="js/sample-roster.js"></script>
 <script src="js/admin-add.js"></script>
 <script src="js/admin-partidos.js"></script>
+<script src="js/admin-tabla.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

@@ -23,6 +23,8 @@ const auth = await import('../lib/auth.js');
 const gamesLib = await import('../lib/games.js');
 const { default: gameApi } = await import('../api/game.js');
 const { default: gamesApi } = await import('../api/games.js');
+const { default: leagueApi } = await import('../api/league.js');
+const leagueLib = await import('../lib/league.js');
 
 let passed = 0, failed = 0;
 
@@ -442,6 +444,78 @@ test('every schedule text the page uses exists in Spanish and English', () => {
     const n = (i18n.match(new RegExp('\\b' + key + ':', 'g')) || []).length;
     assert.equal(n, 2, key + ' should be in both Spanish and English, found ' + n);
   }
+});
+
+/* ================= league: teams and starting table ================= */
+console.log('\napi/league.js — the coach\'s teams and table');
+
+test('team names are trimmed, uppercased and sorted', () => {
+  const r = leagueLib.validateDivision({ teams: ['  real  cuba ', 'ajax'], standingsStart: {} });
+  assert.deepEqual(r.teams, ['AJAX', 'REAL CUBA']);
+});
+
+test('the same team twice, a blank name or no teams at all is refused', () => {
+  assert.equal(leagueLib.validateDivision({ teams: ['AJAX', 'ajax'] }).code, 'team_twice');
+  assert.equal(leagueLib.validateDivision({ teams: ['AJAX', ' '] }).code, 'team_blank');
+  assert.equal(leagueLib.validateDivision({ teams: [] }).code, 'no_teams');
+  assert.equal(leagueLib.validateDivision({}).code, 'teams');
+});
+
+test('numbers must be whole; negatives are allowed (a correction under the games)', () => {
+  assert.equal(leagueLib.validateDivision({ teams: ['AJAX'], standingsStart: { AJAX: { w: 1.5 } } }).code, 'stat');
+  assert.equal(leagueLib.validateDivision({ teams: ['AJAX'], standingsStart: { AJAX: { w: 'x' } } }).code, 'stat');
+  const r = leagueLib.validateDivision({ teams: ['AJAX'], standingsStart: { AJAX: { w: -1, gf: 3, adj: -3 } } });
+  assert.deepEqual(r.standingsStart, { AJAX: { w: -1, gf: 3, adj: -3 } });
+});
+
+test('a team taken off the list loses its numbers; zeros are not stored', () => {
+  const r = leagueLib.validateDivision({ teams: ['AJAX'],
+    standingsStart: { AJAX: { p: 0, w: 0 }, CHELSEA: { w: 3 } } });
+  assert.deepEqual(r.standingsStart, {});
+});
+
+await atest('saving a division needs the coach', async () => {
+  for (const cookie of [undefined, refCookie()]) {
+    const res = mockRes();
+    await leagueApi({ method: 'PUT', query: { division: 'miercoles-premier' },
+      headers: cookie ? { cookie } : {}, body: { teams: ['AJAX'] } }, res);
+    assert.equal(res.statusCode, 401);
+  }
+});
+
+await atest('the coach sending a bad list is refused before the database', async () => {
+  const res = mockRes();
+  await leagueApi({ method: 'PUT', query: { division: 'miercoles-premier' },
+    headers: { cookie: adminCookie() }, body: { teams: ['AJAX', 'AJAX'] } }, res);
+  assert.equal(res.statusCode, 400);
+  assert.equal(res.body.code, 'team_twice');
+});
+
+await atest('a strange division id is refused', async () => {
+  const res = mockRes();
+  await leagueApi({ method: 'PUT', query: { division: 'x\'; drop' },
+    headers: { cookie: adminCookie() }, body: { teams: ['AJAX'] } }, res);
+  assert.equal(res.statusCode, 400);
+});
+
+await atest('the page script still loads when the database is down', async () => {
+  const res = mockRes();
+  await leagueApi({ method: 'GET', query: { js: '1' }, headers: {} }, res);
+  assert.equal(res.statusCode, 200);
+  assert.match(res.headers['Content-Type'], /javascript/);
+  assert.equal(res.headers['Cache-Control'], 'private, no-store');
+});
+
+test('the edits script rewrites a division in place and leaves the others', () => {
+  const src = readFileSync(new URL('../api/league.js', import.meta.url), 'utf8');
+  const apply = src.match(/const APPLY = `([\s\S]*?)`;/)[1];
+  const a = { id: 'a', teams: ['X'] }, b = { id: 'b', teams: ['Y'] };
+  const window = { LVSL_CONFIG: { divisions: [a, b] } };
+  new Function('window', apply + '({"a":{"teams":["Z"],"standingsStart":{"Z":{"w":1}}}})')(window);
+  assert.deepEqual(a.teams, ['Z']);
+  assert.deepEqual(a.standingsStart, { Z: { w: 1 } });
+  assert.deepEqual(b.teams, ['Y']);
+  assert.equal(window.LVSL_CONFIG.divisions[0], a);
 });
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');

@@ -219,11 +219,15 @@
 
   function standings() {
     const rows = new Map();
+    // Only teams on the division's list get a row: one the coach took off
+    // drops out of the table, while its games still count for its opponents.
+    const listed = new Set((DIVISIONS.find((x) => x.id === division) || {}).teams || []);
     const row = (n) => {
+      if (!listed.has(n)) return { p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, adj: 0 };
       if (!rows.has(n)) rows.set(n, { team: n, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, adj: 0 });
       return rows.get(n);
     };
-    divisionTeams().forEach(row);
+    listed.forEach(row);
     Object.entries(startTable()).forEach(([n, s]) => {
       const r = row(n);
       ['p', 'w', 'd', 'l', 'gf', 'ga', 'adj'].forEach((k) => { r[k] += Number(s[k]) || 0; });

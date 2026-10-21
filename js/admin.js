@@ -60,7 +60,7 @@
   /* ---------- sign in ---------- */
   function showGate(msg) {
     $('gate').hidden = false;
-    ['admHead', 'admSwitch', 'admMain', 'gmMain'].forEach((id) => { $(id).hidden = true; });
+    ['admHead', 'admSwitch', 'admMain', 'gmMain', 'tbMain'].forEach((id) => { $(id).hidden = true; });
     if (msg) { $('gateErr').textContent = msg; $('gateErr').hidden = false; }
     $('gatePass').focus();
   }
@@ -72,13 +72,13 @@
     setPanel(firstPanel());
   }
 
-  /* ---------- Jugadores | Partidos ----------
+  /* ---------- Jugadores | Partidos | Tabla ----------
      One page, one password. The games tab lives in js/admin-partidos.js and
-     reloads its list every time it opens. ?tab=partidos (where the old
+     the standings tab in js/admin-tabla.js; both reload every time they open. ?tab=partidos (where the old
      /admin-partidos link now lands) opens it directly; otherwise the coach
      gets whichever tab he used last. */
   const KEY_PANEL = 'lvsl-admin-panel';
-  const PANELS = ['jugadores', 'partidos'];
+  const PANELS = ['jugadores', 'partidos', 'tabla'];
 
   function firstPanel() {
     const asked = new URLSearchParams(location.search).get('tab');
@@ -89,10 +89,13 @@
 
   function setPanel(name) {
     const games = name === 'partidos';
-    $('admMain').hidden = games;
+    const tabla = name === 'tabla';
+    $('admMain').hidden = games || tabla;
     $('gmMain').hidden = !games;
-    $('plActions').hidden = games;
+    $('tbMain').hidden = !tabla;
+    $('plActions').hidden = games || tabla;
     $('gmActions').hidden = !games;
+    $('tbActions').hidden = !tabla;
     $('admSwitch').querySelectorAll('[data-panel]').forEach((b) => {
       const on = b.dataset.panel === name;
       b.classList.toggle('active', on);
@@ -100,6 +103,7 @@
     });
     try { localStorage.setItem(KEY_PANEL, name); } catch (e) { /* private mode */ }
     if (games && window.LVSL_GAMES) window.LVSL_GAMES.show();
+    if (tabla && window.LVSL_TABLA) window.LVSL_TABLA.show();
   }
 
   $('admSwitch').addEventListener('click', (e) => {
