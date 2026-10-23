@@ -2,7 +2,8 @@
 
    POST   /api/player                 create — the coach took $15 in cash
    PATCH  /api/player?id=N            attach a headshot (or an ID, with kind: 'id'),
-                                      or restore an archived row
+                                      restore an archived row, or tick the
+                                      credential printed / delivered
    DELETE /api/player?id=N            archive (recoverable)
    DELETE /api/player?id=N&purge=1    remove for good, archived rows only
 
@@ -133,6 +134,30 @@ async function patch(req, res) {
           message: 'Ya hay un registro activo con ese email en esa división.' });
       }
       console.error('restore failed:', err);
+      return res.status(500).json({ error: 'server_error' });
+    }
+  }
+
+  // The credential checkmarks. Delivered implies printed, so ticking it fills
+  // in both; un-ticking printed clears both (the roster locks that box while
+  // delivered is ticked). COALESCE keeps the first date if he ticks twice.
+  const b = req.body || {};
+  if (typeof b.printed === 'boolean' || typeof b.delivered === 'boolean') {
+    const set =
+      b.delivered === true  ? 'card_delivered_at = COALESCE(card_delivered_at, NOW()), card_printed_at = COALESCE(card_printed_at, NOW())' :
+      b.delivered === false ? 'card_delivered_at = NULL' :
+      b.printed === true    ? 'card_printed_at = COALESCE(card_printed_at, NOW())' :
+                              'card_printed_at = NULL, card_delivered_at = NULL';
+    try {
+      const { rows } = await query(
+        `UPDATE players SET ${set}, updated_at = NOW()
+           WHERE id = $1 AND deleted_at IS NULL
+           RETURNING card_printed_at, card_delivered_at`, [id]);
+      if (!rows.length) return res.status(404).json({ error: 'not_found' });
+      return res.status(200).json({ ok: true,
+        printedAt: rows[0].card_printed_at, deliveredAt: rows[0].card_delivered_at });
+    } catch (err) {
+      console.error('card check failed:', err);
       return res.status(500).json({ error: 'server_error' });
     }
   }

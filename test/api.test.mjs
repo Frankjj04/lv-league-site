@@ -24,6 +24,7 @@ const gamesLib = await import('../lib/games.js');
 const { default: gameApi } = await import('../api/game.js');
 const { default: gamesApi } = await import('../api/games.js');
 const { default: leagueApi } = await import('../api/league.js');
+const { default: playerApi } = await import('../api/player.js');
 const leagueLib = await import('../lib/league.js');
 
 let passed = 0, failed = 0;
@@ -392,6 +393,29 @@ test('the public view hides who entered the score', () => {
 });
 
 /* ================= games: who may change what ================= */
+console.log('\napi/player.js — credential checkmarks (refused before any database call)');
+
+async function callPlayer(method, cookie, body, id) {
+  const res = mockRes();
+  await playerApi({ method, body: body || {}, query: id ? { id: String(id) } : {},
+    headers: cookie ? { cookie } : {} }, res);
+  return res;
+}
+
+await atest('nobody signed in cannot tick printed or delivered', async () => {
+  assert.equal((await callPlayer('PATCH', null, { printed: true }, 1)).statusCode, 401);
+  assert.equal((await callPlayer('PATCH', null, { delivered: true }, 1)).statusCode, 401);
+});
+
+await atest('a referee cannot tick printed or delivered', async () => {
+  assert.equal((await callPlayer('PATCH', refCookie(), { printed: true }, 1)).statusCode, 401);
+});
+
+await atest('a checkmark on a bad player id is refused', async () => {
+  assert.equal((await callPlayer('PATCH', adminCookie(), { printed: true }, 'abc')).statusCode, 400);
+  assert.equal((await callPlayer('PATCH', adminCookie(), { delivered: true }, 0)).statusCode, 400);
+});
+
 console.log('\napi/game.js — permissions (refused before any database call)');
 
 async function callGame(method, cookie, body, id) {

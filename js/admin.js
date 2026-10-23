@@ -311,12 +311,17 @@
       const div  = key.split('||')[0];
 
       members.sort((a, b) => a.name.localeCompare(b.name, 'es'));
+      const printed = members.filter((m) => m.printedAt).length;
+      const given = members.filter((m) => m.deliveredAt).length;
 
       return '<section class="team">' +
         '<header class="team-head">' +
           '<h2 class="team-name">' + esc(team) + '</h2>' +
           '<span class="team-div">' + esc(divisionLabel(div)) + '</span>' +
-          '<span class="team-count">' + members.length + ' jugador' + (members.length === 1 ? '' : 'es') + '</span>' +
+          '<span class="team-count">' + members.length + ' jugador' + (members.length === 1 ? '' : 'es') +
+            ' · ' + printed + ' impresa' + (printed === 1 ? '' : 's') +
+            ' · ' + given + ' entregada' + (given === 1 ? '' : 's') +
+          '</span>' +
           // With one team picked, the team bar above already has the print button.
           (activeTeam ? '' : '<button type="button" class="team-print" data-print-team="' + esc(key) + '">Imprimir credenciales</button>') +
         '</header>' +
@@ -325,8 +330,12 @@
     }).join('');
 
     $('roster').querySelectorAll('.pl').forEach((el) => {
-      el.addEventListener('click', () => openSheet(Number(el.dataset.id)));
+      el.addEventListener('click', (e) => {
+        if (e.target.closest('.pl-checks')) return;
+        openSheet(Number(el.dataset.id));
+      });
       el.addEventListener('keydown', (e) => {
+        if (e.target.closest('.pl-checks')) return;
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet(Number(el.dataset.id)); }
       });
     });
@@ -346,8 +355,60 @@
         '<span class="pl-meta">' + age(p.dob) + ' años · ' + esc(phoneFmt(p.phone)) + '</span>' +
       '</span>' +
       '<span class="pl-since">' + esc(dateFmt(p.createdAt)) + '</span>' +
+      // The coach's checkmarks: credential printed, then handed to the player.
+      // Printed stays locked while delivered is ticked (delivered implies printed).
+      '<span class="pl-checks">' +
+        '<label class="pl-check' + (p.printedAt ? ' is-on' : '') + '"' +
+          (p.printedAt ? ' title="Impresa el ' + esc(dateFmt(p.printedAt)) + '"' : '') + '>' +
+          '<input type="checkbox" data-card="printed" data-id="' + p.id + '"' +
+            (p.printedAt ? ' checked' : '') + (p.deliveredAt ? ' disabled' : '') + ' />Impresa</label>' +
+        '<label class="pl-check' + (p.deliveredAt ? ' is-on' : '') + '"' +
+          (p.deliveredAt ? ' title="Entregada el ' + esc(dateFmt(p.deliveredAt)) + '"' : '') + '>' +
+          '<input type="checkbox" data-card="delivered" data-id="' + p.id + '"' +
+            (p.deliveredAt ? ' checked' : '') + ' />Entregada</label>' +
+      '</span>' +
     '</li>';
   }
+
+  /* Saves a checkmark right away. The roster updates first and goes back if
+     the server says no, so a tap on the field never feels slow. */
+  async function setCard(id, field, on) {
+    const p = players.find((x) => x.id === id);
+    if (!p) return;
+    const before = { printedAt: p.printedAt, deliveredAt: p.deliveredAt };
+    const now = new Date().toISOString();
+    if (field === 'delivered') {
+      p.deliveredAt = on ? now : null;
+      if (on && !p.printedAt) p.printedAt = now;
+    } else {
+      p.printedAt = on ? now : null;
+      if (!on) p.deliveredAt = null;
+    }
+    render();
+    if (usingSample) return;
+
+    try {
+      const res = await fetch('/api/player?id=' + id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ [field]: on }),
+      });
+      if (res.status === 401) { Object.assign(p, before); showGate('Tu sesión terminó. Vuelve a entrar.'); return; }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      p.printedAt = data.printedAt;
+      p.deliveredAt = data.deliveredAt;
+    } catch (e) {
+      Object.assign(p, before);
+      alert('No se pudo guardar la marca de ' + p.name + '. Revisa tu conexión e inténtalo otra vez.');
+    }
+    render();
+  }
+
+  $('roster').addEventListener('change', (e) => {
+    const box = e.target.closest('[data-card]');
+    if (box) setCard(Number(box.dataset.id), box.dataset.card, box.checked);
+  });
 
   /* ---------- player detail ---------- */
   function openSheet(id) {
@@ -396,6 +457,9 @@
         row('Pago', p.paymentMethod ? esc(payLabel(p.paymentMethod)) : '') +
         row('Nota', esc(p.note || '')) +
         row('Aceptó el descargo', esc(dateFmt(p.waiverAcceptedAt))) +
+        row('Credencial', p.deliveredAt
+          ? 'Entregada el ' + esc(dateFmt(p.deliveredAt)) + (p.printedAt ? ' · impresa el ' + esc(dateFmt(p.printedAt)) : '')
+          : p.printedAt ? 'Impresa el ' + esc(dateFmt(p.printedAt)) + ' · falta entregar' : 'Sin imprimir') +
       '</dl>' +
       '<div class="sh-danger">' +
         '<button type="button" class="sh-del-open" id="delOpen">Quitar de la lista</button>' +
@@ -566,7 +630,8 @@
   function toCsv(list) {
     const head = ['Division', 'Equipo', 'Nombre', 'Nacimiento', 'Edad', 'Menor',
                   'Telefono', 'Email', 'Direccion', 'Tutor', 'Telefono tutor',
-                  'Estado', 'Foto ID', 'Registrado', 'Acepto descargo'];
+                  'Estado', 'Foto ID', 'Registrado', 'Acepto descargo',
+                  'Credencial impresa', 'Credencial entregada'];
 
     // Excel and Sheets both read a quoted field; a quote inside one is doubled.
     const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
@@ -575,7 +640,7 @@
       divisionLabel(p.division), p.team, p.name, p.dob, age(p.dob), isMinor(p) ? 'SI' : '',
       phoneFmt(p.phone), p.email, p.address, p.guardianName, phoneFmt(p.guardianPhone),
       isPending(p) ? 'SIN TERMINAR' : 'INSCRITO', p.idPhoto ? 'SI' : 'FALTA',
-      p.createdAt, p.waiverAcceptedAt,
+      p.createdAt, p.waiverAcceptedAt, p.printedAt || '', p.deliveredAt || '',
     ].map(cell).join(','));
 
     // BOM so Excel opens the accents correctly.

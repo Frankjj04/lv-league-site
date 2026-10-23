@@ -28,6 +28,7 @@ export default async function handler(req, res) {
               guardian_name, guardian_phone, status,
               source, payment_method, added_note,
               waiver_accepted_at, created_at, deleted_at, deleted_reason,
+              card_printed_at, card_delivered_at,
               (photo IS NOT NULL) AS has_photo,
               (id_photo IS NOT NULL) AS has_id
          FROM players
@@ -58,6 +59,8 @@ export default async function handler(req, res) {
       createdAt: r.created_at,
       deletedAt: r.deleted_at,
       deletedReason: r.deleted_reason,
+      printedAt: r.card_printed_at,
+      deliveredAt: r.card_delivered_at,
     })));
   } catch (err) {
     console.error('players failed:', err);

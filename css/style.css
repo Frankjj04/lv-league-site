@@ -1883,6 +1883,32 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   font-variant-numeric: tabular-nums;
 }
 
+/* Credential checkmarks: printed (orange), handed to the player (green).
+   Big enough to tap on a phone at the field. */
+.pl-checks { display: flex; gap: 6px; flex-shrink: 0; }
+
+.pl-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+
+.pl-check input { width: 17px; height: 17px; margin: 0; accent-color: var(--orange); cursor: pointer; }
+.pl-check:has(input:disabled) { cursor: default; }
+.pl-check:has(input:disabled) input { cursor: default; }
+.pl-check.is-on { border-color: var(--orange-line); background: var(--orange-soft); color: var(--orange-deep); }
+.pl-check:has([data-card="delivered"]) input { accent-color: var(--green); }
+.pl-check.is-on:has([data-card="delivered"]) { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+
 .adm-empty { text-align: center; color: var(--text-mute); padding: 50px 0; }
 
 /* ---------- never finished paying ----------
@@ -2251,6 +2277,11 @@ tbody td:first-child { color: var(--ink); font-weight: 700; }
   .team-bar .adm-btn { width: 100%; justify-content: center; }
   .team-head { padding: 13px 15px; }
   .pl { padding: 10px 15px; gap: 11px; }
+  /* Phones: the checkmarks go under the name; the sign-up date steps aside. */
+  .pl { flex-wrap: wrap; }
+  .pl-since { display: none; }
+  .pl-checks { width: 100%; padding-left: 53px; }
+  .pl-check { flex: 1; justify-content: center; }
   .sh-row { grid-template-columns: 1fr; gap: 2px; }
   .adm-sheet-panel { padding: 22px 18px 34px; }
 }
