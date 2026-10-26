@@ -690,11 +690,10 @@
         '<div class="cred-info">' +
           // Long names get a smaller size so they stay within two lines.
           '<div class="cred-name' + (p.name.length > 30 ? ' cred-name--xl' : p.name.length > 20 ? ' cred-name--long' : '') + '">' + esc(p.name) + '</div>' +
-          '<div class="cred-team">' + esc(p.team) + '</div>' +
-          '<dl class="cred-facts">' +
-            '<dt>División</dt><dd>' + esc(divisionLabel(p.division)) + '</dd>' +
-            '<dt>Nacimiento</dt><dd>' + esc(dobFmt(p.dob)) + '</dd>' +
-          '</dl>' +
+          // Coach's order (2026-10-26): name, birth date, team, division (bigger).
+          '<div class="cred-dob"><span>Nacimiento</span> ' + esc(dobFmt(p.dob)) + '</div>' +
+          '<div class="cred-team' + (p.team.length > 18 ? ' cred-team--long' : '') + '">' + esc(p.team) + '</div>' +
+          '<div class="cred-div' + (divisionLabel(p.division).length > 17 ? ' cred-div--long' : '') + '"><span>División</span>' + esc(divisionLabel(p.division)) + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="cred-foot"><span>lvsl.futbol</span><span>#' + esc(String(p.id || '')) + '</span></div>' +
