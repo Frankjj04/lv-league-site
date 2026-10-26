@@ -683,8 +683,8 @@
       '<div class="cred-top">' +
         '<img src="assets/logo.jpg" alt="" class="cred-crest" />' +
         '<span class="cred-league">LAS VEGAS SOCCER LEAGUE</span>' +
-        (CFG.season ? '<span class="cred-season">' + esc(CFG.season) + '</span>' : '') +
       '</div>' +
+      (CFG.season ? '<span class="cred-season">' + esc(CFG.season) + '</span>' : '') +
       '<div class="cred-body">' +
         '<img src="' + esc(p.photo) + '" alt="" class="cred-photo" />' +
         '<div class="cred-info">' +
